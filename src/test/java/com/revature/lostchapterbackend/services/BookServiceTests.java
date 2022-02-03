@@ -1,4 +1,4 @@
-package com.revature.lostchapterbackend.booktests;
+package com.revature.lostchapterbackend.services;
 
 import com.revature.lostchapterbackend.dao.BookDAO;
 import com.revature.lostchapterbackend.dao.GenreDAO;

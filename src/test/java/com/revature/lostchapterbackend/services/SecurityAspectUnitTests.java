@@ -1,4 +1,4 @@
-package com.revature.lostchapterbackend.usertests;
+package com.revature.lostchapterbackend.services;
 
 import javax.servlet.http.HttpServletRequest;
 

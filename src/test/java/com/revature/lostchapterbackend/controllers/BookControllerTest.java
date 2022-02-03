@@ -1,4 +1,4 @@
-package com.revature.lostchapterbackend.integrationtests;
+package com.revature.lostchapterbackend.controllers;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -33,7 +33,7 @@ import java.util.List;
 @SpringBootTest
 @AutoConfigureMockMvc
 @DirtiesContext(classMode = ClassMode.BEFORE_EACH_TEST_METHOD)
-public class BookIntegrationTest {
+public class BookControllerTest {
 
 	@Autowired
 	private MockMvc mvc; // send fake http requests to the server

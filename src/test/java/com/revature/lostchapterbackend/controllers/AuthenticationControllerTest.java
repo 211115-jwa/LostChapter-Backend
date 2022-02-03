@@ -1,4 +1,4 @@
-package com.revature.lostchapterbackend.integrationtests;
+package com.revature.lostchapterbackend.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.revature.lostchapterbackend.dto.LoginDto;
