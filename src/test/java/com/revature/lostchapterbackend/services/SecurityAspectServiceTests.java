@@ -1,4 +1,4 @@
-package com.revature.lostchapterbackend.usertests;
+package com.revature.lostchapterbackend.services;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -17,7 +17,7 @@ import org.springframework.mock.web.MockHttpSession;
 import com.revature.lostchapterbackend.aspect.SecurityAspect;
 import com.revature.lostchapterbackend.model.Users;
 
-public class SecurityAspectUnitTests {
+public class SecurityAspectServiceTests {
 
 	@Mock
 	private ProceedingJoinPoint pjp;

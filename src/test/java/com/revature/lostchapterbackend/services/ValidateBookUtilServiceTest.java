@@ -1,4 +1,4 @@
-package com.revature.lostchapterbackend.usertests;
+package com.revature.lostchapterbackend.services;
 
 import java.security.InvalidParameterException;
 import java.util.Optional;
@@ -22,7 +22,7 @@ import com.revature.lostchapterbackend.exceptions.SynopsisInputException;
 import com.revature.lostchapterbackend.model.Genre;
 import com.revature.lostchapterbackend.utility.ValidateBookUtil;
 
-public class ValidateBookUtilUnitTests {
+public class ValidateBookUtilServiceTest {
 
 	@Mock
 	GenreDAO mockGenreDao;

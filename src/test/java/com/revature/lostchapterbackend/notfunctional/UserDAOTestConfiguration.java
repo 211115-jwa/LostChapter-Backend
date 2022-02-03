@@ -1,4 +1,4 @@
-package com.revature.lostchapterbackend.usertests;
+package com.revature.lostchapterbackend.notfunctional;
 
 import org.mockito.Mockito;
 import org.springframework.context.annotation.Bean;

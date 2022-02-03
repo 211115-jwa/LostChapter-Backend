@@ -1,4 +1,4 @@
-package com.revature.lostchapterbackend.cartintegrationtests;
+package com.revature.lostchapterbackend.controllers;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -36,7 +36,7 @@ import com.revature.lostchapterbackend.model.Users;
 @SpringBootTest
 @AutoConfigureMockMvc
 @DirtiesContext(classMode = ClassMode.BEFORE_EACH_TEST_METHOD)
-public class CartIntegrationTests {
+public class CartControllerTests {
 	
 	@Autowired
 	private MockMvc mvc;
