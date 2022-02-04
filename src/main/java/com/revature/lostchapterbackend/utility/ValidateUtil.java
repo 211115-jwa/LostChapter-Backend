@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.revature.lostchapterbackend.dto.SignUpDto;
 import com.revature.lostchapterbackend.exceptions.InvalidParameterException;
-import com.revature.lostchapterbackend.model.Users;
+import com.revature.lostchapterbackend.model.User;
 import com.revature.lostchapterbackend.service.UserService;
 
 public class ValidateUtil {
@@ -80,9 +80,9 @@ public class ValidateUtil {
 		logger.debug("user.getEmail(): {}", user.getEmail());
 		logger.debug("userService: {}", userService);
 
-		Users databaseUserEmail = userService.getUserByEmail(user.getEmail());
+		User databaseUserEmail = userService.getUserByEmail(user.getEmail());
 
-		Users databaseUserUsername = userService.getUserByUsername(user.getUsername());
+		User databaseUserUsername = userService.getUserByUsername(user.getUsername());
 
 		if (databaseUserEmail != null) {
 			if (StringUtils.equalsAnyIgnoreCase(databaseUserEmail.getEmail().trim(), user.getEmail().trim())) {
@@ -164,7 +164,7 @@ public class ValidateUtil {
 //        }
 //    }
 
-	public void verifyUpdateUser(Users user) throws InvalidParameterException {
+	public void verifyUpdateUser(User user) throws InvalidParameterException {
 		logger.info("ValidateUtil.createUser() invoked");
 
 		logger.info("check if inputs are blank");

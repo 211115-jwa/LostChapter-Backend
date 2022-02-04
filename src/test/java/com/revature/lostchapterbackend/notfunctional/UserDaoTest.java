@@ -16,7 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.revature.lostchapterbackend.dao.UserDao;
 import com.revature.lostchapterbackend.dto.SignUpDto;
 import com.revature.lostchapterbackend.model.Carts;
-import com.revature.lostchapterbackend.model.Users;
+import com.revature.lostchapterbackend.model.User;
 
 @SpringBootTest
 @DirtiesContext(classMode = ClassMode.BEFORE_EACH_TEST_METHOD)
@@ -33,14 +33,14 @@ public class UserDaoTest {
 	public void testgetUser_positive() {
 		LocalDate dt = LocalDate.parse("2000-11-01");
 		
-		Users user = new Users("jane_doe", "pass12345", "Jane", "Doe",  "jDoe32@gmail.com", dt, "232 Lake Sheen Ave", "customer");
+		User user = new User("jane_doe", "pass12345", "Jane", "Doe",  "jDoe32@gmail.com", dt, "232 Lake Sheen Ave", "customer");
 		this.em.persist(user);
 		
 		this.em.flush();
 		
-		Users actual = this.sut.getUser("jane_doe", "pass12345");
+		User actual = (User) this.sut.getUser("jane_doe", "pass12345");
 		
-		Users expected = new Users("jane_doe", "pass12345", "Jane", "Doe",  "jDoe32@gmail.com", dt, "232 Lake Sheen Ave", "customer");
+		User expected = new User("jane_doe", "pass12345", "Jane", "Doe",  "jDoe32@gmail.com", dt, "232 Lake Sheen Ave", "customer");
 		expected.setId(1);
 		
 		Assertions.assertEquals(expected, actual);
@@ -52,7 +52,7 @@ public class UserDaoTest {
 	public void testGetUser_incorrectUsername() {
 		LocalDate dt = LocalDate.parse("2000-11-01");
 		
-		Users user = new Users("jane_doe", "pass12345", "Jane", "Doe",  "jDoe32@gmail.com", dt, "232 Lake Sheen Ave", "customer");
+		User user = new User("jane_doe", "pass12345", "Jane", "Doe",  "jDoe32@gmail.com", dt, "232 Lake Sheen Ave", "customer");
 		this.em.persist(user);
 		
 		this.em.flush();
@@ -68,7 +68,7 @@ public class UserDaoTest {
 	public void testGetUser_incorrectPassword() {
 		LocalDate dt = LocalDate.parse("2000-11-01");
 		
-		Users user = new Users("jane_doe", "pass12345", "Jane", "Doe", "jDoe32@gmail.com", dt, "232 Lake Sheen Ave", "customer");
+		User user = new User("jane_doe", "pass12345", "Jane", "Doe", "jDoe32@gmail.com", dt, "232 Lake Sheen Ave", "customer");
 		this.em.persist(user);
 		
 		this.em.flush();
@@ -84,7 +84,7 @@ public class UserDaoTest {
 	public void testGetUser_incorrectUsernameAndPassword() {
 		LocalDate dt = LocalDate.parse("2000-11-01");
 		
-		Users user = new Users("jane_doe", "pass12345", "Jane", "Doe", "jDoe32@gmail.com", dt, "232 Lake Sheen Ave", "customer");
+		User user = new User("jane_doe", "pass12345", "Jane", "Doe", "jDoe32@gmail.com", dt, "232 Lake Sheen Ave", "customer");
 		this.em.persist(user);
 		
 		this.em.flush();
@@ -100,7 +100,7 @@ public class UserDaoTest {
 	public void testGetUser_UsernameIsBlank() {
 		LocalDate dt = LocalDate.parse("2000-11-01");
 		
-		Users user = new Users("jane_doe", "pass12345", "Jane", "Doe",  "jDoe32@gmail.com", dt, "232 Lake Sheen Ave", "customer");
+		User user = new User("jane_doe", "pass12345", "Jane", "Doe",  "jDoe32@gmail.com", dt, "232 Lake Sheen Ave", "customer");
 		this.em.persist(user);
 		
 		this.em.flush();
@@ -116,7 +116,7 @@ public class UserDaoTest {
 	public void testGetUser_PasswordIsBlank() {
 		LocalDate dt = LocalDate.parse("2000-11-01");
 		
-		Users user = new Users("jane_doe", "pass12345", "Jane", "Doe",  "jDoe32@gmail.com", dt, "232 Lake Sheen Ave", "customer");
+		User user = new User("jane_doe", "pass12345", "Jane", "Doe",  "jDoe32@gmail.com", dt, "232 Lake Sheen Ave", "customer");
 		this.em.persist(user);
 		
 		this.em.flush();
@@ -132,7 +132,7 @@ public class UserDaoTest {
 	public void testGetUser_UsernameAndPasswordIsBlank() {
 		LocalDate dt = LocalDate.parse("2000-11-01");
 		
-		Users user = new Users("jane_doe", "pass12345", "Jane", "Doe",  "jDoe32@gmail.com", dt, "232 Lake Sheen Ave", "customer");
+		User user = new User("jane_doe", "pass12345", "Jane", "Doe",  "jDoe32@gmail.com", dt, "232 Lake Sheen Ave", "customer");
 		this.em.persist(user);
 		
 		this.em.flush();
@@ -148,10 +148,10 @@ public class UserDaoTest {
 	public void testaddUser_positive() {
 		LocalDate dt = LocalDate.parse("2000-11-01");
 		
-		Users user = new Users("jane21", "password4", "Jane", "Doe",  "jDoe32@gmail.com", dt, "232 Lake Sheen Ave", "customer");
+		User user = new User("jane21", "password4", "Jane", "Doe",  "jDoe32@gmail.com", dt, "232 Lake Sheen Ave", "customer");
 		user.setId(1);
 		
-		Users expected = new Users("jane21", "password4", "Jane", "Doe",  "jDoe32@gmail.com", dt, "232 Lake Sheen Ave", "customer");
+		User expected = new User("jane21", "password4", "Jane", "Doe",  "jDoe32@gmail.com", dt, "232 Lake Sheen Ave", "customer");
 		expected.setId(1);
 		
 		Assertions.assertEquals(expected, user);
@@ -163,7 +163,7 @@ public class UserDaoTest {
 	public void testAddUser_UsernameAlreadyExist() {
 		LocalDate dt = LocalDate.parse("2000-11-01");
 		
-		Users user = new Users("jane21", "password4", "Jane", "Doe",  "jDoe32@gmail.com", dt, "232 Lake Sheen Ave", "customer");
+		User user = new User("jane21", "password4", "Jane", "Doe",  "jDoe32@gmail.com", dt, "232 Lake Sheen Ave", "customer");
 		this.em.persist(user);
 		Carts c = null;
 		
@@ -184,7 +184,7 @@ public class UserDaoTest {
 	public void testAddUser_EmailAlreadyExist() {
 		LocalDate dt = LocalDate.parse("2000-11-01");
 		
-		Users user = new Users("jane21", "password4", "Jane", "Doe",  "jDoe32@gmail.com", dt, "232 Lake Sheen Ave", "customer");
+		User user = new User("jane21", "password4", "Jane", "Doe",  "jDoe32@gmail.com", dt, "232 Lake Sheen Ave", "customer");
 		this.em.persist(user);
 		Carts c = null;
 		
@@ -205,7 +205,7 @@ public class UserDaoTest {
 	public void testAddUser_UsernameAndEmailAlreadyExist() {
 		LocalDate dt = LocalDate.parse("2000-11-01");
 		
-		Users user = new Users("jane21", "password4", "Jane", "Doe",  "jDoe32@gmail.com", dt, "232 Lake Sheen Ave", "customer");
+		User user = new User("jane21", "password4", "Jane", "Doe",  "jDoe32@gmail.com", dt, "232 Lake Sheen Ave", "customer");
 		this.em.persist(user);
 		Carts c = null;
 		
@@ -226,14 +226,14 @@ public class UserDaoTest {
 	public void testgetUserByEmail_positive() {
 		LocalDate dt = LocalDate.parse("2000-11-01");
 		
-		Users user = new Users("jane_doe", "pass12345", "Jane", "Doe",  "jDoe32@gmail.com", dt, "232 Lake Sheen Ave", "customer");
+		User user = new User("jane_doe", "pass12345", "Jane", "Doe",  "jDoe32@gmail.com", dt, "232 Lake Sheen Ave", "customer");
 		this.em.persist(user);
 		
 		this.em.flush();
 		
-		Users actual = this.sut.getUserByEmail("jDoe32@gmail.com");
+		User actual = (User) this.sut.getUserByEmail("jDoe32@gmail.com");
 		
-		Users expected = new Users("jane_doe", "pass12345", "Jane", "Doe",  "jDoe32@gmail.com", dt, "232 Lake Sheen Ave", "customer");
+		User expected = new User("jane_doe", "pass12345", "Jane", "Doe",  "jDoe32@gmail.com", dt, "232 Lake Sheen Ave", "customer");
 		expected.setId(1);
 		
 		Assertions.assertEquals(expected, actual);
@@ -245,7 +245,7 @@ public class UserDaoTest {
 	public void testgetUserByEmail_BlankEmail() {
 		LocalDate dt = LocalDate.parse("2000-11-01");
 		
-		Users user = new Users("jane_doe", "pass12345", "Jane", "Doe",  "jDoe32@gmail.com", dt, "232 Lake Sheen Ave", "customer");
+		User user = new User("jane_doe", "pass12345", "Jane", "Doe",  "jDoe32@gmail.com", dt, "232 Lake Sheen Ave", "customer");
 		this.em.persist(user);
 		
 		this.em.flush();

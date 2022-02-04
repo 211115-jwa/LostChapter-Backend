@@ -10,7 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
-public class Users {
+public class User {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,11 +28,11 @@ public class Users {
 	private String address;
 	private String role;
 	
-	public Users() {
+	public User() {
 		super();
 	}
 
-	public Users(String username, String password, String firstName, String lastName,  String email,
+	public User(String username, String password, String firstName, String lastName,  String email,
 			LocalDate birthday, String address, String role) {
 		super();
 		this.username = username;
@@ -138,7 +138,7 @@ public class Users {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Users other = (Users) obj;
+		User other = (User) obj;
 		return Objects.equals(address, other.address) && Objects.equals(birthday, other.birthday)
 				&& Objects.equals(email, other.email) && Objects.equals(firstName, other.firstName) && id == other.id
 				&& Objects.equals(lastName, other.lastName) && Objects.equals(password, other.password)

@@ -16,7 +16,7 @@ import com.revature.lostchapterbackend.exceptions.InvalidLoginException;
 import com.revature.lostchapterbackend.exceptions.InvalidParameterException;
 import com.revature.lostchapterbackend.exceptions.UserNotFoundException;
 import com.revature.lostchapterbackend.model.Carts;
-import com.revature.lostchapterbackend.model.Users;
+import com.revature.lostchapterbackend.model.User;
 import com.revature.lostchapterbackend.utility.HashUtil;
 
 @Service
@@ -31,7 +31,7 @@ public class UserService {
 		this.ud = ud;
 	}
 
-	public Users createUser(SignUpDto dto)
+	public User createUser(SignUpDto dto)
 			throws InvalidLoginException, InvalidParameterException, NoSuchAlgorithmException {
 
 		if (dto.getUsername().trim().equals("") || dto.getPassword().trim().equals("")
@@ -62,16 +62,16 @@ public class UserService {
 		dto.setPassword(hashedPassword);
 
 		Carts c = null;
-		Users createdUser = this.ud.addUser(dto, c);
+		User createdUser = this.ud.addUser(dto, c);
 		return createdUser;
 
 	}
 
-	public Users getUser(String username, String password) throws InvalidLoginException, NoSuchAlgorithmException {
+	public User getUser(String username, String password) throws InvalidLoginException, NoSuchAlgorithmException {
 
 		logger.info("UserService.getUser() invoked");
 
-		Users user = ud.getUser(username);
+		User user = ud.getUser(username);
 
 		try {
 
@@ -94,7 +94,7 @@ public class UserService {
 		}
 	}
 
-	public void deleteUserById(Users currentUser) throws UserNotFoundException {
+	public void deleteUserById(User currentUser) throws UserNotFoundException {
 
 		if (currentUser != null) {
 			int currentUserId = currentUser.getId();
@@ -104,19 +104,19 @@ public class UserService {
 		}
 	}
 
-	public Users getUserByEmail(String email) throws InvalidParameterException {
+	public User getUserByEmail(String email) throws InvalidParameterException {
 		logger.info("UserService.getUserByEmail() invoked");
 
 		if (email == null) {
 			throw new InvalidParameterException("Email is Null");
 		}
 
-		Users users = this.ud.getUserByEmail(email);
+		User users = this.ud.getUserByEmail(email);
 
 		return users;
 	}
 
-	public Users updateUser(Users currentUser, Users updatedUserInfo) throws InvalidParameterException {
+	public User updateUser(User currentUser, User updatedUserInfo) throws InvalidParameterException {
 
 		if (updatedUserInfo.getUsername().trim().equals("") || updatedUserInfo.getPassword().trim().equals("")
 				|| updatedUserInfo.getFirstName().trim().equals("") || updatedUserInfo.getLastName().trim().equals("")
@@ -144,14 +144,14 @@ public class UserService {
 		return updatedUserInfo;
 	}
 
-	public Users getUserByUsername(String username) throws InvalidParameterException {
+	public User getUserByUsername(String username) throws InvalidParameterException {
 		logger.info("UserService.getUserByUsername() invoked");
 
 		if (username == null) {
 			throw new InvalidParameterException("username is Null");
 		}
 
-		Users users = this.ud.getUser(username);
+		User users = this.ud.getUser(username);
 
 		return users;
 	}

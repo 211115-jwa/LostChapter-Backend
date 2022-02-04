@@ -3,6 +3,7 @@ package com.revature.lostchapterbackend.services;
 import static org.mockito.Mockito.mock;
 
 import java.security.NoSuchAlgorithmException;
+import java.time.LocalDate;
 
 import javax.annotation.Resource;
 
@@ -20,7 +21,7 @@ import com.revature.lostchapterbackend.exceptions.InvalidLoginException;
 import com.revature.lostchapterbackend.exceptions.InvalidParameterException;
 import com.revature.lostchapterbackend.exceptions.UserNotFoundException;
 import com.revature.lostchapterbackend.model.Carts;
-import com.revature.lostchapterbackend.model.Users;
+import com.revature.lostchapterbackend.model.User;
 import com.revature.lostchapterbackend.service.UserService;
 import com.revature.lostchapterbackend.utility.HashUtil;
 import com.revature.lostchapterbackend.utility.ValidateUtil;
@@ -46,7 +47,8 @@ public class ValidateUtilTest {
 	
 	@Test
 	public void testCreateUser_positive() throws NoSuchAlgorithmException, InvalidLoginException, InvalidParameterException {
-		Users user = new Users("JDoe", "password1", "John", "Doe", 24, "jdoe@gmail.com", "01/01/1997", "22nd Ave", "Customer");
+		LocalDate dt = LocalDate.parse("01/1/1997");
+		User user = new User("JDoe", "password1", "John", "Doe", "jdoe@gmail.com", dt, "22nd Ave", "Customer");
 		user.setId(1);
 		
 		SignUpDto createdUser = new SignUpDto("JDoe", "password1", "John", "Doe", 24, "jdoe@gmail.com", "01/01/1997", "22nd Ave", "Customer");
@@ -698,11 +700,13 @@ public class ValidateUtilTest {
 	
 	@Test
 	public void testUpdateUserByUsernamePasswordFirstNameLastNameAgeEmailBirthdayAndAddress_positive() throws NoSuchAlgorithmException, InvalidParameterException {
-		Users user1 = new Users("JDoe", "password1", "John", "Doe", 24, "jdoe@gmail.com", "01/01/1997", "22nd Ave", "Customer");
+		LocalDate dt = LocalDate.parse("01/1/1997");
+		User user1 = new User("JDoe", "password1", "John", "Doe", "jdoe@gmail.com", dt, "22nd Ave", "Customer");
 		user1.setId(1);
 		user1.setPassword(HashUtil.hashPassword("password1", "SHA-256"));
 		
-		Users user2 = new Users("JaneS",  "password2", "Jane", "Smith", 25, "jsmith@gmail.com", "01/02/1997", "123 River Street", "Customer");
+		LocalDate dt1 = LocalDate.parse("01/1/1997");
+		User user2 = new User("JaneS",  "password2", "Jane", "Smith", "jsmith@gmail.com", dt, "123 River Street", "Customer");
 		user2.setId(1);
 		user2.setPassword(HashUtil.hashPassword("password2", "SHA-256"));
 		
@@ -714,11 +718,13 @@ public class ValidateUtilTest {
 	
 	@Test
 	public void testUpdateUserByAll_positive() throws NoSuchAlgorithmException, InvalidParameterException {
-		Users user1 = new Users("JDoe", "password1", "John", "Doe", 24, "jdoe@gmail.com", "01/01/1997", "22nd Ave", "Customer");
+		LocalDate dt = LocalDate.parse("01/1/1997");
+		User user1 = new User("JDoe", "password1", "John", "Doe", "jdoe@gmail.com", dt, "22nd Ave", "Customer");
 		user1.setId(1);
 		user1.setPassword(HashUtil.hashPassword("password1", "SHA-256"));
 		
-		Users user2 = new Users("JaneS",  "password2", "Jane", "Smith", 25, "jsmith@gmail.com", "01/02/1997", "22nd Ave", "Admin");
+		LocalDate dt1 = LocalDate.parse("01/1/1997");
+		User user2 = new User("JaneS",  "password2", "Jane", "Smith", "jsmith@gmail.com", dt1, "22nd Ave", "Admin");
 		user2.setId(1);
 		user2.setPassword(HashUtil.hashPassword("password2", "SHA-256"));
 		

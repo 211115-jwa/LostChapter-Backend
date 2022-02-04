@@ -10,6 +10,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
+import org.apache.catalina.User;
+
 @Entity
 public class Carts {
 
@@ -18,7 +20,7 @@ public class Carts {
 	private int cartId;
 
 	@OneToOne
-	private Users user;
+	private User user;
 
 	@OneToMany
 	private List<BookToBuy> booksToBuy;
@@ -27,9 +29,9 @@ public class Carts {
 		super();
 	}
 	
-	public Carts(Users user) {
+	public Carts(User createdUser) {
 		super();
-		this.user = user;
+		this.user = (User) createdUser;
 	}
 
 	public Carts(List<BookToBuy> booksToBuy) {
@@ -37,7 +39,7 @@ public class Carts {
 		this.booksToBuy = booksToBuy;
 	}
 
-	public Carts(int cartId, Users user, List<BookToBuy> booksToBuy) {
+	public Carts(int cartId, User user, List<BookToBuy> booksToBuy) {
 		super();
 		this.cartId = cartId;
 		this.user = user;
@@ -60,11 +62,11 @@ public class Carts {
 		this.booksToBuy = booksToBuy;
 	}
 
-	public Users getUser() {
+	public User getUser() {
 		return user;
 	}
 
-	public void setUser(Users user) {
+	public void setUser(User user) {
 		this.user = user;
 	}
 

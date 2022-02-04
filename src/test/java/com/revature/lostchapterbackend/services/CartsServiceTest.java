@@ -23,7 +23,7 @@ import com.revature.lostchapterbackend.model.Book;
 import com.revature.lostchapterbackend.model.BookToBuy;
 import com.revature.lostchapterbackend.model.Carts;
 import com.revature.lostchapterbackend.model.Genre;
-import com.revature.lostchapterbackend.model.Users;
+import com.revature.lostchapterbackend.model.User;
 import com.revature.lostchapterbackend.service.BookService;
 import com.revature.lostchapterbackend.service.CartsService;
 
@@ -50,7 +50,7 @@ public class CartsServiceTest {
 
 		List<BookToBuy> bookToBuy = new ArrayList<>();
 
-		Carts currentCart = new Carts(new Users());
+		Carts currentCart = new Carts(new User());
 		currentCart = new Carts(bookToBuy);
 		currentCart.setCartId(1);
 
@@ -129,7 +129,7 @@ public class CartsServiceTest {
 
 		List<BookToBuy> bookToBuy = new ArrayList<>();
 
-		Carts currentCart = new Carts(new Users());
+		Carts currentCart = new Carts(new User());
 		currentCart = new Carts(bookToBuy);
 		currentCart.setCartId(1);
 
@@ -177,7 +177,7 @@ public class CartsServiceTest {
 
 		List<BookToBuy> bookToBuy = new ArrayList<>();
 
-		Carts currentCart = new Carts(new Users());
+		Carts currentCart = new Carts(new User());
 		currentCart = new Carts(bookToBuy);
 		currentCart.setCartId(1);
 

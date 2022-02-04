@@ -17,7 +17,7 @@ import com.revature.lostchapterbackend.annotation.Customer;
 import com.revature.lostchapterbackend.model.Carts;
 import com.revature.lostchapterbackend.model.Checkout;
 import com.revature.lostchapterbackend.model.TransactionKeeper;
-import com.revature.lostchapterbackend.model.Users;
+import com.revature.lostchapterbackend.model.User;
 import com.revature.lostchapterbackend.service.CartsService;
 import com.revature.lostchapterbackend.service.CheckoutService;
 import com.revature.lostchapterbackend.utility.ValidateCheckoutUtil;
@@ -45,7 +45,7 @@ public class CheckoutController {
 		try {
 			TransactionKeeper tk;
 			// main way to get cartId
-			Users currentlyLoggedInUser = (Users) req.getSession().getAttribute("currentUser");
+			User currentlyLoggedInUser = (User) req.getSession().getAttribute("currentUser");
 
 			Carts c = css.getCartById(String.valueOf(currentlyLoggedInUser.getId()));
 			validateCheckoutUtil.verifyCheckout(payout); // validates card information
