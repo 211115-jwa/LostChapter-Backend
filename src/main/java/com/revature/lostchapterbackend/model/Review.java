@@ -44,14 +44,14 @@ public class Review {
 	@Column(nullable = false)
 	private int ratingThree;
 
-	private LocalDateTime sent_at;
+	private LocalDateTime sentAt;
 	
 	public Review() {
 		super();
 	}
 	
 	public Review(int reviewId, Book book, Users user, String reviewTitle, String reviewText, int ratingOne,
-			int ratingTwo, int ratingThree, LocalDateTime sent_at) {
+			int ratingTwo, int ratingThree, LocalDateTime sentAt) {
 		super();
 		this.reviewId = reviewId;
 		this.book = book;
@@ -61,7 +61,7 @@ public class Review {
 		this.ratingOne = ratingOne;
 		this.ratingTwo = ratingTwo;
 		this.ratingThree = ratingThree;
-		this.sent_at = sent_at;
+		this.sentAt = sentAt;
 	}
 	
 	public double getOverallRating() {
@@ -117,15 +117,15 @@ public class Review {
 	public void setRatingThree(int ratingThree) {
 		this.ratingThree = ratingThree;
 	}
-	public LocalDateTime getSent_at() {
-		return sent_at;
+	public LocalDateTime getSentAt() {
+		return sentAt;
 	}
-	public void setSent_at(LocalDateTime sent_at) {
-		this.sent_at = sent_at;
+	public void setSentAt(LocalDateTime sentAt) {
+		this.sentAt = sentAt;
 	}
 	@Override
 	public int hashCode() {
-		return Objects.hash(book, ratingOne, ratingThree, ratingTwo, reviewId, reviewText, reviewTitle, sent_at, user);
+		return Objects.hash(book, ratingOne, ratingThree, ratingTwo, reviewId, reviewText, reviewTitle, sentAt, user);
 	}
 	@Override
 	public boolean equals(Object obj) {
@@ -139,13 +139,13 @@ public class Review {
 		return Objects.equals(book, other.book) && ratingOne == other.ratingOne && ratingThree == other.ratingThree
 				&& ratingTwo == other.ratingTwo && reviewId == other.reviewId
 				&& Objects.equals(reviewText, other.reviewText) && Objects.equals(reviewTitle, other.reviewTitle)
-				&& Objects.equals(sent_at, other.sent_at) && Objects.equals(user, other.user);
+				&& Objects.equals(sentAt, other.sentAt) && Objects.equals(user, other.user);
 	}
 	@Override
 	public String toString() {
 		return "Review [reviewId=" + reviewId + ", book=" + book + ", user=" + user + ", reviewTitle=" + reviewTitle
 				+ ", reviewText=" + reviewText + ", ratingOne=" + ratingOne + ", ratingTwo=" + ratingTwo
-				+ ", ratingThree=" + ratingThree + ", sent_at=" + sent_at + "]";
+				+ ", ratingThree=" + ratingThree + ", sentAt=" + sentAt + "]";
 	}
 	
 		
