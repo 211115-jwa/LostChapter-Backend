@@ -3,6 +3,11 @@ package com.revature.lostchapterbackend.exceptions;
 public class ReviewNotFoundException extends Exception {
 	
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	public ReviewNotFoundException() {
 		super();
 	}
@@ -15,18 +20,9 @@ public class ReviewNotFoundException extends Exception {
 	public ReviewNotFoundException(String message, Throwable cause) {
 		super(message, cause);
 
-		// TODO Auto-generated constructor stub
 
 	}
 
-	public ReviewNotFoundException(String message) {
-		super(message);
 
-	}
-
-	public ReviewNotFoundException(Throwable cause) {
-		super(cause);
-
-	}
 
 }

@@ -17,21 +17,29 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.revature.lostchapterbackend.exceptions.BookNotFoundException;
+import com.revature.lostchapterbackend.exceptions.InvalidParameterException;
 import com.revature.lostchapterbackend.exceptions.ReviewNotFoundException;
 import com.revature.lostchapterbackend.model.Review;
 import com.revature.lostchapterbackend.service.BookService;
 import com.revature.lostchapterbackend.service.ReviewService;
 
 @RestController
-@CrossOrigin(originPatterns = "*", allowCredentials = "true")
+@CrossOrigin(origins="http://localhost:4200/")
 public class ReviewController {
 	private Logger logger = LoggerFactory.getLogger(ReviewController.class);
 
+	private static ReviewService reviewService;
+	private static BookService bookService;
+	
+	public ReviewController() {
+		super();
+	}
+	
 	@Autowired
-	private ReviewService reviewService;
-
-	@Autowired
-	private BookService bookService;
+	public ReviewController(ReviewService reviewService, BookService bookService) {
+		this.reviewService = reviewService;
+		this.bookService = bookService;
+	}
 
 	@GetMapping(path = "/reviews")
 	public List<Review> getAllReviews() {
@@ -53,7 +61,7 @@ public class ReviewController {
 	}
 
 	@PostMapping(path = "/reviews")
-	public ResponseEntity<Object> postNewReview(@RequestBody Review newReview) {
+	public ResponseEntity<Object> postNewReview(@RequestBody Review newReview) throws InvalidParameterException {
 		logger.info("ReviewController.postNewReview() invoked.");
 
 		if (newReview != null) {
@@ -66,7 +74,7 @@ public class ReviewController {
 
 	@PutMapping(path = "/reviews/{reviewId}")
 	public ResponseEntity<Object> updateReviewById(@PathVariable String reviewId, @RequestBody Review updatedReview)
-			throws ReviewNotFoundException {
+			throws ReviewNotFoundException, InvalidParameterException {
 		logger.info("ReviewController.updateReviewById() invoked.");
 
 		try {
@@ -78,7 +86,7 @@ public class ReviewController {
 	}
 
 	@GetMapping(path = "/reviews/book/{bookId}")
-	public ResponseEntity<Object> getAllReviewsForBook(@PathVariable String bookId) 
+	public ResponseEntity<Object> getAllReviewsForBook(@PathVariable int bookId) 
 			throws BookNotFoundException {
 		logger.info("ReviewController.getAllReviewsForBook() invoked.");
 		try {
@@ -87,7 +95,5 @@ public class ReviewController {
 		} catch (BookNotFoundException e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
 		}
-
 	}
-
 }

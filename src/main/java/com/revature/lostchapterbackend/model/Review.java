@@ -3,14 +3,14 @@ package com.revature.lostchapterbackend.model;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import com.revature.lostchapterbackend.model.Users;
-import com.revature.lostchapterbackend.model.Book;
 
 
 @Entity
@@ -20,35 +20,33 @@ public class Review {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int reviewId;
 
-	@Column(nullable = false)
+	@ManyToOne
+	@JoinColumn(name="book_id")
 	private Book book;
 	
-	@Column(nullable = false)
-	private Users user;
+	@OneToOne
+	@JoinColumn(name="user_id")
+	private User user;
 	
 	private String reviewTitle;
 	private String reviewText;
 	//rating names to be set on the front end based on book genre
 	//For Fiction, ratingOne is Plot
 	//For Non-Fiction, ratingOne is ???
-	@Column(nullable = false)
+	
 	private int ratingOne;
 	
 	//For Fiction, ratingTwo is Pacing
 	//For Non-Fiction, ratingTwo is ???
-	@Column(nullable = false)
+	
 	private int ratingTwo;
 	
 	//For Fiction, ratingThree is Prose
 	//For Non-Fiction, ratingThree is ???
-	@Column(nullable = false)
+	
 	private int ratingThree;
 
 	private LocalDateTime sentAt;
-	
-	public Review() {
-		super();
-	}
 	
 	public Review(int reviewId, Book book, Users user, String reviewTitle, String reviewText, int ratingOne,
 			int ratingTwo, int ratingThree, LocalDateTime sentAt) {
@@ -62,6 +60,19 @@ public class Review {
 		this.ratingTwo = ratingTwo;
 		this.ratingThree = ratingThree;
 		this.sentAt = sentAt;
+	}
+	
+	public Review() {
+		super();
+		this.reviewId = 0;
+		this.book = new Book();
+		this.user = new User();
+		this.reviewTitle = "";
+		this.reviewText = "";
+		this.ratingOne = 0;
+		this.ratingTwo = 0;
+		this.ratingThree = 0;
+		this.sentAt = LocalDateTime.now();
 	}
 	
 	public double getOverallRating() {
@@ -81,10 +92,10 @@ public class Review {
 	public void setBook(Book book) {
 		this.book = book;
 	}
-	public Users getUser() {
+	public User getUser() {
 		return user;
 	}
-	public void setUser(Users user) {
+	public void setUser(User user) {
 		this.user = user;
 	}
 	public String getReviewTitle() {
@@ -146,7 +157,5 @@ public class Review {
 		return "Review [reviewId=" + reviewId + ", book=" + book + ", user=" + user + ", reviewTitle=" + reviewTitle
 				+ ", reviewText=" + reviewText + ", ratingOne=" + ratingOne + ", ratingTwo=" + ratingTwo
 				+ ", ratingThree=" + ratingThree + ", sentAt=" + sentAt + "]";
-	}
-	
-		
+	}	
 }

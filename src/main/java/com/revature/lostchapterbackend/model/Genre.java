@@ -8,33 +8,33 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
+@Table(name="genre")
 public class Genre {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name="id")
 	private int Id;
 
-	@Column(nullable = false)
+	@Column(name="genre")
 	private String genre;
 
-	public Genre() {
-		super();
-	}
-
-	public Genre(int Id, String genre) {
-		super();
-		this.Id = Id;
-		this.genre = genre;
-	}
-
+//	public Genre() {
+//		this.Id = 1;
+//		this.genre = "unknown";
+//	}
+//public Genre(int Id) {
+//this.Id = Id;
+//}
 	public int getId() {
 		return Id;
 	}
 
-	public void setId(int Id) {
-		this.Id = Id;
+	public void setId(int id) {
+		Id = id;
 	}
 
 	public String getGenre() {

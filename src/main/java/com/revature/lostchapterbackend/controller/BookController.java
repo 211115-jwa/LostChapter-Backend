@@ -1,148 +1,160 @@
 package com.revature.lostchapterbackend.controller;
 
-import java.security.InvalidParameterException;
+
 import java.util.List;
+
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.revature.lostchapterbackend.annotation.Admin;
-import com.revature.lostchapterbackend.dto.AddOrUpdateBookDTO;
-import com.revature.lostchapterbackend.exceptions.BookNotFoundException;
-import com.revature.lostchapterbackend.exceptions.GenreNotFoundException;
-import com.revature.lostchapterbackend.exceptions.ISBNAlreadyExists;
-import com.revature.lostchapterbackend.exceptions.SaleDiscountRateException;
-import com.revature.lostchapterbackend.exceptions.SynopsisInputException;
+
 import com.revature.lostchapterbackend.model.Book;
 import com.revature.lostchapterbackend.service.BookService;
-import com.revature.lostchapterbackend.service.UserService;
+
 
 @RestController
-@CrossOrigin(originPatterns = "*", allowCredentials = "true")
+@RequestMapping(path="/book")
+@CrossOrigin("*")
 public class BookController {
 
 	private Logger logger = LoggerFactory.getLogger(BookController.class);
 
+	//static for testing
+	private static BookService bookServ;
+	public BookController() {
+		super();
+	}
+	//field injection
 	@Autowired
-	private BookService bs;
-
-	@GetMapping(path = "/books")
-	public List<Book> getAllBooks() {
-		logger.info("BookController.getAllBooks() invoked.");
-
-		List<Book> bookList = bs.getAllBooks();
-
-		return bookList;
-
+	public BookController(BookService bookServ) {
+		this.bookServ=bookServ;
+	}
+	
+	//working
+	@GetMapping
+	public ResponseEntity<List<Book>>  getAllBooks() {
+		logger.debug("BookController.getAllBooks() invoked.");
+		List<Book> books = bookServ.getAllBooks();
+		return ResponseEntity.ok(books);
 	}
 
-	@GetMapping(path = "/books/featured")
-	public List<Book> getFeaturedBooks() {
+//	@GetMapping(path = "/books/featured")
+//	public List<Book> getFeaturedBooks() {
+//
+//		logger.info("BookController.getFeaturedBooks() invoked.");
+//
+//		List<Book> featuredBooks = bs.getFeaturedBooks();
+//
+//		return featuredBooks;
+//	}
+	
+	//working
+	@GetMapping(path = "/{bookId}")
+	public ResponseEntity<Book> getBookById(@PathVariable int bookId) {
+		logger.debug("BookController.getBookById() invoked.");
 
-		logger.info("BookController.getFeaturedBooks() invoked.");
+		Book book = bookServ.getBookById(bookId);
+		
+		if (book != null) {
+			return ResponseEntity.ok(book);
+		}
+		else
+			return ResponseEntity.notFound().build();
 
-		List<Book> featuredBooks = bs.getFeaturedBooks();
-
-		return featuredBooks;
 	}
-
-	@GetMapping(path = "/books/{id}")
-	public ResponseEntity<Object> getBookById(@PathVariable(value = "id") String id) {
-		logger.info("BookController.getBookById() invoked.");
+	//working
+	@GetMapping(path = "/genre/{name}")
+	public ResponseEntity<Object> getBookByGenreId(@PathVariable String name) {
+		logger.debug("BookController.getBookByGenreId() invoked.");
 
 		try {
-			Book book = bs.getBookById(id);
-			return ResponseEntity.status(200).body(book);
-		} catch (BookNotFoundException | InvalidParameterException e) {
-			return ResponseEntity.status(400).body(e.getMessage());
+			List<Book> bookList = bookServ.getBookByGenre(name);
+			if(bookList!=null)
+			return ResponseEntity.ok(bookList);
+			else
+				return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+		}
+		catch (NumberFormatException e) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 		}
 
 	}
-
-	@GetMapping(path = "/books/genre/{genreId}")
-	public ResponseEntity<Object> getBookByGenreId(@PathVariable(value = "genreId") String genreId) {
-		logger.info("BookController.getBookByGenreId() invoked.");
-
+	//working
+	@GetMapping(path = "/search/{key}")
+	public ResponseEntity<Object> getBookByKeyword(@PathVariable String key) {
+		logger.debug("BookController.getBookByKeyword() invoked.");
 		try {
-			List<Book> bookList = bs.getBooksByGenreId(genreId);
-			return ResponseEntity.status(200).body(bookList);
-		} catch (InvalidParameterException e) {
-			return ResponseEntity.status(400).body(e.getMessage());
+			List<Book> bookList = bookServ.getByKeyWord(key);
+			if(bookList!=null)
+			return ResponseEntity.ok(bookList);
+			else
+				return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 		}
-
-	}
-
-	@GetMapping(path = "/books/search/{keyword}")
-	public List<Book> getBookByKeyword(@PathVariable(value = "keyword") String keyword) {
-		logger.info("BookController.getBookByKeyword() invoked.");
-
-		return bs.getBooksByKeyword(keyword);
-
-	}
-
-	@GetMapping(path = "/books/sales")
-	public List<Book> getBookBySale() {
-		logger.info("BookController.getBookBySale() invoked.");
-
-		return bs.getBooksBySale();
-
-	}
-
-	//@Admin
-	@PostMapping(path = "/books")
-	public ResponseEntity<Object> addNewBook(@RequestBody AddOrUpdateBookDTO dto) throws SynopsisInputException {
-
-		logger.info("BookController.addNewBook() invoked.");
-
-		try {
-			System.out.println("controller syso:" + dto.getSaleDiscountRate());
-			Book addedBook = bs.addBook(dto);
-			return ResponseEntity.status(201).body(addedBook);
-		} catch (InvalidParameterException e) {
-			return ResponseEntity.status(400).body(e.getMessage());
-
-		} catch (GenreNotFoundException | ISBNAlreadyExists | SaleDiscountRateException e) {
-			return ResponseEntity.status(400).body(e.getMessage());
+		catch (NumberFormatException e) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 		}
 	}
 
-	@Admin
-	@PutMapping(path = "/books/{id}")
-	public ResponseEntity<Object> updateBookById(@PathVariable(value = "id") String id,
-			@RequestBody AddOrUpdateBookDTO dto) throws InvalidParameterException, GenreNotFoundException,
-			ISBNAlreadyExists, SynopsisInputException, SaleDiscountRateException {
+//	@GetMapping(path = "/books/sales")
+//	public List<Book> getBookBySale() {
+//		//logger.info("BookController.getBookBySale() invoked.");
+//
+//		return bs.getBooksBySale();
+//
+//	}
 
-		logger.info("BookController.updateBookById() invoked.");
+	//working
+	@PostMapping
+	public ResponseEntity<Void> addNewBook(@RequestBody Book newBook) {
 
-		try {
+		logger.debug("BookController.addNewBook() invoked.");
 
-			Book updatedBook = bs.updateBook(dto, id);
-
-			logger.info("updatedBook {}", updatedBook);
-
-			return ResponseEntity.status(200).body(updatedBook);
-
-		} catch (BookNotFoundException e) {
-			return ResponseEntity.status(400).body(e.getMessage());
-		} catch (InvalidParameterException e) {
-			return ResponseEntity.status(400).body(e.getMessage());
-		} catch (GenreNotFoundException e) {
-			return ResponseEntity.status(400).body(e.getMessage());
-		} catch (SaleDiscountRateException e) {
-			return ResponseEntity.status(400).body(e.getMessage());
-		} catch (ISBNAlreadyExists e) {
-			return ResponseEntity.status(400).body(e.getMessage());
-
-		}
-
+		if (newBook !=null) {
+		System.out.println(newBook);
+				bookServ.addBook(newBook);
+				return ResponseEntity.status(HttpStatus.CREATED).build();
+			}
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
 	}
+
+//	@Admin
+//	@PutMapping(path = "/books/{id}")
+//	public ResponseEntity<Object> updateBookById(@PathVariable(value = "id") String id,
+//			@RequestBody AddOrUpdateBookDTO dto) throws InvalidParameterException, GenreNotFoundException,
+//			ISBNAlreadyExists, SynopsisInputException, SaleDiscountRateException {
+//
+//		//logger.info("BookController.updateBookById() invoked.");
+//
+//		try {
+//
+//			Book updatedBook = bs.updateBook(null);
+//
+//			logger.info("updatedBook {}", updatedBook);
+//
+//			return ResponseEntity.status(200).body(updatedBook);
+//
+//		} catch (BookNotFoundException e) {
+//			return ResponseEntity.status(400).body(e.getMessage());
+//		} catch (InvalidParameterException e) {
+//			return ResponseEntity.status(400).body(e.getMessage());
+//		} catch (GenreNotFoundException e) {
+//			return ResponseEntity.status(400).body(e.getMessage());
+//		} catch (SaleDiscountRateException e) {
+//			return ResponseEntity.status(400).body(e.getMessage());
+//		} catch (ISBNAlreadyExists e) {
+//			return ResponseEntity.status(400).body(e.getMessage());
+//
+//		}
+//
+//	}
 }

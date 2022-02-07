@@ -2,6 +2,11 @@ package com.revature.lostchapterbackend.exceptions;
 
 public class UserNotFoundException extends Exception {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3396371978946917292L;
+
 	public UserNotFoundException() {
 		super();
 	}
