@@ -2,6 +2,11 @@ package com.revature.lostchapterbackend.exceptions;
 
 public class BookNotFoundException extends Exception {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	public BookNotFoundException() {
 		super();
 
@@ -16,19 +21,9 @@ public class BookNotFoundException extends Exception {
 	public BookNotFoundException(String message, Throwable cause) {
 		super(message, cause);
 
-		// TODO Auto-generated constructor stub
 
 	}
 
-	public BookNotFoundException(String message) {
-		super(message);
-
-	}
-
-	public BookNotFoundException(Throwable cause) {
-		super(cause);
-
-	}
 
 	
 }

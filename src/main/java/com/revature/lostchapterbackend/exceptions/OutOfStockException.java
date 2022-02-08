@@ -2,6 +2,11 @@ package com.revature.lostchapterbackend.exceptions;
 
 public class OutOfStockException extends Exception {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	public OutOfStockException() {
 		super();
 	}
@@ -14,12 +19,6 @@ public class OutOfStockException extends Exception {
 		super(message, cause);
 	}
 
-	public OutOfStockException(String message) {
-		super(message);
-	}
 
-	public OutOfStockException(Throwable cause) {
-		super(cause);
-	}
 
 }

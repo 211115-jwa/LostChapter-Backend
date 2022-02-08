@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
-import com.revature.lostchapterbackend.model.Users;
+import com.revature.lostchapterbackend.model.User;
 
 @Aspect
 @Component
@@ -28,7 +28,7 @@ public class SecurityAspect {
 
 		HttpSession session = req.getSession();
 
-		Users currentlyLoggedInUser = (Users) session.getAttribute("currentUser");
+		User currentlyLoggedInUser = (User) session.getAttribute("currentUser");
 
 		if (currentlyLoggedInUser == null) {
 			return ResponseEntity.status(401).body("You are not currently logged in");
@@ -43,7 +43,7 @@ public class SecurityAspect {
 
 		HttpSession session = req.getSession();
 
-		Users currentlyLoggedInUser = (Users) session.getAttribute("currentUser");
+		User currentlyLoggedInUser = (User) session.getAttribute("currentUser");
 
 		if (currentlyLoggedInUser == null) {
 			return ResponseEntity.status(401).body("You are not currently logged in");
@@ -64,7 +64,7 @@ public class SecurityAspect {
 
 		HttpSession session = req.getSession();
 
-		Users currentlyLoggedInUser = (Users) session.getAttribute("currentUser");
+		User currentlyLoggedInUser = (User) session.getAttribute("currentUser");
 
 		if (currentlyLoggedInUser == null) {
 			return ResponseEntity.status(401).body("You are not currently logged in");
@@ -85,7 +85,7 @@ public class SecurityAspect {
 
 		HttpSession session = req.getSession();
 
-		Users currentlyLoggedInUser = (Users) session.getAttribute("currentUser");
+		User currentlyLoggedInUser = (User) session.getAttribute("currentUser");
 
 		if (currentlyLoggedInUser == null) {
 			return ResponseEntity.status(401).body("You are not currently logged in");
