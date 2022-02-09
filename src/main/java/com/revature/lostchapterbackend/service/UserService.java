@@ -12,12 +12,12 @@ import com.revature.lostchapterbackend.model.User;
 @Service
 public interface UserService {
 	public User login(String username, String password) throws UserNotFoundException, InvalidLoginException;
-	public int register(User newUser) throws UsernameAlreadyExists;
+	public User register(User newUser) throws UsernameAlreadyExists;
 	public User getUserById(int userId) throws UserNotFoundException;
 	public User getUserByEmail(String email) throws UserNotFoundException;
 	public User getUserByUsername(String username) throws UserNotFoundException;
 	public User update(User user) throws UserNotFoundException;
-	public void deleteUser(User user) throws UserNotFoundException;
+	public User deleteUser(User user) throws UserNotFoundException;
 	public String passwordHasher(String password) throws NoSuchAlgorithmException;
 	
 }

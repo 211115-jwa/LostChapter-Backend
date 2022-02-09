@@ -20,7 +20,7 @@ import com.revature.lostchapterbackend.service.TransactionService;
 
 @RestController
 @RequestMapping(path="/transactions")
-@CrossOrigin(origins="http://localhost:4200/")
+@CrossOrigin("*")
 public class TransactionController {
 
 	private static TransactionService transService;
@@ -29,7 +29,7 @@ public class TransactionController {
 	public TransactionController () {super();}
 	
 	@Autowired
-	public TransactionController(TransactionService transService, CartService cartServ) {
+	public TransactionController(TransactionService transService, CartService cartService) {
 		this.transService=transService;
 		this.cartService=cartService;
 	}

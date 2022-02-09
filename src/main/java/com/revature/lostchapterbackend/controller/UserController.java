@@ -1,6 +1,8 @@
 package com.revature.lostchapterbackend.controller;
 
+import java.util.HashMap;
 import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
 import com.revature.lostchapterbackend.exceptions.InvalidLoginException;
 import com.revature.lostchapterbackend.exceptions.UserNotFoundException;
 import com.revature.lostchapterbackend.exceptions.UsernameAlreadyExists;
@@ -21,7 +24,7 @@ import com.revature.lostchapterbackend.service.UserService;
 
 @RestController
 @RequestMapping(path="/users")
-@CrossOrigin(origins="http://localhost:4200")
+@CrossOrigin("*")
 public class UserController {
 	
 	private static UserService userService;
@@ -36,24 +39,25 @@ public class UserController {
 	}
 	
 	@PostMapping
-	public ResponseEntity<Void> register(@RequestBody User newUser) throws UsernameAlreadyExists{
+	public ResponseEntity<Map<String,Integer>> register(@RequestBody User newUser) throws UsernameAlreadyExists{
 		try
 		{
-			int newUserId = userService.register(newUser);
-			newUser = userService.getUserById(newUserId);
+			newUser = userService.register(newUser);
+			Map<String, Integer> newIdMap = new HashMap<>();
+			newIdMap.put("generatedId", newUser.getUserId());
+			return ResponseEntity.status(HttpStatus.CREATED).body(newIdMap);
 			
-		}catch (UsernameAlreadyExists e)
-		{
-			ResponseEntity.status(HttpStatus.CONFLICT).build();
-		} catch (UserNotFoundException e) {
-			
-			e.printStackTrace();
+		}catch (UsernameAlreadyExists e)	{
+			return ResponseEntity.status(HttpStatus.CONFLICT).build();
 		}
-		return ResponseEntity.status(HttpStatus.CREATED).build();
 	}
+			
+		
 	
 	@PostMapping(path="/auth")
+
 	public ResponseEntity<String> logIn(@RequestBody Map<String, String> credentials){
+
 		String username = credentials.get("username");
 		String password = credentials.get("password");
 		
@@ -61,25 +65,27 @@ public class UserController {
 			User user = userService.login(username, password);
 			String token = Integer.toString(user.getUserId());
 			return ResponseEntity.ok(token);
+
 		} catch (UserNotFoundException | InvalidLoginException e) {
 			return ResponseEntity.notFound().build();
 	}
 }
 	
 	@GetMapping(path="/{userid}/auth")
-	public ResponseEntity<User> checkLogin(@PathVariable int userId) {
+	public ResponseEntity<User> checkLogin(@PathVariable int userid) throws UserNotFoundException{
 		try {
-			User loggedInUser = userService.getUserById(userId);
-			if(loggedInUser != null)
-				return ResponseEntity.ok(loggedInUser);
+
+			User loggedInPerson =userService.getUserById(userid);
+			if(loggedInPerson!=null)
+				return ResponseEntity.ok(loggedInPerson);
 			else
 				return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 		}
-		catch (NumberFormatException | UserNotFoundException e) {
+		catch (UserNotFoundException e) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 		}
+		
 	}
-	
 	
 	
 	@GetMapping(path="/{userid}")
@@ -110,6 +116,7 @@ public class UserController {
 		} else
 			return ResponseEntity.notFound().build();
 	}
+
 	
 	@PutMapping(path="/{userId}")
 	public ResponseEntity<User> updateUser(@PathVariable int userId,
