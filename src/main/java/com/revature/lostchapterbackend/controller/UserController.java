@@ -1,5 +1,6 @@
 package com.revature.lostchapterbackend.controller;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,21 +39,20 @@ public class UserController {
 	}
 	
 	@PostMapping
-	public ResponseEntity<Void> register(@RequestBody User newUser) throws UsernameAlreadyExists{
+	public ResponseEntity<Map<String,Integer>> register(@RequestBody User newUser) throws UsernameAlreadyExists{
 		try
 		{
-			int newUserId = userService.register(newUser);
-			newUser = userService.getUserById(newUserId);
+			newUser = userService.register(newUser);
+			Map<String, Integer> newIdMap = new HashMap<>();
+			newIdMap.put("generatedId", newUser.getUserId());
+			return ResponseEntity.status(HttpStatus.CREATED).body(newIdMap);
 			
-		}catch (UsernameAlreadyExists e)
-		{
-			ResponseEntity.status(HttpStatus.CONFLICT).build();
-		} catch (UserNotFoundException e) {
-			
-			e.printStackTrace();
+		}catch (UsernameAlreadyExists e)	{
+			return ResponseEntity.status(HttpStatus.CONFLICT).build();
 		}
-		return ResponseEntity.status(HttpStatus.CREATED).build();
 	}
+			
+		
 	
 	@PostMapping(path="/auth")
 
