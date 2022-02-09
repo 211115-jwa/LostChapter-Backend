@@ -98,11 +98,12 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	@Transactional
-	public void deleteUser(User user) {
+	public User deleteUser(User user) {
 		User userFromDatabase = userDao.findById(user.getUserId()).get();
 		if(userFromDatabase != null) {
 			userDao.delete(userFromDatabase);
 		}
+		return userFromDatabase;
 		
 	}
 
