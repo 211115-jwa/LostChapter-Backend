@@ -1,6 +1,7 @@
 //<<<<<<< HEAD:src/test/java/com/revature/lostchapterbackend/cartintegrationtests/CartIntegrationTests.java
 package com.revature.lostchapterbackend.controllers;
 
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -97,6 +98,24 @@ public class CartControllerTests {
 		mockMvc.perform(get("/cart/{cartId}", 1)).andExpect(status().isNotFound()).andReturn();
 	}
 	
+	@Test
+	public void addBookToCart(@RequestBody Book bookToAdd, @PathVariable int userId) throws Exception {
+		Book newBook = new Book ();
+		doNothing().when(cartServ).addBooksToCart(newBook, userId);
+		
+		
+		String jsonBook = objMapper.writeValueAsString(newBook);
+		
+		mockMvc.perform(post("/cart/add/{bookToBuyId}/{userId}").content(jsonBook).contentType(MediaType.APPLICATION_JSON))
+		.andExpect(status().isBadRequest()).andReturn();
+	}
+	
+	@Test 
+	public void addBookToCartNoUser(@RequestBody Book bookToAdd, @PathVariable int cartId) throws Exception {
+		String jsonBook = objMapper.writeValueAsString(null);
+		mockMvc.perform(post("/cart/delete/{bookToBuyId}/{userId}").content(jsonBook).contentType(MediaType.APPLICATION_JSON))
+		.andExpect(status().isBadRequest()).andReturn();
+	}
 }
 //@AutoConfigureMockMvc
 //@DirtiesContext(classMode = ClassMode.BEFORE_EACH_TEST_METHOD)
