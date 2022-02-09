@@ -17,7 +17,7 @@ public interface UserService {
 	public User getUserByEmail(String email) throws UserNotFoundException;
 	public User getUserByUsername(String username) throws UserNotFoundException;
 	public User update(User user) throws UserNotFoundException;
-	public void deleteUser(User user) throws UserNotFoundException;
+	public User deleteUser(User user) throws UserNotFoundException;
 	public String passwordHasher(String password) throws NoSuchAlgorithmException;
 	
 }
