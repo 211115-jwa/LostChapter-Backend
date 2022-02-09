@@ -13,7 +13,7 @@ import com.revature.lostchapterbackend.model.Transaction;
 
 @Service
 public interface TransactionService {
-	public Cart getPurchacedCart(int currentOrderId) throws OrderDoesNotExist;
+	public Cart getPurchasedCart(int currentOrderId) throws OrderDoesNotExist;
 	public Transaction getTransactionById(int transactionId) throws TransactionNotFound;
 	public List<Transaction> getTransactionByUser(int userId) throws UserNotFoundException;
 	public Transaction getTransactionByOrderId(int orderId) throws OrderDoesNotExist;

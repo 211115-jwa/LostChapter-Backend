@@ -35,13 +35,13 @@ public class CartController {
 		}
 	//field injection
 	@Autowired
-	public CartController(CartService cartserv) {
-		this.cartServ=cartServ;
+	public CartController(CartService cartServ) {
+		this.cartServ= cartServ;
 	}
 	
 	
 	@PostMapping(path = "/add/{bookToBuyId}/{userId}") 
-	public ResponseEntity<Object> addBookToCart(@RequestBody Book bookToAdd, @PathVariable int userId){
+	public ResponseEntity<Object> addBookToCart(@RequestBody Book bookToAdd, @PathVariable (value="userId") int userId){
 		if (bookToAdd !=null&&userId!=0) {
 			if(cartServ.checkBookInTheCart(bookToAdd, userId)) {
 				cartServ.incrementQuantity(bookToAdd, userId);

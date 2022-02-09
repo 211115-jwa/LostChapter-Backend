@@ -15,7 +15,7 @@ drop table if exists genre cascade;
 
 create table if not exists genre (
      id serial unique not null primary key,
-      genre varchar
+     genre varchar
 );
 
 create table if not exists book (
@@ -49,7 +49,7 @@ create table if not exists book_to_buy (
 
 create table if not exists usr (
 	user_id serial unique not null primary key,
-	username varchar, 
+	username varchar(50), 
 	passwrd varchar, 
 	first_name varchar, 
 	last_name varchar, 
@@ -91,7 +91,7 @@ create table if not exists shipping_information (
 create table if not exists credit_card_info (
     cc_info_id serial unique not null primary key,
 	name_on_card varchar, 
-	card_number integer, 
+	card_number BIGINT, 
 	cvv integer, 
 	expiration_month integer, 
 	expiration_year integer, 
