@@ -23,7 +23,7 @@ values
 ('amel', 'pass', 'Alexandra', 'Melanaphy', 'amelanaphyh@umn.edu', '7/10/1988', 'customer'),				--18
 ('dcluetti', 'pass', 'Derron', 'Cluett', 'dcluetti@google.ru', '10/5/1994', 'customer'),				--19
 ('bpruej', 'pass', 'Basile', 'Prue', 'bpruej@bing.com', '9/25/1990', 'customer');						--20
-​
+
 
 insert into genre 
 (genre)
@@ -65,7 +65,7 @@ values
 
 
 
-insert into ordr ​
+insert into ordr
 (cc_info_id, cart_id)
 values 
 ( 12, 11),			--1
@@ -77,7 +77,6 @@ values
 
 
 
-​
 insert into transaction_keeper 
 (order_id, total_price,  transaction_date) 
 values 
@@ -85,10 +84,7 @@ values
 (4, '22.82', '9/23/2021'),		--2
 (5, '37.55', '11/19/2021');		--3
 
-​
-​
-​
-​
+
 insert into shipping_information 
 (first_name, last_name, street_name, city, state, zip_code, delivery_date) 
 values 
@@ -97,9 +93,7 @@ values
 ('Gerome', 'Pavlenko', '103 Garrison Street', 'Troy', 'Michigan', '48098', 'express'), 					--3
 ('Hyacinthie', 'Orteaux', '168 New Castle Parkway', 'Orange', 'California', '92867', 'priority'), 		--4
 ('Jareb', 'Greenhaugh', '7249 Spenser Alley', 'Van Nuys', 'California', '91411', 'express'); 			--5
-​
-​
-​
+
 insert into credit_card_info 
 (name_on_card, card_number, cvv, expiration_month, expiration_year, billing_zip, credit_card_type, shipping_info_id) 
 values 
@@ -118,16 +112,12 @@ values
 ('Holden Suggey', '201855565263203', 686, 4, 23, '69455', 'diners-club-enroute', 3),	--13
 ('Feodora McQuaid', '3585420940317602', 494, 8, 27, '09909', 'jcb', 4),					--14
 ('Broderic Noell', '3539337111971990', 221, 5, 27, '98765', 'jcb', 5);					--15
-​
-​	
+
+
 insert into review 
-(​book_id, user_id, review_title, review_text, rating_one, rating_two, rating_three, sent_at)
+(book_id, user_id, review_title, review_text, rating_one, rating_two, rating_three, sent_at)
 values 
 (1, 17, 'The Hobbit Sucks!', 'What can I say, I hated it.', 1, 1, 1, null),
 (33, 6, 'The Return Rocks', 'Dude its the best book Ive ever read', 5, 5, 5, null);
 	
 	
-	
-​
-​
-​

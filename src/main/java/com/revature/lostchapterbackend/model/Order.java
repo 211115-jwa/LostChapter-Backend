@@ -1,5 +1,6 @@
 package com.revature.lostchapterbackend.model;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 import javax.persistence.Column;
@@ -8,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -20,19 +22,21 @@ public class Order {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int orderId;
 	
-	@OneToOne
-	@JoinColumn(name="cc_info_id")
-	private CreditCardInfo creditCard;
+	private float totalPrice;
 	
-	@OneToOne
-	@JoinColumn(name="cart_id")
-	private Cart cart;
+	private LocalDateTime transactionDate;
+	
+	@ManyToOne
+	@JoinColumn(name="user_id")
+	private User user;
 
 	public Order() {
 
 		this.orderId = 0;
-		this.creditCard = new CreditCardInfo();
-		this.cart = new Cart();
+		this.totalPrice=0.0f;
+		this.transactionDate=LocalDateTime.now();
+		this.user=new User();
+
 	}
 
 	public int getOrderId() {
@@ -43,30 +47,33 @@ public class Order {
 		this.orderId = orderId;
 	}
 
-	public CreditCardInfo getCreditCard() {
-		return creditCard;
+	public float getTotalPrice() {
+		return totalPrice;
 	}
 
-	public void setCreditCard(CreditCardInfo creditCard) {
-		this.creditCard = creditCard;
+	public void setTotalPrice(float totalPrice) {
+		this.totalPrice = totalPrice;
 	}
 
-	public Cart getCart() {
-		return cart;
+	public LocalDateTime getTransactionDate() {
+		return transactionDate;
 	}
 
-	public void setCart(Cart cart) {
-		this.cart = cart;
+	public void setTransactionDate(LocalDateTime transactionDate) {
+		this.transactionDate = transactionDate;
 	}
 
-	@Override
-	public String toString() {
-		return "Order [orderId=" + orderId + ", creditCard=" + creditCard + ", cart=" + cart + "]";
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(cart, creditCard, orderId);
+		return Objects.hash(orderId, totalPrice, transactionDate, user);
 	}
 
 	@Override
@@ -78,11 +85,17 @@ public class Order {
 		if (getClass() != obj.getClass())
 			return false;
 		Order other = (Order) obj;
-		return Objects.equals(cart, other.cart) && Objects.equals(creditCard, other.creditCard)
-				&& orderId == other.orderId;
+		return orderId == other.orderId && Float.floatToIntBits(totalPrice) == Float.floatToIntBits(other.totalPrice)
+				&& Objects.equals(transactionDate, other.transactionDate) && Objects.equals(user, other.user);
 	}
 
+	@Override
+	public String toString() {
+		return "Order [orderId=" + orderId + ", totalPrice=" + totalPrice + ", transactionDate=" + transactionDate
+				+ ", user=" + user + "]";
+	}
 
+	
 	
 
 
