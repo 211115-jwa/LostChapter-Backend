@@ -1,5 +1,29 @@
 //<<<<<<< HEAD:src/test/java/com/revature/lostchapterbackend/cartintegrationtests/CartIntegrationTests.java
-//package com.revature.lostchapterbackend.cartintegrationtests;
+package com.revature.lostchapterbackend.controllers;
+
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.ResponseEntity;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.revature.lostchapterbackend.LostChapterBackendApplication;
+import com.revature.lostchapterbackend.controller.CartController;
+import com.revature.lostchapterbackend.model.Book;
+import com.revature.lostchapterbackend.model.Cart;
+import com.revature.lostchapterbackend.service.CartService;
+import com.revature.lostchapterbackend.service.TransactionService;
+
 //
 //import java.time.LocalDate;
 //import java.util.ArrayList;
@@ -34,7 +58,47 @@
 //import com.revature.lostchapterbackend.model.Genre;
 //import com.revature.lostchapterbackend.model.User;
 //
-//@SpringBootTest
+@SpringBootTest(classes=LostChapterBackendApplication.class)
+public class CartControllerTests {
+	@MockBean
+	private CartService cartServ;
+	
+	@MockBean
+	private  TransactionService transServ;
+	
+	@Autowired
+	private static CartController cartController;
+	
+	// this object basically represents a mock of the Spring Web architecture
+	private static MockMvc mockMvc;
+	
+	// this is a Jackson object mapper for JSON marshalling
+	// (turning objects to JSON strings and vice versa
+	private ObjectMapper objMapper = new ObjectMapper();
+	
+	@BeforeAll
+	public static void setUp () {
+		// sets up the minimum architecture to test our controller
+		mockMvc = MockMvcBuilders.standaloneSetup(CartController.class).build();
+	}
+	
+	@Test
+	public void getCartById ()throws Exception {
+		when(cartServ.getCartById(1)).thenReturn(new Cart());
+		
+		mockMvc.perform(get("/cart/{cartId}",1)).andExpect(status().isOk()).andReturn();
+	}
+	
+	@Test
+	public void getCartByIdNotFound() throws Exception {
+		when(cartServ.getCartById(1)).thenReturn(null);
+		mockMvc.perform(get("/cart/{cartId}", 1)).andExpect(status().isNotFound()).andReturn();
+	}
+	
+	@Test
+	public ResponseEntity<Object> addBookToCart(@RequestBody Book bookToAdd, @PathVariable int userId){
+		return null;}
+}
 //@AutoConfigureMockMvc
 //@DirtiesContext(classMode = ClassMode.BEFORE_EACH_TEST_METHOD)
 //public class CartIntegrationTests {
