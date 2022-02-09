@@ -24,7 +24,7 @@ import com.revature.lostchapterbackend.service.BookService;
 import com.revature.lostchapterbackend.service.ReviewService;
 
 @RestController
-@CrossOrigin(origins="http://localhost:4200/")
+@CrossOrigin("*")
 public class ReviewController {
 	private Logger logger = LoggerFactory.getLogger(ReviewController.class);
 

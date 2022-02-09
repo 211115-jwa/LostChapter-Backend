@@ -64,7 +64,7 @@ import com.revature.lostchapterbackend.service.TransactionService;
 //import com.revature.lostchapterbackend.model.User;
 //
 @SpringBootTest(classes=LostChapterBackendApplication.class)
-public class CartControllerTests {
+public class CartControllerTest {
 	@MockBean
 	private CartService cartServ;
 	

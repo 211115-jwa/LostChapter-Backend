@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -24,11 +25,12 @@ import com.revature.lostchapterbackend.service.CartService;
 
 @RestController
 @RequestMapping(path="/cart")
-@CrossOrigin(origins="http://localhost:4200/")
+@CrossOrigin("*")
 public class CartController {
 
 	//static for testing
 	private static CartService cartServ;
+	
 	
 	public CartController() {
 		super();
@@ -40,14 +42,15 @@ public class CartController {
 	}
 	
 	
-	@PostMapping(path = "/add/{bookToBuyId}/{userId}") 
-	public ResponseEntity<Object> addBookToCart(@RequestBody Book bookToAdd, @PathVariable (value="userId") int userId){
-		if (bookToAdd !=null&&userId!=0) {
-			if(cartServ.checkBookInTheCart(bookToAdd, userId)) {
-				cartServ.incrementQuantity(bookToAdd, userId);
+
+	@PostMapping(path = "/add/{userId}") 
+	public ResponseEntity<Object> addBookToCart(@RequestBody Book bookId, @PathVariable(value="userId") int userId){
+		if (bookId !=null&&userId!=0) {
+			if(cartServ.checkBookInTheCart(bookId, userId)) {
+				cartServ.incrementQuantity(bookId, userId);
 			}
 			else {
-			cartServ.addBooksToCart(bookToAdd, userId);
+			cartServ.addBooksToCart(bookId, userId);
 			return ResponseEntity.status(HttpStatus.CREATED).build();
 			}
 		}
@@ -55,8 +58,8 @@ public class CartController {
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
 	}
 	
-	@PostMapping(path = "/add/{bookToBuyId}/{cartId}") 
-	public ResponseEntity<Object> addBookToCartNoUser(@RequestBody Book bookToAdd, @PathVariable int cartId){
+	@PutMapping(path = "/add/{bookToBuyId}/{cartId}") 
+	public ResponseEntity<Object> addBookToCartNoUser(@RequestBody Book bookToAdd, @PathVariable(value="cartId") int cartId){
 		if (bookToAdd !=null) {
 			cartServ.addBooksToCartNoUser(bookToAdd, cartServ.getCartById(cartId));
 			return ResponseEntity.status(HttpStatus.CREATED).build();
