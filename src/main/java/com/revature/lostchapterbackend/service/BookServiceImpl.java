@@ -11,9 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.revature.lostchapterbackend.dao.BookDAO;
-import com.revature.lostchapterbackend.dao.GenreDAO;
 import com.revature.lostchapterbackend.model.Book;
-import com.revature.lostchapterbackend.model.Genre;
+
 
 
 @Service
@@ -21,27 +20,33 @@ public class BookServiceImpl implements BookService {
 
 	private Logger logger = LoggerFactory.getLogger(BookService.class);
 	private BookDAO bookDao;
-	private GenreDAO genreDao;
 	
 
 	@Autowired
-	public BookServiceImpl(BookDAO bookDao, GenreDAO genreDao) {
+	public BookServiceImpl(BookDAO bookDao) {
 		this.bookDao = bookDao;
-		this.genreDao=genreDao;
 	}
 
 	
 
-	@Override
-	public List<Genre> getAllGenre() {
-		
-		return genreDao.findAll();
-	}
+//	@Override
+//	public List<Genre> getAllGenre() {
+//		
+//		return genreDao.findAll();
+//	}
 
 
 
 	@Override
 	public List<Book> getFeaturedBooks() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+
+	@Override
+	public List<Book> getBooksByGenre() {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -110,7 +115,7 @@ public class BookServiceImpl implements BookService {
 			logger.debug("BookService.getBookByGenre() invoked.");
 			System.out.println("simpl");
 			
-			return bookDao.findByGenre_Genre(genre);
+			return bookDao.findByGenre(genre);
 		}
 		
 
