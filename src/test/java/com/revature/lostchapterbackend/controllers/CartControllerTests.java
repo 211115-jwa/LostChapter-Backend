@@ -3,6 +3,7 @@ package com.revature.lostchapterbackend.controllers;
 
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import org.junit.jupiter.api.BeforeAll;
@@ -10,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -95,9 +97,6 @@ public class CartControllerTests {
 		mockMvc.perform(get("/cart/{cartId}", 1)).andExpect(status().isNotFound()).andReturn();
 	}
 	
-	@Test
-	public ResponseEntity<Object> addBookToCart(@RequestBody Book bookToAdd, @PathVariable int userId){
-		return null;}
 }
 //@AutoConfigureMockMvc
 //@DirtiesContext(classMode = ClassMode.BEFORE_EACH_TEST_METHOD)

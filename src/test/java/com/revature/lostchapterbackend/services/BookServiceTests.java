@@ -1,297 +1,237 @@
-//package com.revature.lostchapterbackend.services;
-//
-//import com.revature.lostchapterbackend.dao.BookDAO;
-//import com.revature.lostchapterbackend.dao.GenreDAO;
-//import com.revature.lostchapterbackend.dto.AddOrUpdateBookDTO;
-//import com.revature.lostchapterbackend.exceptions.*;
-//import com.revature.lostchapterbackend.model.Book;
-//import com.revature.lostchapterbackend.model.Genre;
-//import com.revature.lostchapterbackend.service.BookService;
-//import com.revature.lostchapterbackend.utility.ValidateBookUtil;
-//import com.revature.lostchapterbackend.utility.ValidateUtil;
-//import org.junit.jupiter.api.Assertions;
-//import org.junit.jupiter.api.BeforeEach;
-//import org.junit.jupiter.api.Test;
-//import org.mockito.InjectMocks;
-//import org.mockito.Mock;
-//import org.mockito.Mockito;
-//import org.mockito.MockitoAnnotations;
-//
-//import javax.annotation.Resource;
-//
-//import java.util.ArrayList;
-//import java.util.List;
-//import java.util.Optional;
-//import java.util.stream.Stream;
-//
-//import static org.mockito.Mockito.*;
-//
-//
-//public class BookServiceTests {
-//
-//    @InjectMocks
-//    private BookService bs;
-//
-//    @Mock
-//    private ValidateBookUtil vu;
-//
-//    @Mock
-//    private GenreDAO gd;
-//
-//
-//    @Mock
-//    private BookDAO bd;
-//
-//    @BeforeEach
-//    public void setUp() {
-//        this.vu = new ValidateBookUtil();
-//
-//        MockitoAnnotations.initMocks(this);
-//    }
-//
-//    @Test
-//    void getAllBook_positive(){
-//
-//        Genre g = new Genre();
-//        g.setGenre("Fiction");
-//
-//        Book book1 = new Book("23242526","booktest1","synposis",
-//                "author",g,4,1997,"edition",
-//                "publisher",false,0.99,10,"image");
-//        book1.setBookId(1);
-//
-//        Book book2 = new Book("76777879","booktest2","synposis2",
-//                "author2",g,4,1997,"edition2",
-//                "publisher2",false,0.99,10,"image2");
-//        book2.setBookId(2);
-//
-//        List<Book> books = new ArrayList<>();
-//        books.add(book1);
-//        books.add(book2);
-//
-//        when(bd.findAll()).thenReturn(books);
-//
-//        bs = new BookService(bd);
-//
-//        Book expected1 = new Book("23242526","booktest1","synposis",
-//                "author",g,4,1997,"edition",
-//                "publisher",false,0.99,10,"image");
-//        expected1.setBookId(1);
-//
-//        Book expected2 = new Book("76777879","booktest2","synposis2",
-//                "author2",g,4,1997,"edition2",
-//                "publisher2",false,0.99,10,"image2");
-//        expected2.setBookId(2);
-//
-//        List<Book> expectedBooks = new ArrayList<>();
-//        expectedBooks.add(expected1);
-//        expectedBooks.add(expected2);
-//
-//        List<Book> actual = bs.getAllBooks();
-//
-//        Assertions.assertEquals(expectedBooks,actual);
-//    }
-//
-//    @Test
-//    void getBookById_positive() throws BookNotFoundException {
-//        Genre g = new Genre();
-//        g.setGenre("Fiction");
-//
-//        when(bd.findById(1)).thenReturn(Optional.of(new Book("23242526", "booktest1", "synposis",
-//                "author", g, 4, 1997, "edition",
-//                "publisher", false, 0.99, 10, "image")));
-//
-//        bs = new BookService(bd);
-//
-//        Book actual = bs.getBookById("1");
-//
-//        Assertions.assertEquals(new Book("23242526", "booktest1", "synposis",
-//                "author", g, 4, 1997, "edition",
-//                "publisher", false, 0.99, 10, "image"),actual);
-//    }
-//
-//    @Test
-//    void getBookByGenreId_positive(){
-//        Genre g = new Genre();
-//        g.setGenre("Fiction");
-//
-//        Book book1 = new Book("23242526","booktest1","synposis",
-//                "author",g,4,1997,"edition",
-//                "publisher",false,0.99,10,"image");
-//        book1.setBookId(1);
-//
-//        Book book2 = new Book("76777879","booktest2","synposis2",
-//                "author2",g,4,1997,"edition2",
-//                "publisher2",false,0.99,10,"image2");
-//        book2.setBookId(2);
-//
-//        List<Book> books = new ArrayList<>();
-//        books.add(book1);
-//        books.add(book2);
-//
-//        when(bd.getByGenreId(1)).thenReturn(books);
-//
-//        bs = new BookService(bd);
-//
-//        Book expectedBook1 = new Book("23242526","booktest1","synposis",
-//                "author",g,4,1997,"edition",
-//                "publisher",false,0.99,10,"image");
-//        expectedBook1.setBookId(1);
-//
-//        Book expectedBook2 = new Book("76777879","booktest2","synposis2",
-//                "author2",g,4,1997,"edition2",
-//                "publisher2",false,0.99,10,"image2");
-//        expectedBook2.setBookId(2);
-//
-//        List<Book> expectedBooks = new ArrayList<>();
-//        expectedBooks.add(expectedBook1);
-//        expectedBooks.add(expectedBook2);
-//
-//        List<Book> actual = bs.getBooksByGenreId("1");
-//
-//        Assertions.assertEquals(expectedBooks,actual);
-//    }
-//
-//    @Test
-//    void getBookByKeyword_positive(){
-//        Genre g = new Genre();
-//        g.setGenre("Fiction");
-//
-//        Book book1 = new Book("23242526","booktest1","synposis",
-//                "author",g,4,1997,"edition",
-//                "publisher",false,0.99,10,"image");
-//        book1.setBookId(1);
-//
-//        Book book2 = new Book("76777879","booktest2","synposis2",
-//                "author2",g,4,1997,"edition2",
-//                "publisher2",false,0.99,10,"image2");
-//        book2.setBookId(2);
-//
-//        List<Book> books = new ArrayList<>();
-//        books.add(book1);
-//        books.add(book2);
-//
-//        when(bd.findBybookNameIgnoreCaseContaining("book")).thenReturn(books);
-//
-//        bs = new BookService(bd);
-//
-//        Book expectedBook1 = new Book("23242526","booktest1","synposis",
-//                "author",g,4,1997,"edition",
-//                "publisher",false,0.99,10,"image");
-//        expectedBook1.setBookId(1);
-//
-//        Book expectedBook2 = new Book("76777879","booktest2","synposis2",
-//                "author2",g,4,1997,"edition2",
-//                "publisher2",false,0.99,10,"image2");
-//        expectedBook2.setBookId(2);
-//
-//        List<Book> expectedBooks = new ArrayList<>();
-//        expectedBooks.add(expectedBook1);
-//        expectedBooks.add(expectedBook2);
-//
-//        List<Book> actual = bs.getBooksByKeyword("book");
-//
-//        Assertions.assertEquals(expectedBooks,actual);
-//    }
-//
-//    @Test
-//    void getBookBySales_positive(){
-//        Genre g = new Genre();
-//        g.setGenre("Fiction");
-//
-//        Book book1 = new Book("23242526","booktest1","synposis",
-//                "author",g,4,1997,"edition",
-//                "publisher",true,0.99,10,"image");
-//        book1.setBookId(1);
-//
-//        Book book2 = new Book("76777879","booktest2","synposis2",
-//                "author2",g,4,1997,"edition2",
-//                "publisher2",false,0.99,10,"image2");
-//        book2.setBookId(2);
-//
-//        List<Book> books = new ArrayList<>();
-//        books.add(book1);
-//        books.add(book2);
-//
-//        when(bd.findBysaleIsActiveTrue()).thenReturn(books);
-//
-//        bs = new BookService(bd);
-//
-//        Book expectedBook1 = new Book("23242526","booktest1","synposis",
-//                "author",g,4,1997,"edition",
-//                "publisher",true,0.99,10,"image");
-//        expectedBook1.setBookId(1);
-//
-//        Book expectedBook2 = new Book("76777879","booktest2","synposis2",
-//                "author2",g,4,1997,"edition2",
-//                "publisher2",false,0.99,10,"image2");
-//        expectedBook2.setBookId(2);
-//
-//        List<Book> expectedBooks = new ArrayList<>();
-//        expectedBooks.add(expectedBook1);
-//        expectedBooks.add(expectedBook2);
-//
-//        List<Book> actual = bs.getBooksBySale();
-//
-//        Assertions.assertEquals(expectedBooks,actual);
-//    }
-//
-////    @Test
-////    void addBook_positive() throws SynopsisInputException,
-////            SaleDiscountRateException, ISBNAlreadyExists,
-////            GenreNotFoundException {
-////
-////        Genre g = new Genre();
-////        g.setGenre("Fiction");
-////        g.setId(1);
-////
-////        Book addBook = new Book("23242526","booktest1","synposis",
-////                "author",g,4,1997,"edition",
-////                "publisher",true,0.89,10,"image");
-////
-////        when(bd.saveAndFlush(addBook)).thenReturn(new Book("23242526","booktest1","synposis",
-////                "author",g,4,1997,"edition",
-////                "publisher",true,0.89,10,"image"));
-////
-////        bs = new BookService(bd);
-////
-////        AddOrUpdateBookDTO dto = new AddOrUpdateBookDTO("23242526","booktest1","synposis",
-////                "author",1,4,1997,"edition",
-////                "publisher",true,0.89,10,"image");
-////
-////        when(gd.findById(1)).thenReturn(Optional.of(new Genre(1, "Fiction")));
-////
-////        when(vu.validateBookInput(any(AddOrUpdateBookDTO.class))).thenReturn(Optional.empty());
-////        //vu.validateBookInput(dto);
-////
-//////               // when(jobService.listJobs(any(Person.class))).thenReturn(Stream.empty());
-////
-////        Book addedBook = new Book("23242526","booktest1","synposis",
-////                "author",g,4,1997,"edition",
-////                "publisher",true,0.89,10,"image");
-////
-////        Book expectedBook = bs.addBook(dto);
-////
-////        Assertions.assertEquals(addedBook,expectedBook);
-////    }
-//
-////    @Test
-////    void addBookISBNIsEmpty_negative() throws SynopsisInputException,
-////            SaleDiscountRateException, ISBNAlreadyExists, GenreNotFoundException {
-////
-////        AddOrUpdateBookDTO dto = new AddOrUpdateBookDTO("23242526","booktest1","synposis",
-////                "author",1,4,1997,"edition",
-////                "publisher",true,0.89,10,"image");
-////
-////        Genre g = gd.findById(dto.getGenre()).get();
-////        AddOrUpdateBookDTO dto1 = new AddOrUpdateBookDTO("23242526","booktest1","synposis",
-////                "author", g, 4,1997,"edition",
-////                "publisher",true,0.89,10,"image");
-////
-////        vu.validateBookInput(dto1);
-////
-////        Assertions.assertThrows(GenreNotFoundException.class, () -> {
-////            bs.addBook(dto1);
-////        });
-////    }
-//}
+package com.revature.lostchapterbackend.services;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+
+import com.revature.lostchapterbackend.LostChapterBackendApplication;
+import com.revature.lostchapterbackend.dao.BookDAO;
+import com.revature.lostchapterbackend.model.Book;
+import com.revature.lostchapterbackend.model.Genre;
+import com.revature.lostchapterbackend.service.BookService;
+
+@SpringBootTest(classes=LostChapterBackendApplication.class)
+public class BookServiceTests {
+	@MockBean
+	private BookDAO bookDao;
+	@Autowired
+	private BookService bookServ;
+	
+	private static List<Book> mockBooks;
+	
+	private static Genre mockGenreHorror;
+	
+	private static Genre mockGenreAction;
+	
+	@BeforeAll
+	public static void mockBookSetUp() {
+			mockBooks = new ArrayList<>();
+			
+			mockGenreHorror = new Genre();
+			mockGenreHorror.setGenre("Horror");
+			mockGenreHorror.setId(1);
+			
+			mockGenreAction = new Genre();
+			mockGenreAction.setGenre("Action");
+			mockGenreAction.setId(2);
+		
+		for (int i=1; i<=5; i++) {
+			Book book = new Book();
+			book.setBookId(i);
+			if (i<3)
+				book.setGenre(mockGenreHorror);
+				book.setBookName("To Kill a Mocking Bird");
+				book.setISBN("123456789");
+			if  (i>3)
+				book.setGenre(mockGenreAction);
+				book.setBookName("Fahrenheit 451");
+				book.setISBN("987654321");
+			mockBooks.add(book);
+		}
+	}
+	
+	@Test
+	public void getAllBooks() {
+		when(bookDao.findAll()).thenReturn(mockBooks);
+		
+		List<Book> actualBooks = bookServ.getAllBooks();
+		
+		assertEquals(mockBooks, actualBooks);
+	}
+	
+	@Test
+	public void getBookByIdExists() {
+		Book book = new Book();
+		book.setBookId(0);
+		
+		when(bookDao.findById(1)).thenReturn(Optional.of(book));
+		
+		Book actualBook = bookServ.getBookById(1);
+		assertEquals(book, actualBook);
+	}
+	
+	@Test
+	public void getBookByIdDoesNotExist() {
+		when(bookDao.findById(1)).thenReturn(Optional.empty());
+		
+		Book actualBook = bookServ.getBookById(1);
+		assertNull(actualBook);
+	}
+	
+	@Test
+	public void getBooksByGenreExists() {
+		String genre = "Horror";
+		
+		when(bookDao.findByGenre_Genre("Horror")).thenReturn(mockBooks);
+		
+		List<Book> actualBooks = bookServ.getBookByGenre(genre);
+		boolean onlyHorror = true;
+		for (Book book : actualBooks) {
+			if (!book.getGenreId().equals(1))
+				onlyHorror = false;
+		}
+		assertTrue(onlyHorror);
+	}
+
+	
+	@Test
+	public void getBooksByGenreDoesNotExist() {
+		String genre = "Mystery";
+		
+		when(bookDao.findByGenre_Genre("Mystery")).thenReturn(mockBooks);
+		
+		List<Book> actualBooks = bookServ.getBookByGenre(genre);
+		assertTrue(actualBooks.isEmpty());
+	}
+	
+	@Test
+	public void getBooksByISBNExists() {
+		String ISBN = "123456789";
+		
+		when(bookDao.findByISBN("123456789")).thenReturn(mockBooks);
+		
+		List<Book> actualBooks = bookServ.getByISBN(ISBN);
+		boolean onlyISBN = true;
+		for (Book book : actualBooks) {
+			if (!book.getISBN().equals("123456789"))
+				onlyISBN = false;
+		}
+		assertTrue(onlyISBN);
+	}
+
+	
+	@Test
+	public void getBooksByISBNDoesNotExist() {
+		String ISBN = "1";
+		
+		when(bookDao.findByISBN("1")).thenReturn(mockBooks);
+		
+		List<Book> actualBooks = bookServ.getByISBN(ISBN);
+		assertTrue(actualBooks.isEmpty());
+	}
+	
+	@Test
+	public void getBooksByKeyWordExists() {
+		String keyWord = "Kill";
+		
+		when(bookDao.findAll()).thenReturn(mockBooks);
+		
+		List<Book> actualBooks = bookServ.getByKeyWord(keyWord);
+		boolean onlyKeyWord = true;
+		for (Book book : actualBooks) {
+			if (!book.getBookName().toLowerCase().contains(keyWord.toLowerCase()))
+				onlyKeyWord = false;
+		}
+		assertTrue(onlyKeyWord);
+	}
+	
+	@Test
+	public void getBooksByKeyWordDoesNotExist() {
+		String keyWord = "bubble gum";
+		
+		when(bookDao.findAll()).thenReturn(mockBooks);
+		
+		List<Book> actualBooks = bookServ.getByKeyWord(keyWord);
+		assertTrue(actualBooks.isEmpty());
+	}
+	
+	
+//	Feature still a stretch?
+//	@Test
+//	public void getBooksByFeaturedExists() {
+//		
+//	}
+//	
+//	@Test
+//	public void getBooksByFeaturedDoesNotExist() {
+//
+//	}
+	
+	@Test
+	public void addBookSuccessfully() {
+		Book newBook = new Book();
+		Book mockBook = new Book();
+		mockBook.setBookId(69);
+		
+		when(bookDao.save(newBook)).thenReturn(mockBook);
+		
+		int newId = bookServ.addBook(newBook);
+		
+		assertNotEquals(0, newId);
+	}
+	
+	@Test
+	public void addBookUnSuccessfully() {
+		Book book = new Book();
+		
+		when(bookDao.save(book)).thenReturn(book);
+		
+		int newId = bookServ.addBook(book);
+		
+		assertEquals(0,newId);
+	}
+	
+	@Test
+	public void updateBookSuccessfully() {
+		Book editedBook = new Book();
+		editedBook.setBookId(1);
+		editedBook.setBookName("My Last Book");
+		
+		when(bookDao.findById(2)).thenReturn(Optional.of(editedBook));
+		when(bookDao.save(Mockito.any(Book.class))).thenReturn(editedBook);
+		
+		Book actualBook = bookServ.updateBook(editedBook);
+		
+		assertEquals(editedBook, actualBook);
+
+	}
+	
+	@Test
+	public void updateBookUnsuccessfully() {
+		when(bookDao.findById(2)).thenReturn(Optional.empty());
+		
+		Book editedBook = new Book();
+		editedBook.setBookId(2);
+		editedBook.setBookName("My First Book");
+		
+		Book actualBook = bookServ.updateBook(editedBook);
+		
+		assertNull(actualBook);
+		verify(bookDao, times(0)).save(Mockito.any(Book.class));
+	}
+	
+}
