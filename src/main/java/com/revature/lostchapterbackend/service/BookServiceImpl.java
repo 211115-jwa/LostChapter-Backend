@@ -1,5 +1,6 @@
 package com.revature.lostchapterbackend.service;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -39,8 +40,16 @@ public class BookServiceImpl implements BookService {
 
 	@Override
 	public List<Book> getFeaturedBooks() {
-		// TODO Auto-generated method stub
-		return null;
+		List<Book> all=bookDao.findAll();
+		List<Book> featured= Collections.emptyList();
+		for(Book book:all) {
+			if(book.isFeatured()) {
+				
+				featured.add(book);
+				
+			}
+		}
+		return featured;
 	}
 
 
@@ -55,8 +64,16 @@ public class BookServiceImpl implements BookService {
 
 	@Override
 	public List<Book> getBooksBySale() {
-		// TODO Auto-generated method stub
-		return null;
+		List<Book> all=bookDao.findAll();
+		List<Book> sale= Collections.emptyList();
+		for(Book book:all) {
+			if(book.isSaleIsActive()) {
+				
+				sale.add(book);
+				
+			}
+		}
+		return sale;
 	}
 
 
