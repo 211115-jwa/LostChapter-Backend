@@ -22,17 +22,17 @@ public class Order {
 	
 	@OneToOne
 	@JoinColumn(name="cc_info_id")
-	private int ccInfoId;
+	private CreditCardInfo creditCard;
 	
 	@OneToOne
 	@JoinColumn(name="cart_id")
-	private int cartId;
+	private Cart cart;
 
-	public Order(int orderId, int ccInfoId, int cartId) {
-		super();
-		this.orderId = orderId;
-		this.ccInfoId = ccInfoId;
-		this.cartId = cartId;
+	public Order() {
+
+		this.orderId = 0;
+		this.creditCard = new CreditCardInfo();
+		this.cart = new Cart();
 	}
 
 	public int getOrderId() {
@@ -43,30 +43,30 @@ public class Order {
 		this.orderId = orderId;
 	}
 
-	public int getCcInfoId() {
-		return ccInfoId;
+	public CreditCardInfo getCreditCard() {
+		return creditCard;
 	}
 
-	public void setCcInfoId(int ccInfoId) {
-		this.ccInfoId = ccInfoId;
+	public void setCreditCard(CreditCardInfo creditCard) {
+		this.creditCard = creditCard;
 	}
 
-	public int getCartId() {
-		return cartId;
+	public Cart getCart() {
+		return cart;
 	}
 
-	public void setCartId(int cartId) {
-		this.cartId = cartId;
+	public void setCart(Cart cart) {
+		this.cart = cart;
 	}
 
 	@Override
 	public String toString() {
-		return "Order [orderId=" + orderId + ", ccInfoId=" + ccInfoId + ", cartId=" + cartId + "]";
+		return "Order [orderId=" + orderId + ", creditCard=" + creditCard + ", cart=" + cart + "]";
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(cartId, ccInfoId, orderId);
+		return Objects.hash(cart, creditCard, orderId);
 	}
 
 	@Override
@@ -78,9 +78,11 @@ public class Order {
 		if (getClass() != obj.getClass())
 			return false;
 		Order other = (Order) obj;
-		return cartId == other.cartId && ccInfoId == other.ccInfoId && orderId == other.orderId;
+		return Objects.equals(cart, other.cart) && Objects.equals(creditCard, other.creditCard)
+				&& orderId == other.orderId;
 	}
-	
+
+
 	
 
 

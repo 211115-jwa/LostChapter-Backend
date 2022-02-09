@@ -1,24 +1,19 @@
 package com.revature.lostchapterbackend.controller;
-
-import java.security.InvalidParameterException;
-import java.util.NoSuchElementException;
-
-import javax.persistence.NoResultException;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+
 import org.springframework.web.bind.annotation.RestController;
 
-import com.revature.lostchapterbackend.annotation.Customer;
-import com.revature.lostchapterbackend.exceptions.BookNotFoundException;
-import com.revature.lostchapterbackend.exceptions.OutOfStockException;
-
+import com.revature.lostchapterbackend.model.Book;
 import com.revature.lostchapterbackend.model.Cart;
 
 
@@ -29,71 +24,134 @@ import com.revature.lostchapterbackend.service.CartService;
 
 
 @RestController
-@CrossOrigin(originPatterns = "*", allowCredentials = "true")
+@RequestMapping(path="/cart")
+@CrossOrigin("*")
 public class CartController {
 
-	@Autowired
-	private CartService cartServ;
-
-	private final String PATTERN = "[0-9]+"; // checks String if it only contains numbers
+	//static for testing
+	private static CartService cartServ;
 	
-	@Customer
-	@PostMapping(path = "/users/{userId}/cart") // Because a User is connected to a Cart, we can then find the cart Id
-												// // by using the User.
-	public ResponseEntity<Object> addBookToCart(@PathVariable("userId") String userId,
-			@RequestParam("bookId") String bookId, @RequestParam("quantityToBuy") String quantityToBuy) throws BookNotFoundException {
-		// Aspect or another class for protecting endpoint
-		try {
-			Cart currentCart = null;
-			if (userId.matches(PATTERN) && bookId.matches(PATTERN) && quantityToBuy.matches(PATTERN)) {
-				currentCart = cartServ.addBooksToCart(currentCart, userId, bookId, quantityToBuy);
-				return ResponseEntity.status(200).body(currentCart);
-			} else {
-				throw new NumberFormatException("product id or quantity must be of type int!");
-			}
-		} catch (NumberFormatException | OutOfStockException | InvalidParameterException | NoSuchElementException | BookNotFoundException e) {
-			return ResponseEntity.status(400).body(e.getMessage());
-		} catch (NoResultException e) {
-			return ResponseEntity.status(404).body(e.getMessage());
-		} 
-	}
-
-	@Customer
-	@GetMapping(path = "/users/{userId}/cart") // endpoint used for displaying all Books in the Cart
-	public ResponseEntity<Object> getCartById(@PathVariable("userId") String userId) {
-		// Aspect or another class for protecting endpoint
-		try {
-
-			Cart getCartById = cartServ.getCartById(userId);
-			return ResponseEntity.status(200).body(getCartById);
-
-		} catch (InvalidParameterException e) {
-			return ResponseEntity.status(400).body(e.getMessage());
-		}  catch (NoSuchElementException e) {
-			return ResponseEntity.status(404).body("There is no cart with the id of " +userId);
+	
+	public CartController() {
+		super();
 		}
+	//field injection
+	@Autowired
+	public CartController(CartService cartServ) {
+		this.cartServ= cartServ;
 	}
+	
+	
 
-	@Customer
-	@DeleteMapping(path = "/users/{userId}/cart")
-	public ResponseEntity<Object> delteteProductInCart(@PathVariable("userId") String cartId,
-			@RequestParam(name = "bookId", required = false) String bookId) throws BookNotFoundException, NoResultException {
-
-		try {
-			Cart currentCart = null;
-			if (bookId != null && (cartId.matches(PATTERN) && bookId.matches(PATTERN))) {
-				currentCart = cartServ.delteteProductInCart(currentCart, cartId, bookId);
-				return ResponseEntity.status(200).body(currentCart);
-			} else if (bookId == null) {
-				currentCart = cartServ.delteteAllProductInCart(currentCart, cartId);
-				return ResponseEntity.status(200).body(currentCart);
-			} else {
-				throw new NumberFormatException("cart id/product id must be of type int!");
+	@PostMapping(path = "/add/{userId}") 
+	public ResponseEntity<Object> addBookToCart(@RequestBody Book bookId, @PathVariable(value="userId") int userId){
+		if (bookId !=null&&userId!=0) {
+			if(cartServ.checkBookInTheCart(bookId, userId)) {
+				cartServ.incrementQuantity(bookId, userId);
 			}
-		} catch (NumberFormatException e) {
-			return ResponseEntity.status(400).body(e.getMessage());
-		} catch (NoResultException | BookNotFoundException | NoSuchElementException e) {
-			return ResponseEntity.status(404).body(e.getMessage());
-		} 
+			else {
+			cartServ.addBooksToCart(bookId, userId);
+			return ResponseEntity.status(HttpStatus.CREATED).build();
+			}
+		}
+		
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
 	}
+	
+	@PutMapping(path = "/add/{bookToBuyId}/{cartId}") 
+	public ResponseEntity<Object> addBookToCartNoUser(@RequestBody Book bookToAdd, @PathVariable(value="cartId") int cartId){
+		if (bookToAdd !=null) {
+			cartServ.addBooksToCartNoUser(bookToAdd, cartServ.getCartById(cartId));
+			return ResponseEntity.status(HttpStatus.CREATED).build();
+		}
+		
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+	}
+	@PostMapping(path = "/delete/{bookToBuyId}/{userId}") 
+	public ResponseEntity<Object> deleteBookToCart(@RequestBody Book bookToDelete, @PathVariable int userId){
+		if (bookToDelete !=null&&userId!=0) {
+			cartServ.deleteBookInCart(bookToDelete, userId);
+			return ResponseEntity.status(HttpStatus.CREATED).build();
+		}
+		
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+	}
+	
+	@PostMapping(path = "/delete/{bookToBuyId}/{cartId}") 
+	public ResponseEntity<Object> deleteBookToCartNoUser(@RequestBody Book bookToAdd, @PathVariable int cartId){
+		if (bookToAdd !=null) {
+			cartServ.deleteBookInCartNoUser(bookToAdd, cartServ.getCartById(cartId));
+			return ResponseEntity.status(HttpStatus.CREATED).build();
+		}
+		
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+	}
+	@PostMapping(path = "/add/quantity/{bookToBuyId}/{userId}") 
+	public ResponseEntity<Object> addQuantity(@RequestBody Book bookToAdd, @PathVariable int userId){
+		if (bookToAdd !=null&&userId!=0) {
+			
+			cartServ.incrementQuantity(bookToAdd, userId);
+			return ResponseEntity.status(HttpStatus.CREATED).build();
+			
+		}
+		
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+	}
+	
+	@PostMapping(path = "/add/quantity/{bookToBuyId}/{cartId}") 
+	public ResponseEntity<Object> addQuantityNoUser(@RequestBody Book bookToAdd, @PathVariable int cartId){
+		if (bookToAdd !=null) {
+			
+			cartServ.incrementQuantity(bookToAdd, cartId);
+			return ResponseEntity.status(HttpStatus.CREATED).build();
+			
+		}
+		
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+	}
+	
+	@PostMapping(path = "/decrease/quantity/{bookToBuyId}/{userId}") 
+	public ResponseEntity<Object> decreaseQuantity(@RequestBody Book bookToAdd, @PathVariable int userId){
+		if (bookToAdd !=null&&userId!=0) {
+			
+			cartServ.decreaseQuantity(bookToAdd, userId);
+			return ResponseEntity.status(HttpStatus.CREATED).build();
+			
+		}
+		
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+	}
+	
+	@PostMapping(path = "/decrease/quantity/{bookToBuyId}/{cartId}") 
+	public ResponseEntity<Object> decreaseQuantityNoUser(@RequestBody Book bookToAdd, @PathVariable int cartId){
+		if (bookToAdd !=null) {
+			
+			cartServ.decreaseQuantity(bookToAdd, cartId);
+			return ResponseEntity.status(HttpStatus.CREATED).build();
+			
+		}
+		
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+	}
+	
+	@GetMapping(path = "/{cartId}") 
+	public ResponseEntity<Object> getCartById(@PathVariable int cartId) {
+		Cart cart = cartServ.getCartById(cartId);
+		if (cart != null)
+			return ResponseEntity.ok(cart);
+		else
+			return ResponseEntity.notFound().build();
+	}
+
+	
+	@DeleteMapping(path = "/{cartId}")
+	public ResponseEntity<Void> deleteCart(@RequestBody Cart cartToDelete){
+		if (cartToDelete !=null) {
+			cartServ.deleteCart(cartToDelete);
+			return ResponseEntity.status(HttpStatus.CREATED).build();
+		}
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+	}
+	
+	
 }

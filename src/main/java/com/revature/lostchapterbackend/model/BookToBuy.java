@@ -19,53 +19,56 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 public class BookToBuy {
 
 	@Id
-	@Column(name="book_id")
+	@Column(name="book_to_buy_id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int bookId;
 
 	@ManyToOne
-	@JoinColumn(name="quantity_to_buy")
+	@JoinColumn(name="book_id")
+	private Book book;
+	
+	@Column(name="quantity_to_buy")
 	private int quantityToBuy;
 
-	
-
 	public BookToBuy() {
-		bookId = 0;
-		quantityToBuy = 0;
+		this.bookId=0;
+		this.book=null;
+		this.quantityToBuy=1;
 	}
-
-
-
+	
 	public int getBookId() {
 		return bookId;
 	}
-
-
 
 	public void setBookId(int bookId) {
 		this.bookId = bookId;
 	}
 
+	public Book getBook() {
+		return book;
+	}
 
+	public void setBook(Book book) {
+		this.book = book;
+	}
 
 	public int getQuantityToBuy() {
 		return quantityToBuy;
 	}
 
-
-
 	public void setQuantityToBuy(int quantityToBuy) {
 		this.quantityToBuy = quantityToBuy;
 	}
 
-
+	@Override
+	public String toString() {
+		return "BookToBuy [bookId=" + bookId + ", book=" + book + ", quantityToBuy=" + quantityToBuy + "]";
+	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(bookId, quantityToBuy);
+		return Objects.hash(book, bookId, quantityToBuy);
 	}
-
-
 
 	@Override
 	public boolean equals(Object obj) {
@@ -76,14 +79,10 @@ public class BookToBuy {
 		if (getClass() != obj.getClass())
 			return false;
 		BookToBuy other = (BookToBuy) obj;
-		return bookId == other.bookId && quantityToBuy == other.quantityToBuy;
+		return Objects.equals(book, other.book) && bookId == other.bookId && quantityToBuy == other.quantityToBuy;
 	}
 
+	
 
-
-	@Override
-	public String toString() {
-		return "BookToBuy [bookId=" + bookId + ", quantityToBuy=" + quantityToBuy + "]";
-	}
-
+	
 }

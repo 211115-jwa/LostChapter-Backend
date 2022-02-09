@@ -2,6 +2,7 @@ package com.revature.lostchapterbackend.model;
 
 import java.util.Objects;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -9,7 +10,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -39,7 +39,7 @@ public class Book {
 
 	@ManyToOne
 	@JoinColumn(name="genre_id")
-	private int genreId;
+	private Genre genre;
 
 	@Column(name="year")
 	private int year;
@@ -56,7 +56,7 @@ public class Book {
 		bookName = " ";
 		synopsis = "";
 		author = "";
-		genreId = 0;
+		genre = new Genre();
 		year = 0;
 		publisher = "";
 		bookImage = "";
@@ -102,12 +102,12 @@ public class Book {
 		this.author = author;
 	}
 
-	public int getGenreId() {
-		return genreId;
+	public Genre getGenreId() {
+		return genre;
 	}
 
-	public void setGenreId(int genreId) {
-		this.genreId = genreId;
+	public void setGenre(Genre genre) {
+		this.genre = genre;
 	}
 
 	public int getYear() {
@@ -136,7 +136,7 @@ public class Book {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(ISBN, author, bookId, bookImage, bookName, genreId, publisher, synopsis, year);
+		return Objects.hash(ISBN, author, bookId, bookImage, bookName, genre, publisher, synopsis, year);
 	}
 
 	@Override
@@ -150,14 +150,14 @@ public class Book {
 		Book other = (Book) obj;
 		return Objects.equals(ISBN, other.ISBN) && Objects.equals(author, other.author) && bookId == other.bookId
 				&& Objects.equals(bookImage, other.bookImage) && Objects.equals(bookName, other.bookName)
-				&& genreId == other.genreId && Objects.equals(publisher, other.publisher)
+				&& genre == other.genre && Objects.equals(publisher, other.publisher)
 				&& Objects.equals(synopsis, other.synopsis) && year == other.year;
 	}
 
 	@Override
 	public String toString() {
 		return "Book [bookId=" + bookId + ", ISBN=" + ISBN + ", bookName=" + bookName + ", synopsis=" + synopsis
-				+ ", author=" + author + ", genreId=" + genreId + ", year=" + year + ", publisher=" + publisher
+				+ ", author=" + author + ", genreId=" + genre + ", year=" + year + ", publisher=" + publisher
 				+ ", bookImage=" + bookImage + "]";
 	}
 	

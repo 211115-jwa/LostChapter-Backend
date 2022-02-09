@@ -19,16 +19,20 @@ public class User {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int userId;
 	
-	@Column(unique=true)
+	@Column(name="username")
 	private String username;
+	@Column(name="passwrd")
 	private String password;
+	@Column(name="first_name")
 	private String firstName;
+	@Column(name="last_name")
 	private String lastName;
-	
-	@Column(unique=true)
+	@Column(name="email")
 	private String email;
+	@Column(name="birthday")
 	private LocalDate birthday;
-	private String address;
+
+	@Column(name="user_role")
 	private String role;
 	
 	public User() {
@@ -36,16 +40,14 @@ public class User {
 	}
 
 	public User(String username, String password, String firstName, String lastName,  String email,
-			LocalDate birthday, String address, String role) {
+			LocalDate birthday, String role) {
 		super();
 		this.username = username;
 		this.password = password;
 		this.firstName = firstName;
 		this.lastName = lastName;
-		
 		this.email = email;
 		this.birthday = birthday;
-		this.address = address;
 		this.role = role;
 	}
 
@@ -105,14 +107,6 @@ public class User {
 		this.birthday = birthday;
 	}
 
-	public String getAddress() {
-		return address;
-	}
-
-	public void setAddress(String address) {
-		this.address = address;
-	}
-
 	public String getRole() {
 		return role;
 	}
@@ -124,13 +118,13 @@ public class User {
 	@Override
 	public String toString() {
 		return "User [userId=" + userId + ", username=" + username + ", password=" + password + ", firstName="
-				+ firstName + ", lastName=" + lastName + ", email=" + email + ", birthday=" + birthday + ", address="
-				+ address + ", role=" + role + "]";
+				+ firstName + ", lastName=" + lastName + ", email=" + email + ", birthday=" + birthday + ", role="
+				+ role + "]";
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(address, birthday, email, firstName, lastName, password, role, userId, username);
+		return Objects.hash(birthday, email, firstName, lastName, password, role, userId, username);
 	}
 
 	@Override
@@ -142,14 +136,11 @@ public class User {
 		if (getClass() != obj.getClass())
 			return false;
 		User other = (User) obj;
-		return Objects.equals(address, other.address) && Objects.equals(birthday, other.birthday)
-				&& Objects.equals(email, other.email) && Objects.equals(firstName, other.firstName)
-				&& Objects.equals(lastName, other.lastName) && Objects.equals(password, other.password)
-				&& Objects.equals(role, other.role) && userId == other.userId
-				&& Objects.equals(username, other.username);
+		return Objects.equals(birthday, other.birthday) && Objects.equals(email, other.email)
+				&& Objects.equals(firstName, other.firstName) && Objects.equals(lastName, other.lastName)
+				&& Objects.equals(password, other.password) && Objects.equals(role, other.role)
+				&& userId == other.userId && Objects.equals(username, other.username);
 	}
 
-	
-	
 
 }
