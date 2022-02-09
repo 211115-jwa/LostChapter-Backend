@@ -1,4 +1,4 @@
-//package com.revature.lostchapterbackend.services;
+package com.revature.lostchapterbackend.services;
 //
 //import static org.mockito.Mockito.mock;
 //
@@ -20,7 +20,51 @@
 //import com.revature.lostchapterbackend.service.UserService;
 //import com.revature.lostchapterbackend.utility.HashUtil;
 //
-//public class UserServiceTest {
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.when;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+
+import com.revature.lostchapterbackend.LostChapterBackendApplication;
+import com.revature.lostchapterbackend.dao.UserDAO;
+import com.revature.lostchapterbackend.exceptions.UsernameAlreadyExists;
+import com.revature.lostchapterbackend.model.User;
+import com.revature.lostchapterbackend.service.UserService;
+
+@SpringBootTest(classes=LostChapterBackendApplication.class)
+public class UserServiceTest {
+	@MockBean
+	private UserDAO userDao;
+	
+	@Autowired
+	private UserService userServ;
+	
+	@Test
+	public void registerPersonSuccessfully() throws UsernameAlreadyExists {
+		User user = new User ();
+		user.setUserId(10);
+		
+		when (userDao.save(user)).thenReturn(user);
+		User actualUser = userServ.register(user);
+		assertEquals(10, actualUser.getUserId());
+	}
+	
+	@Test
+	public void registerPersonSomethingWrong() throws UsernameAlreadyExists {
+		User user = new User ();
+		when(userDao.save(user)).thenThrow(new RuntimeException());
+		User actualUser = userServ.register(user);
+		assertNull(actualUser);
+		
+	}
+	
+	
+	
+	
+}
 //
 //	private UserService us;
 //

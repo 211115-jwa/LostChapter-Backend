@@ -13,7 +13,6 @@ import com.revature.lostchapterbackend.model.Order;
 public interface OrderService {
 	
 	public Order getOrderById(int orderId) throws OrderDoesNotExist;
-	public Order getOrderByCartId(int cartId) throws CartNotFoundException;
 	public List<Order> getAllOrdersByUser(int userId) throws UserNotFoundException;
 	public Order addOrder(Order order);
 //	public Order getOrderByBook(Book book);  stretch goal

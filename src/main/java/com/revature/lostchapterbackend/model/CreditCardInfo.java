@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -27,9 +28,9 @@ public class CreditCardInfo {
 	private int billingZip;
 	private String creditCardType;
 	
-	@OneToOne
-	@JoinColumn(name="shipping_info_id")
-	private ShippingInformation shippingInfo;
+	@ManyToOne
+	@JoinColumn(name="user_id")
+	private User user;
 	
 	
 	public CreditCardInfo() {
@@ -41,7 +42,7 @@ public class CreditCardInfo {
 		this.expirationYear = 25;
 		this.billingZip = 12345;
 		this.creditCardType = "visa";
-		this.shippingInfo = new ShippingInformation();
+		this.user = new User();
 	}
 
 
@@ -125,13 +126,18 @@ public class CreditCardInfo {
 	}
 
 
-	public ShippingInformation getShippingInfo() {
-		return shippingInfo;
+	public User getUser() {
+		return user;
 	}
 
 
-	public void setShippingInfo(ShippingInformation shippingInfo) {
-		this.shippingInfo = shippingInfo;
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+
+	public void setCardNumber(long cardNumber) {
+		this.cardNumber = cardNumber;
 	}
 
 
@@ -139,15 +145,14 @@ public class CreditCardInfo {
 	public String toString() {
 		return "CreditCardInfo [ccInfoId=" + ccInfoId + ", nameOnCard=" + nameOnCard + ", cardNumber=" + cardNumber
 				+ ", cvv=" + cvv + ", expirationMonth=" + expirationMonth + ", expirationYear=" + expirationYear
-				+ ", billingZip=" + billingZip + ", creditCardType=" + creditCardType + ", shippingInfo=" + shippingInfo
-				+ "]";
+				+ ", billingZip=" + billingZip + ", creditCardType=" + creditCardType + ", user=" + user + "]";
 	}
 
 
 	@Override
 	public int hashCode() {
 		return Objects.hash(billingZip, cardNumber, ccInfoId, creditCardType, cvv, expirationMonth, expirationYear,
-				nameOnCard, shippingInfo);
+				nameOnCard, user);
 	}
 
 
@@ -163,8 +168,11 @@ public class CreditCardInfo {
 		return billingZip == other.billingZip && cardNumber == other.cardNumber && ccInfoId == other.ccInfoId
 				&& Objects.equals(creditCardType, other.creditCardType) && cvv == other.cvv
 				&& expirationMonth == other.expirationMonth && expirationYear == other.expirationYear
-				&& Objects.equals(nameOnCard, other.nameOnCard) && Objects.equals(shippingInfo, other.shippingInfo);
+				&& Objects.equals(nameOnCard, other.nameOnCard) && Objects.equals(user, other.user);
 	}
+
+
+	
 	
 
 	

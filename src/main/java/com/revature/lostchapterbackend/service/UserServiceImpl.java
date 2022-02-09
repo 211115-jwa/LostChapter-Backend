@@ -1,12 +1,12 @@
 package com.revature.lostchapterbackend.service;
 
 import java.security.NoSuchAlgorithmException;
+import java.util.Optional;
 
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import com.revature.lostchapterbackend.dao.UserDAO;
 import com.revature.lostchapterbackend.exceptions.InvalidLoginException;
 import com.revature.lostchapterbackend.exceptions.UserNotFoundException;
@@ -26,6 +26,23 @@ public class UserServiceImpl implements UserService {
 		this.userDao = userDao;
 	}
 	
+	@Override
+	@Transactional
+	public User register(User newUser) throws UsernameAlreadyExists {
+		try 
+		{
+			newUser = userDao.save(newUser);
+			return newUser;
+		} catch(Exception e) {
+			if(e.getMessage() != null && e.getMessage().contains("unique"))
+				
+				throw new UsernameAlreadyExists("Username Already Exists! Try Again!");
+			
+			else return null;
+		}	
+		
+	}
+
 	
 	@Override
 	@Transactional
@@ -44,24 +61,13 @@ public class UserServiceImpl implements UserService {
 		
 	}
 
-	@Override
-	@Transactional
-	public int register(User newUser) throws UsernameAlreadyExists {
-		try 
-		{
-			newUser = userDao.save(newUser);
-		}catch(Exception e)
-		{
-			throw new UsernameAlreadyExists("Username Already Exists! Try Again!");
-		}	
-		return 0;
-	}
-
+	
 	@Override
 	@Transactional
 	public User getUserById(int userId) {
-		User user = userDao.getById(userId);
-		return user;
+		Optional<User> user = userDao.findById(userId);
+		if (user.isPresent()) return user.get();
+		else return null;
 	}
 
 	@Override
@@ -69,6 +75,7 @@ public class UserServiceImpl implements UserService {
 	public User getUserByEmail(String email) {
 		User user = userDao.findByEmail(email);
 		return user;
+				
 	}
 
 	@Override
@@ -79,16 +86,24 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	@Transactional
+	@Transactional()
 	public User update(User user) {
-		User updatedUser = userDao.save(user);
-		return updatedUser;
+		if (userDao.existsById(user.getUserId())) {
+			userDao.save(user);
+			user = userDao.findById(user.getUserId()).get();
+			return user;
+		}
+		return null;
 	}
 
 	@Override
 	@Transactional
 	public void deleteUser(User user) {
-		userDao.delete(user);
+		User userFromDatabase = userDao.findById(user.getUserId()).get();
+		if(userFromDatabase != null) {
+			userDao.delete(userFromDatabase);
+		}
+		
 	}
 
 
