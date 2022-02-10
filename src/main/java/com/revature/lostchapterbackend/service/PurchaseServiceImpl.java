@@ -25,7 +25,7 @@ public class PurchaseServiceImpl implements PurchaseService{
 	public void deletePurchase(Purchase PurchaseToDelete) {
 		PurchaseDao.delete(PurchaseToDelete);
 		}
-
+	
 	@Override
 	@Transactional
 	public Purchase getPurchaseById(int id) {
@@ -196,9 +196,11 @@ public class PurchaseServiceImpl implements PurchaseService{
 //
 	@Override
 	@Transactional
-	public Purchase createPurchase(Purchase newPurchase) {
-		// TODO Auto-generated method stub
-		return null;
+	public int createPurchase(Purchase newPurchase) {
+		Purchase purchase = PurchaseDao.save(newPurchase);
+		if(purchase != null)
+		return purchase.getPurchaseId();
+		else return 0;
 	}
 //
 //	@Override
