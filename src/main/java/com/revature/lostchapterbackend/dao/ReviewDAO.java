@@ -8,5 +8,5 @@ import com.revature.lostchapterbackend.model.Book;
 import com.revature.lostchapterbackend.model.Review;
 @Repository
 public interface ReviewDAO extends JpaRepository<Review, Integer> {
-	public List<Review> findByReviewByBook(int bookId);
+	public List<Review> findReviewByBook(int bookId);
 }

@@ -23,14 +23,10 @@ public class ReviewServiceImpl implements ReviewService {
 	private Logger logger = LoggerFactory.getLogger(ReviewService.class);
 
 	private ReviewDAO revDao;
-	private BookDAO bookDao;
 	
 	@Autowired
-	public ReviewServiceImpl(ReviewDAO revDao, BookDAO bookDao) {
-		// For mocking
-		// For Unit Testing
+	public ReviewServiceImpl(ReviewDAO revDao) {
 		this.revDao = revDao;
-		this.bookDao = bookDao;
 	}
 
 	@Override
@@ -79,7 +75,7 @@ public class ReviewServiceImpl implements ReviewService {
 	public List<Review> getReviewsByBook(int bookId) throws BookNotFoundException {
 		try
 		{
-			List<Review> reviews = revDao.findByReviewByBook(bookId);
+			List<Review> reviews = revDao.findReviewByBook(bookId);
 			return reviews;
 		}catch(Exception e)
 		{

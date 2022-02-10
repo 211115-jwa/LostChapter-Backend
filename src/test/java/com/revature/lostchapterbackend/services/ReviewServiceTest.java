@@ -89,7 +89,7 @@ public class ReviewServiceTest {
 		Book book = new Book();
 		book.setBookId(1);
 		
-		when(reviewDao.findByReviewByBook(1)).thenReturn(mockReviews);
+		when(reviewDao.findReviewByBook(1)).thenReturn(mockReviews);
 		
 		List<Review> actualReviews = reviewServ.getReviewsByBook(1);
 		boolean onlyBook = true;
@@ -103,7 +103,7 @@ public class ReviewServiceTest {
 	@Test 
 	public void getReviewsByBookDoesNotExist() throws BookNotFoundException  {
 		
-		when(reviewDao.findByReviewByBook(2)).thenReturn(mockReviews);
+		when(reviewDao.findReviewByBook(2)).thenReturn(mockReviews);
 		
 		List<Review> actualReviews = reviewServ.getReviewsByBook(0);
 		assertTrue(actualReviews.isEmpty());
