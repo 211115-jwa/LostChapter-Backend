@@ -65,7 +65,7 @@ public class BookController {
 	}
 
 	@GetMapping(path = "/featured")
-public List<Book> getFeaturedBooks() {
+	public List<Book> getFeaturedBooks() {
 
 		logger.info("BookController.getFeaturedBooks() invoked.");
 	List<Book> featuredBooks = bookServ.getFeaturedBooks();
@@ -89,7 +89,7 @@ public List<Book> getFeaturedBooks() {
 	}
 	//working
 	@GetMapping(path = "/genre/{name}")
-	public ResponseEntity<Object> getBookByGenreId(@PathVariable String name) {
+	public ResponseEntity<Object> getBookByGenre(@PathVariable String name) {
 		logger.debug("BookController.getBookByGenreId() invoked.");
 
 		try {

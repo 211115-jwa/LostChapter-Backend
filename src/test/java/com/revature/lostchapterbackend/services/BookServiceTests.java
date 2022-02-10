@@ -30,6 +30,8 @@ public class BookServiceTests {
 	
 	private static List<Book> mockBooks;
 	
+	private static List<Book> mockNonFeaturedBooks;
+	
 	@BeforeAll
 	public static void mockBookSetUp() {
 			mockBooks = new ArrayList<>();
@@ -41,10 +43,27 @@ public class BookServiceTests {
 				book.setGenre("Horror");
 				book.setBookName("To Kill a Mocking Bird");
 				book.setISBN("123456789");
+				book.setFeatured(true);
 			if  (i>3)
 				book.setGenre("Action");
 				book.setBookName("Fahrenheit 451");
 				book.setISBN("987654321");
+			mockBooks.add(book);
+		}
+	}
+	
+	@BeforeAll
+	public static void mockNonFeaturedBookSetUp() {
+			mockNonFeaturedBooks = new ArrayList<>();
+		
+		for (int i=1; i<=5; i++) {
+			Book book = new Book();
+			book.setBookId(i);
+			if (i<3)
+				book.setGenre("Horror");
+				book.setBookName("To Kill a Mocking Bird");
+				book.setISBN("123456789");
+				book.setFeatured(false);
 			mockBooks.add(book);
 		}
 	}
@@ -155,16 +174,27 @@ public class BookServiceTests {
 	}
 	
 	
-//	Feature still a stretch?
-//	@Test
-//	public void getBooksByFeaturedExists() {
-//		
-//	}
-//	
-//	@Test
-//	public void getBooksByFeaturedDoesNotExist() {
-//
-//	}
+
+	@Test
+	public void getBooksByFeaturedExists() {
+		when(bookDao.findAll()).thenReturn(mockBooks);
+		
+		List<Book> actualBooks = bookServ.getFeaturedBooks();
+		boolean onlyFeatured = true;
+		for (Book book : actualBooks) {
+			if (!book.isFeatured())
+				onlyFeatured = false;
+		}
+		assertTrue(onlyFeatured);
+	}
+	
+	@Test
+	public void getBooksByFeaturedDoesNotExist() {
+		when(bookDao.findAll()).thenReturn(mockNonFeaturedBooks);
+		
+		List<Book> actualBooks = bookServ.getFeaturedBooks();
+		assertTrue(actualBooks.isEmpty());
+	}
 	
 	@Test
 	public void addBookSuccessfully() {

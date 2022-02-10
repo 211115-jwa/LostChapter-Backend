@@ -21,8 +21,6 @@ import com.revature.lostchapterbackend.model.Purchase;
 
 import com.revature.lostchapterbackend.service.PurchaseService;
 
-
-
 @RestController
 @RequestMapping(path="/Purchase")
 @CrossOrigin("*")
