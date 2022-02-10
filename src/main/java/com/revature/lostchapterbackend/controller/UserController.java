@@ -71,11 +71,11 @@ public class UserController {
 	}
 }
 	
-	@GetMapping(path="/{userid}/auth")
-	public ResponseEntity<User> checkLogin(@PathVariable int userid) throws UserNotFoundException{
+	@GetMapping(path="/{userId}/auth")
+	public ResponseEntity<User> checkLogin(@PathVariable int userId) throws UserNotFoundException{
 		try {
 
-			User loggedInPerson =userService.getUserById(userid);
+			User loggedInPerson =userService.getUserById(userId);
 			if(loggedInPerson!=null)
 				return ResponseEntity.ok(loggedInPerson);
 			else
@@ -88,7 +88,7 @@ public class UserController {
 	}
 	
 	
-	@GetMapping(path="/{userid}")
+	@GetMapping(path="/{userId}")
 	public ResponseEntity<User> getUserById(@PathVariable int userId) throws UserNotFoundException{
 		
 		User user = userService.getUserById(userId);
@@ -100,7 +100,7 @@ public class UserController {
 	}
 	
 	@GetMapping(path="/email/{email}")
-	public ResponseEntity<User> getUserByEmail(@RequestBody String email) throws UserNotFoundException{
+	public ResponseEntity<User> getUserByEmail(@PathVariable String email) throws UserNotFoundException{
 		User user = userService.getUserByEmail(email);
 		if (user != null) {
 		return ResponseEntity.ok(user);
@@ -109,7 +109,7 @@ public class UserController {
 	}
 	
 	@GetMapping(path="/username/{username}")
-	public ResponseEntity<User> getUserByUsername(@RequestBody String username) throws UserNotFoundException{
+	public ResponseEntity<User> getUserByUsername(@PathVariable String username) throws UserNotFoundException{
 		User user = userService.getUserByUsername(username);
 		if (user != null) {
 			return ResponseEntity.ok(user);

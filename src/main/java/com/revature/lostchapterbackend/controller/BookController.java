@@ -68,7 +68,6 @@ public class BookController {
 public List<Book> getFeaturedBooks() {
 
 		logger.info("BookController.getFeaturedBooks() invoked.");
-
 	List<Book> featuredBooks = bookServ.getFeaturedBooks();
 
 	return featuredBooks;
@@ -124,7 +123,6 @@ public List<Book> getFeaturedBooks() {
 	@GetMapping(path = "/books/sales")
 	public List<Book> getBookBySale() {
 		//logger.info("BookController.getBookBySale() invoked.");
-
 		return bookServ.getBooksBySale();
 
 	}
@@ -136,7 +134,6 @@ public List<Book> getFeaturedBooks() {
 		logger.debug("BookController.addNewBook() invoked.");
 
 		if (newBook !=null) {
-		System.out.println(newBook);
 				bookServ.addBook(newBook);
 				return ResponseEntity.status(HttpStatus.CREATED).build();
 			}
