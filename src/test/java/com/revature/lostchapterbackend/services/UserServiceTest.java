@@ -1,4 +1,4 @@
-//package com.revature.lostchapterbackend.services;
+package com.revature.lostchapterbackend.services;
 //
 //import static org.mockito.Mockito.mock;
 //
@@ -20,7 +20,218 @@
 //import com.revature.lostchapterbackend.service.UserService;
 //import com.revature.lostchapterbackend.utility.HashUtil;
 //
-//public class UserServiceTest {
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.when;
+
+import java.security.NoSuchAlgorithmException;
+import java.util.Optional;
+
+import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+
+import com.revature.lostchapterbackend.LostChapterBackendApplication;
+import com.revature.lostchapterbackend.dao.UserDAO;
+import com.revature.lostchapterbackend.exceptions.InvalidLoginException;
+import com.revature.lostchapterbackend.exceptions.UserNotFoundException;
+import com.revature.lostchapterbackend.exceptions.UsernameAlreadyExists;
+import com.revature.lostchapterbackend.model.User;
+import com.revature.lostchapterbackend.service.UserService;
+import com.revature.lostchapterbackend.utility.HashUtil;
+
+@SpringBootTest(classes=LostChapterBackendApplication.class)
+public class UserServiceTest {
+	@MockBean
+	private UserDAO userDao;
+	
+	@Autowired
+	private UserService userServ;
+	
+	@Test
+	public void registerPersonSuccessfully() throws UsernameAlreadyExists {
+		User user = new User ();
+		user.setUserId(10);
+		
+		when (userDao.save(user)).thenReturn(user);
+		User actualUser = userServ.register(user);
+		assertEquals(10, actualUser.getUserId());
+	}
+	
+	@Test
+	public void registerPersonSomethingWrong() throws UsernameAlreadyExists {
+		User user = new User ();
+		when(userDao.save(user)).thenThrow(new RuntimeException());
+		User actualUser = userServ.register(user);
+		assertNull(actualUser);
+		
+	}
+	
+	@Test
+	public void registerPersonUsernameAlreadyExists() {
+		User user = new User ();
+		when(userDao.save(user)).thenThrow(new RuntimeException("unique constraint violation"));
+		assertThrows(UsernameAlreadyExists.class, () ->{
+			userServ.register(user);
+		});
+	}
+	
+	@Test
+	public void logInSuccesfully() throws UserNotFoundException, InvalidLoginException {
+		// input setup
+		String username="qwertyuiop";
+		String password="pass";
+		
+		//set up mocking
+		User mockUser = new User();
+		mockUser.setUsername(username);
+		mockUser.setPassword(password);
+		when(userDao.findByUsername(username)).thenReturn(mockUser);
+		
+		//call method we're testing
+		User actualUser = userServ.login(username, password);
+		
+		//assert expected behavior/output
+		assertEquals(mockUser,actualUser);
+	}
+	
+	@Test
+	public void logInIncorrectPassword() {
+		String username="qwertyuiop";
+		String password="12345";
+		
+		User mockUser = new User();
+		mockUser.setUsername(username);
+		mockUser.setPassword("pass");
+		when(userDao.findByUsername(username)).thenReturn(mockUser);
+		
+		assertThrows(InvalidLoginException.class, () -> {
+			userServ.login(username, password);
+		});
+	}
+	
+	@Test
+	public void logInUsernameDoesNotExist() {
+		String username="qwertyuiop";
+		String password="pass";
+		
+		when(userDao.findByUsername(username)).thenReturn(null);
+		
+		assertThrows(UserNotFoundException.class, () -> {
+			userServ.login(username, password);
+		});
+	}
+	
+	@Test
+	public void getByIdUserExists() throws UserNotFoundException {
+		User user = new User();
+		user.setUserId(2);
+		
+		when(userDao.findById(2)).thenReturn(Optional.of(user));
+		
+		User actualUser = userServ.getUserById(2);
+		assertEquals(user, actualUser);
+	}
+	
+	@Test
+	public void getByIdUserDoesNotExist() throws UserNotFoundException {
+		when(userDao.findById(2)).thenReturn(Optional.empty());
+		
+		User actualUser = userServ.getUserById(2);
+		assertNull(actualUser);
+	}
+	
+	@Test
+	public void getByEmailUserExists() throws UserNotFoundException {
+		User user = new User();
+		user.setEmail("fakeemail.com");
+		
+		when(userDao.findByEmail("fakeemail.com")).thenReturn(user);
+		User actualUser = userServ.getUserByEmail("fakeemail.com");
+		assertEquals(user, actualUser);
+		
+	}
+	
+	@Test
+	public void getByEmailUserDoesNotExist() throws UserNotFoundException {
+		when(userDao.findByEmail("fakeemail.com")).thenReturn(null);
+		
+		User actualUser = userServ.getUserByEmail("fakeemail.com");
+		assertNull(actualUser);
+	}
+	
+	@Test
+	public void getByUsernameExists() throws UserNotFoundException {
+		User user = new User();
+		user.setUsername("lost_chapter");
+		
+		when(userDao.findByUsername("lost_chapter")).thenReturn(user);
+		User actualUser = userServ.getUserByUsername("lost_chapter");
+		assertEquals(user, actualUser);
+	}
+	
+	@Test
+	public void getByUsernameDoesNotExist () throws UserNotFoundException {
+		when(userDao.findByUsername("lost_chapter")).thenReturn(null);
+		
+		User actualUser = userServ.getUserByUsername("lost_chapter");
+		assertNull(actualUser);
+		
+	}
+	
+	@Test
+	public void updateSuccessfully() throws UserNotFoundException {
+		User mockUser = new User();
+		mockUser.setUserId(1);
+		
+		when(userDao.existsById(1)).thenReturn(true);
+		when(userDao.save(Mockito.any(User.class))).thenReturn(mockUser);
+		when(userDao.findById(1)).thenReturn(Optional.of(mockUser));
+		
+		User updatedUser = userServ.update(mockUser);
+		assertNotNull(updatedUser);
+	}
+	
+	@Test
+	public void updateSomethingWrong() throws UserNotFoundException {
+		User mockUser = new User();
+		mockUser.setUserId(1);
+		
+		when(userDao.existsById(1)).thenReturn(false);
+		User updatedUser = userServ.update(mockUser);
+		assertNull(updatedUser);
+	}
+	
+	@Test
+	public void deleteUserSuccessfully() throws UserNotFoundException {
+		User mockUser = new User();
+		mockUser.setUserId(1);
+		
+		when(userDao.existsById(1)).thenReturn(true);
+		when(userDao.save(Mockito.any(User.class))).thenReturn(mockUser);
+		when(userDao.findById(1)).thenReturn(Optional.of(mockUser));
+		
+		User deletedUser = userServ.deleteUser(mockUser);
+		assertNotNull(deletedUser);
+	}
+	
+	@Test
+	public void passwordHasherSuccessful() throws NoSuchAlgorithmException {
+		String algorithm = new String();
+		String hashedPassword = new String();
+		
+		algorithm = "SHA-256";
+		hashedPassword = "BBD07C4FC02C99B97124FEBF42C7B63B5011C0DF28D409FBB486B5A9D2E615EA";
+		
+		String actualPassword = userServ.passwordHasher(algorithm);
+		assertEquals(hashedPassword, actualPassword);
+		
+		
+
+	}
+	
+}
 //
 //	private UserService us;
 //
