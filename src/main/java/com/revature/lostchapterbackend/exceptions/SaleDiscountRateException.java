@@ -2,6 +2,11 @@ package com.revature.lostchapterbackend.exceptions;
 
 public class SaleDiscountRateException extends Exception {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	public SaleDiscountRateException() {
 		super();
 	}
@@ -15,12 +20,5 @@ public class SaleDiscountRateException extends Exception {
 		super(message, cause);
 	}
 
-	public SaleDiscountRateException(String message) {
-		super(message);
-	}
-
-	public SaleDiscountRateException(Throwable cause) {
-		super(cause);
-	}
 
 }

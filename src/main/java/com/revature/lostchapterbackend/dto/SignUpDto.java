@@ -1,5 +1,6 @@
 package com.revature.lostchapterbackend.dto;
 
+import java.time.LocalDate;
 import java.util.Objects;
 
 public class SignUpDto {
@@ -10,7 +11,7 @@ public class SignUpDto {
 	private String lastName;
 	private int age;
 	private String email;
-	private String birthday;
+	private LocalDate birthday;
 	private String address;
 	private String role;
 	
@@ -18,14 +19,14 @@ public class SignUpDto {
 		super();
 	}
 
-	public SignUpDto(String username, String password, String firstName, String lastName, int age, String email,
-			String birthday, String address, String role) {
+	public SignUpDto(String username, String password, String firstName, String lastName,  String email,
+			LocalDate birthday, String address, String role) {
 		super();
 		this.username = username;
 		this.password = password;
 		this.firstName = firstName;
 		this.lastName = lastName;
-		this.age = age;
+		
 		this.email = email;
 		this.birthday = birthday;
 		this.address = address;
@@ -80,11 +81,11 @@ public class SignUpDto {
 		this.email = email;
 	}
 
-	public String getBirthday() {
+	public LocalDate getBirthday() {
 		return birthday;
 	}
 
-	public void setBirthday(String birthday) {
+	public void setBirthday(LocalDate birthday) {
 		this.birthday = birthday;
 	}
 
@@ -102,6 +103,13 @@ public class SignUpDto {
 
 	public void setRole(String role) {
 		this.role = role;
+	}
+
+	@Override
+	public String toString() {
+		return "SignUpDto [username=" + username + ", password=" + password + ", firstName=" + firstName + ", lastName="
+				+ lastName + ", age=" + age + ", email=" + email + ", birthday=" + birthday + ", address=" + address
+				+ ", role=" + role + "]";
 	}
 
 	@Override
@@ -124,12 +132,6 @@ public class SignUpDto {
 				&& Objects.equals(role, other.role) && Objects.equals(username, other.username);
 	}
 
-	@Override
-	public String toString() {
-		return "SignUpDto [username=" + username + ", password=" + password + ", firstName=" + firstName + ", lastName="
-				+ lastName + ", age=" + age + ", email=" + email + ", birthday=" + birthday + ", address=" + address
-				+ ", role=" + role + "]";
-	}
 	
 	
 

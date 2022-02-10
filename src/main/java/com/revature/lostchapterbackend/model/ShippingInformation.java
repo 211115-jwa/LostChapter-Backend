@@ -2,15 +2,21 @@ package com.revature.lostchapterbackend.model;
 
 import java.util.Objects;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 @Entity
+@Table
 public class ShippingInformation {
 
 	@Id
+	@Column(name="shipping_info_id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int shippingInfoId;
 
@@ -21,7 +27,9 @@ public class ShippingInformation {
 	private String state;
 	private String zipCode;
 	private String deliveryDate; 
-
+	@ManyToOne
+	@JoinColumn(name="user_id")
+	private User user;
 	public ShippingInformation() {
 		super();
 	}
@@ -102,9 +110,24 @@ public class ShippingInformation {
 		this.deliveryDate = deliveryDate;
 	}
 
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	@Override
+	public String toString() {
+		return "ShippingInformation [shippingInfoId=" + shippingInfoId + ", firstName=" + firstName + ", lastName="
+				+ lastName + ", streetName=" + streetName + ", city=" + city + ", state=" + state + ", zipCode="
+				+ zipCode + ", deliveryDate=" + deliveryDate + ", user=" + user + "]";
+	}
+
 	@Override
 	public int hashCode() {
-		return Objects.hash(city, deliveryDate, firstName, lastName, shippingInfoId, state, streetName, zipCode);
+		return Objects.hash(city, deliveryDate, firstName, lastName, shippingInfoId, state, streetName, user, zipCode);
 	}
 
 	@Override
@@ -119,14 +142,11 @@ public class ShippingInformation {
 		return Objects.equals(city, other.city) && Objects.equals(deliveryDate, other.deliveryDate)
 				&& Objects.equals(firstName, other.firstName) && Objects.equals(lastName, other.lastName)
 				&& shippingInfoId == other.shippingInfoId && Objects.equals(state, other.state)
-				&& Objects.equals(streetName, other.streetName) && Objects.equals(zipCode, other.zipCode);
+				&& Objects.equals(streetName, other.streetName) && Objects.equals(user, other.user)
+				&& Objects.equals(zipCode, other.zipCode);
 	}
 
-	@Override
-	public String toString() {
-		return "ShippingInformation [shippingInfoId=" + shippingInfoId + ", firstName=" + firstName + ", lastName="
-				+ lastName + ", streetName=" + streetName + ", city=" + city + ", state=" + state + ", zipCode="
-				+ zipCode + ", deliveryDate=" + deliveryDate + "]";
-	}
+	
+	
 
 }
