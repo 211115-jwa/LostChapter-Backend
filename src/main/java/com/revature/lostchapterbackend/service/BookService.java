@@ -3,7 +3,7 @@ package com.revature.lostchapterbackend.service;
 import java.util.List;
 import org.springframework.stereotype.Service;
 import com.revature.lostchapterbackend.model.Book;
-import com.revature.lostchapterbackend.model.Genre;
+
 
 
 /* To do
@@ -37,5 +37,5 @@ public interface BookService {
 	public List<Book> getByKeyWord(String key);
 	public List<Book> getFeaturedBooks();
 	public List<Book> getBooksBySale();
-	public List<Genre> getAllGenre();
+	public List<Book> getBooksByGenre();
 }

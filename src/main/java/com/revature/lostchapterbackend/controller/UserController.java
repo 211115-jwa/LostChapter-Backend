@@ -1,5 +1,6 @@
 package com.revature.lostchapterbackend.controller;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,21 +39,20 @@ public class UserController {
 	}
 	
 	@PostMapping
-	public ResponseEntity<Void> register(@RequestBody User newUser) throws UsernameAlreadyExists{
+	public ResponseEntity<Map<String,Integer>> register(@RequestBody User newUser) throws UsernameAlreadyExists{
 		try
 		{
-			int newUserId = userService.register(newUser);
-			newUser = userService.getUserById(newUserId);
+			newUser = userService.register(newUser);
+			Map<String, Integer> newIdMap = new HashMap<>();
+			newIdMap.put("generatedId", newUser.getUserId());
+			return ResponseEntity.status(HttpStatus.CREATED).body(newIdMap);
 			
-		}catch (UsernameAlreadyExists e)
-		{
-			ResponseEntity.status(HttpStatus.CONFLICT).build();
-		} catch (UserNotFoundException e) {
-			
-			e.printStackTrace();
+		}catch (UsernameAlreadyExists e)	{
+			return ResponseEntity.status(HttpStatus.CONFLICT).build();
 		}
-		return ResponseEntity.status(HttpStatus.CREATED).build();
 	}
+			
+		
 	
 	@PostMapping(path="/auth")
 
@@ -71,11 +71,11 @@ public class UserController {
 	}
 }
 	
-	@GetMapping(path="/{userid}/auth")
-	public ResponseEntity<User> checkLogin(@PathVariable int userid) throws UserNotFoundException{
+	@GetMapping(path="/{userId}/auth")
+	public ResponseEntity<User> checkLogin(@PathVariable int userId) throws UserNotFoundException{
 		try {
 
-			User loggedInPerson =userService.getUserById(userid);
+			User loggedInPerson =userService.getUserById(userId);
 			if(loggedInPerson!=null)
 				return ResponseEntity.ok(loggedInPerson);
 			else
@@ -88,7 +88,7 @@ public class UserController {
 	}
 	
 	
-	@GetMapping(path="/{userid}")
+	@GetMapping(path="/{userId}")
 	public ResponseEntity<User> getUserById(@PathVariable int userId) throws UserNotFoundException{
 		
 		User user = userService.getUserById(userId);
@@ -100,7 +100,7 @@ public class UserController {
 	}
 	
 	@GetMapping(path="/email/{email}")
-	public ResponseEntity<User> getUserByEmail(@RequestBody String email) throws UserNotFoundException{
+	public ResponseEntity<User> getUserByEmail(@PathVariable String email) throws UserNotFoundException{
 		User user = userService.getUserByEmail(email);
 		if (user != null) {
 		return ResponseEntity.ok(user);
@@ -109,7 +109,7 @@ public class UserController {
 	}
 	
 	@GetMapping(path="/username/{username}")
-	public ResponseEntity<User> getUserByUsername(@RequestBody String username) throws UserNotFoundException{
+	public ResponseEntity<User> getUserByUsername(@PathVariable String username) throws UserNotFoundException{
 		User user = userService.getUserByUsername(username);
 		if (user != null) {
 			return ResponseEntity.ok(user);

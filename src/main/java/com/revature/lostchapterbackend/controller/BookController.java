@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 import com.revature.lostchapterbackend.model.Book;
-import com.revature.lostchapterbackend.model.Genre;
 import com.revature.lostchapterbackend.service.BookService;
 
 
@@ -41,22 +40,22 @@ public class BookController {
 		this.bookServ=bookServ;
 	}
 	
-	@GetMapping(path = "/genre")
-	public ResponseEntity<Object> getAllGenre() {
-		logger.debug("BookController.getBookByGenreId() invoked.");
-
-		try {
-			List<Genre> genres = bookServ.getAllGenre();
-			if(genres!=null)
-			return ResponseEntity.ok(genres);
-			else
-				return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-		}
-		catch (NumberFormatException e) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-		}
-
-	}
+//	@GetMapping(path = "/genre")
+//	public ResponseEntity<Object> getAllGenre() {
+//		logger.debug("BookController.getBookByGenreId() invoked.");
+//
+//		try {
+//			List<Genre> genres = bookServ.getAllGenre();
+//			if(genres!=null)
+//			return ResponseEntity.ok(genres);
+//			else
+//				return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+//		}
+//		catch (NumberFormatException e) {
+//			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+//		}
+//
+//	}
 	//working
 	@GetMapping
 	public ResponseEntity<List<Book>>  getAllBooks() {
@@ -69,7 +68,6 @@ public class BookController {
 public List<Book> getFeaturedBooks() {
 
 		logger.info("BookController.getFeaturedBooks() invoked.");
-
 	List<Book> featuredBooks = bookServ.getFeaturedBooks();
 
 	return featuredBooks;
@@ -125,7 +123,6 @@ public List<Book> getFeaturedBooks() {
 	@GetMapping(path = "/books/sales")
 	public List<Book> getBookBySale() {
 		//logger.info("BookController.getBookBySale() invoked.");
-
 		return bookServ.getBooksBySale();
 
 	}
@@ -137,7 +134,6 @@ public List<Book> getFeaturedBooks() {
 		logger.debug("BookController.addNewBook() invoked.");
 
 		if (newBook !=null) {
-		System.out.println(newBook);
 				bookServ.addBook(newBook);
 				return ResponseEntity.status(HttpStatus.CREATED).build();
 			}

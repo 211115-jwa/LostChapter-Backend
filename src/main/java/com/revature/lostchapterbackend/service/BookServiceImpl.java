@@ -1,5 +1,6 @@
 package com.revature.lostchapterbackend.service;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -11,9 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.revature.lostchapterbackend.dao.BookDAO;
-import com.revature.lostchapterbackend.dao.GenreDAO;
 import com.revature.lostchapterbackend.model.Book;
-import com.revature.lostchapterbackend.model.Genre;
+
 
 
 @Service
@@ -21,27 +21,41 @@ public class BookServiceImpl implements BookService {
 
 	private Logger logger = LoggerFactory.getLogger(BookService.class);
 	private BookDAO bookDao;
-	private GenreDAO genreDao;
 	
 
 	@Autowired
-	public BookServiceImpl(BookDAO bookDao, GenreDAO genreDao) {
+	public BookServiceImpl(BookDAO bookDao) {
 		this.bookDao = bookDao;
-		this.genreDao=genreDao;
 	}
 
 	
 
-	@Override
-	public List<Genre> getAllGenre() {
-		
-		return genreDao.findAll();
-	}
+//	@Override
+//	public List<Genre> getAllGenre() {
+//		
+//		return genreDao.findAll();
+//	}
 
 
 
 	@Override
 	public List<Book> getFeaturedBooks() {
+		List<Book> all=bookDao.findAll();
+		List<Book> featured= new ArrayList<Book>();
+		for(Book book:all) {
+			if(book.isFeatured()) {
+				
+				featured.add(book);
+				
+			}
+		}
+		return featured;
+	}
+
+
+
+	@Override
+	public List<Book> getBooksByGenre() {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -50,8 +64,14 @@ public class BookServiceImpl implements BookService {
 
 	@Override
 	public List<Book> getBooksBySale() {
-		// TODO Auto-generated method stub
-		return null;
+		List<Book> all=bookDao.findAll();
+		List<Book> sale= new ArrayList<Book>();
+		for(Book book:all) {
+			if(book.isSaleIsActive()) {
+				sale.add(book);		
+			}
+		}
+		return sale;
 	}
 
 
@@ -108,9 +128,8 @@ public class BookServiceImpl implements BookService {
 		@Transactional
 		public List<Book> getBookByGenre(String genre) {
 			logger.debug("BookService.getBookByGenre() invoked.");
-			System.out.println("simpl");
 			
-			return bookDao.findByGenre_Genre(genre);
+			return bookDao.findByGenre(genre.toLowerCase());
 		}
 		
 
