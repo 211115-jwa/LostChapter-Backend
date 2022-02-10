@@ -49,7 +49,7 @@ public class ReviewController {
 	}
 
 	@GetMapping(path = "/reviews/{reviewId}")
-	public ResponseEntity<Object> getReviewById(@PathVariable String reviewId) 
+	public ResponseEntity<Object> getReviewById(@PathVariable int reviewId) 
 			throws ReviewNotFoundException {
 		logger.info("ReviewController.getReviewById() invoked.");
 		try {
@@ -78,7 +78,7 @@ public class ReviewController {
 		logger.info("ReviewController.updateReviewById() invoked.");
 
 		try {
-			reviewService.updateReview(updatedReview, reviewId);
+			reviewService.updateReview(updatedReview);
 			return ResponseEntity.ok(updatedReview);
 		} catch (ReviewNotFoundException e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
@@ -90,7 +90,7 @@ public class ReviewController {
 			throws BookNotFoundException {
 		logger.info("ReviewController.getAllReviewsForBook() invoked.");
 		try {
-			List<Review> reviewList = reviewService.getReviewsByBook(bookService.getBookById(bookId));
+			List<Review> reviewList = reviewService.getReviewsByBook(bookId);
 			return ResponseEntity.ok(reviewList);
 		} catch (BookNotFoundException e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
