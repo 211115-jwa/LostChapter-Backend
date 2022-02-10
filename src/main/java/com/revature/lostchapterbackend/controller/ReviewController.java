@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.revature.lostchapterbackend.exceptions.BookNotFoundException;
@@ -24,6 +25,7 @@ import com.revature.lostchapterbackend.service.BookService;
 import com.revature.lostchapterbackend.service.ReviewService;
 
 @RestController
+@RequestMapping(path="/reviews")
 @CrossOrigin("*")
 public class ReviewController {
 	private Logger logger = LoggerFactory.getLogger(ReviewController.class);
@@ -41,14 +43,14 @@ public class ReviewController {
 		this.bookService = bookService;
 	}
 
-	@GetMapping(path = "/reviews")
+	@GetMapping
 	public List<Review> getAllReviews() {
 		logger.info("ReviewController.getAllReviews() invoked.");
 		List<Review> allReviews = reviewService.getAllReviews();
 		return allReviews;
 	}
 
-	@GetMapping(path = "/reviews/{reviewId}")
+	@GetMapping(path = "/{reviewId}")
 	public ResponseEntity<Object> getReviewById(@PathVariable String reviewId) throws ReviewNotFoundException {
 		logger.info("ReviewController.getReviewById() invoked.");
 		try {
@@ -59,8 +61,8 @@ public class ReviewController {
 		}
 	}
 
-	@PostMapping(path = "/reviews")
-	public ResponseEntity<Object> postNewReview(@RequestBody Review newReview) throws InvalidParameterException {
+	@PostMapping
+	public ResponseEntity<Void> postNewReview(@RequestBody Review newReview) throws InvalidParameterException {
 		logger.info("ReviewController.postNewReview() invoked.");
 
 		if (newReview != null) {
@@ -71,7 +73,7 @@ public class ReviewController {
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
 	}
 
-	@PutMapping(path = "/reviews/{reviewId}")
+	@PutMapping(path = "/{reviewId}")
 	public ResponseEntity<Object> updateReviewById(@PathVariable String reviewId, @RequestBody Review updatedReview)
 			throws ReviewNotFoundException, InvalidParameterException {
 		logger.info("ReviewController.updateReviewById() invoked.");
@@ -88,7 +90,7 @@ public class ReviewController {
 		}
 	}
 
-	@GetMapping(path = "/reviews/book/{bookId}")
+	@GetMapping(path = "/book/{bookId}")
 	public ResponseEntity<Object> getAllReviewsForBook(@PathVariable int bookId) throws BookNotFoundException {
 		logger.info("ReviewController.getAllReviewsForBook() invoked.");
 		try {

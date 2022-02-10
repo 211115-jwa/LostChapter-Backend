@@ -24,12 +24,10 @@ public class Review {
 
 	@ManyToOne
 	@JoinColumn(name="book_id")
-	@Autowired
 	private Book book;
 	
 	@OneToOne
 	@JoinColumn(name="user_id")
-	@Autowired
 	private User user;
 	
 	private String reviewTitle;
@@ -69,8 +67,8 @@ public class Review {
 	public Review() {
 		super();
 		this.reviewId = 0;
-		//this.book = new Book();
-		//this.user = new User();
+		this.book = new Book();
+		this.user = new User();
 		this.reviewTitle = "";
 		this.reviewText = "";
 		this.ratingOne = 0;

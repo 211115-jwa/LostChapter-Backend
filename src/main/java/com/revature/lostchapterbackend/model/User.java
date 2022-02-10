@@ -42,7 +42,10 @@ public class User {
 	public User() {
 		super();
 	}
-
+public User(int userId) {
+	super();
+	this.userId = userId;
+}
 	public User(String username, String password, String firstName, String lastName,  String email,
 			LocalDate birthday, String role) {
 		super();
