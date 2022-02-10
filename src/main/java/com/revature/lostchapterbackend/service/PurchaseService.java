@@ -25,7 +25,7 @@ import com.revature.lostchapterbackend.model.Purchase;
 @Service
 public interface PurchaseService {
 	
-public Purchase createPurchase(Purchase newPurchase);	
+public int createPurchase(Purchase newPurchase);	
 	
 /* Returns Purchase by id using spring boot repo*/
 public Purchase getPurchaseById(int Id);
