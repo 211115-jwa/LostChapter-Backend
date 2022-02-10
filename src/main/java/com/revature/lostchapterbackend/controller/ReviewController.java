@@ -30,11 +30,11 @@ public class ReviewController {
 
 	private static ReviewService reviewService;
 	private static BookService bookService;
-	
+
 	public ReviewController() {
 		super();
 	}
-	
+
 	@Autowired
 	public ReviewController(ReviewService reviewService, BookService bookService) {
 		this.reviewService = reviewService;
@@ -49,8 +49,7 @@ public class ReviewController {
 	}
 
 	@GetMapping(path = "/reviews/{reviewId}")
-	public ResponseEntity<Object> getReviewById(@PathVariable String reviewId) 
-			throws ReviewNotFoundException {
+	public ResponseEntity<Object> getReviewById(@PathVariable String reviewId) throws ReviewNotFoundException {
 		logger.info("ReviewController.getReviewById() invoked.");
 		try {
 			Review review = reviewService.getReviewById(reviewId);
@@ -77,17 +76,20 @@ public class ReviewController {
 			throws ReviewNotFoundException, InvalidParameterException {
 		logger.info("ReviewController.updateReviewById() invoked.");
 
-		try {
-			reviewService.updateReview(updatedReview, reviewId);
-			return ResponseEntity.ok(updatedReview);
-		} catch (ReviewNotFoundException e) {
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+		if (updatedReview != null && updatedReview.getReviewId() == Integer.parseInt(reviewId)) {
+			try {
+				updatedReview = reviewService.updateReview(updatedReview, reviewId);
+				return ResponseEntity.ok(updatedReview);
+			} catch (ReviewNotFoundException e) {
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+			}
+		} else {
+			return ResponseEntity.status(HttpStatus.CONFLICT).build();
 		}
 	}
 
 	@GetMapping(path = "/reviews/book/{bookId}")
-	public ResponseEntity<Object> getAllReviewsForBook(@PathVariable int bookId) 
-			throws BookNotFoundException {
+	public ResponseEntity<Object> getAllReviewsForBook(@PathVariable int bookId) throws BookNotFoundException {
 		logger.info("ReviewController.getAllReviewsForBook() invoked.");
 		try {
 			List<Review> reviewList = reviewService.getReviewsByBook(bookService.getBookById(bookId));
@@ -95,7 +97,5 @@ public class ReviewController {
 		} catch (BookNotFoundException e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
 		}
-
 	}
-
 }

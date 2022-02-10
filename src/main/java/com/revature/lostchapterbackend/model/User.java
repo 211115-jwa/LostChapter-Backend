@@ -56,6 +56,7 @@ public class User {
 		this.isNotLocked=true;
 		this.isActive=true;
 	}
+	
 
 	public int getUserId() {
 		return userId;

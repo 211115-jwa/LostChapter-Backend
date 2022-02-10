@@ -12,6 +12,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 
 @Entity
 @Table
@@ -22,10 +24,12 @@ public class Review {
 
 	@ManyToOne
 	@JoinColumn(name="book_id")
+	@Autowired
 	private Book book;
 	
 	@OneToOne
 	@JoinColumn(name="user_id")
+	@Autowired
 	private User user;
 	
 	private String reviewTitle;
@@ -48,13 +52,25 @@ public class Review {
 
 	private LocalDateTime sentAt;
 	
-	
+	public Review(int reviewId, Book book, User user, String reviewTitle, String reviewText, int ratingOne,
+			int ratingTwo, int ratingThree, LocalDateTime sentAt) {
+		super();
+		this.reviewId = reviewId;
+		this.book = book;
+		this.user = user;
+		this.reviewTitle = reviewTitle;
+		this.reviewText = reviewText;
+		this.ratingOne = ratingOne;
+		this.ratingTwo = ratingTwo;
+		this.ratingThree = ratingThree;
+		this.sentAt = sentAt;
+	}
 	
 	public Review() {
 		super();
 		this.reviewId = 0;
-		this.book = new Book();
-		this.user = new User();
+		//this.book = new Book();
+		//this.user = new User();
 		this.reviewTitle = "";
 		this.reviewText = "";
 		this.ratingOne = 0;
@@ -144,8 +160,6 @@ public class Review {
 	public String toString() {
 		return "Review [reviewId=" + reviewId + ", book=" + book + ", user=" + user + ", reviewTitle=" + reviewTitle
 				+ ", reviewText=" + reviewText + ", ratingOne=" + ratingOne + ", ratingTwo=" + ratingTwo
-				+ ", ratingThree=" + ratingThree + ", sent_at=" + sentAt + "]";
-	}
-	
-		
+				+ ", ratingThree=" + ratingThree + ", sentAt=" + sentAt + "]";
+	}	
 }
