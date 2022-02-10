@@ -41,7 +41,7 @@ public class ReviewController {
 	}
 
 	@GetMapping
-	public List<Review> getAllReviews() {
+	public ResponseEntity<List<Review>> getAllReviews() {
 		logger.info("ReviewController.getAllReviews() invoked.");
 		List<Review> allReviews = reviewService.getAllReviews();
 		return ResponseEntity.ok(allReviews);
