@@ -12,6 +12,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 @Entity
 @Table
 public class CreditCardInfo {
@@ -30,8 +32,8 @@ public class CreditCardInfo {
 	
 	@ManyToOne
 	@JoinColumn(name="user_id")
+	@Autowired
 	private User user;
-	
 	
 	public CreditCardInfo() {
 		this.ccInfoId = 0;
@@ -42,7 +44,7 @@ public class CreditCardInfo {
 		this.expirationYear = 25;
 		this.billingZip = 12345;
 		this.creditCardType = "visa";
-		this.user = new User();
+		//this.user = new User();
 	}
 
 

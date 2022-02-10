@@ -60,7 +60,10 @@ public class Book {
 	@Column(name="quantity_on_hand")
 	private int quantityOnHand;
 	
-
+	public Book(int bookId) {
+		super();
+		this.bookId = bookId;
+	}
 	public Book() {
 		bookId = 0;
 		ISBN = " ";

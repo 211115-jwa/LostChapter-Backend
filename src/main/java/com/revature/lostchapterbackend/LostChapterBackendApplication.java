@@ -8,6 +8,10 @@ public class LostChapterBackendApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(LostChapterBackendApplication.class, args);
-	}
 
+
+	
+	    
+	    
+	}
 }
