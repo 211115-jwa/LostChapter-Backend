@@ -14,10 +14,10 @@ import com.revature.lostchapterbackend.model.Review;
 public interface ReviewService {
 	
 	public List<Review> getAllReviews();
-	public Review getReviewById(String id) throws ReviewNotFoundException;
-	public Review addReview(Review newReview) throws InvalidParameterException ;
-	public Review updateReview(Review reviewToUpdate, String id)
+	public Review getReviewById(int id) throws ReviewNotFoundException;
+	public int addReview(Review newReview) throws InvalidParameterException ;
+	public Review updateReview(Review reviewToUpdate)
 			throws ReviewNotFoundException, InvalidParameterException ;
-	public List<Review> getReviewsByBook(Book book) throws BookNotFoundException ;
+	public List<Review> getReviewsByBook(int bookId) throws BookNotFoundException ;
 
 }
