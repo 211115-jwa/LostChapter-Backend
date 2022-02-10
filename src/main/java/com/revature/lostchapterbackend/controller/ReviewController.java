@@ -31,25 +31,23 @@ public class ReviewController {
 	private Logger logger = LoggerFactory.getLogger(ReviewController.class);
 
 	private static ReviewService reviewService;
-	
 	public ReviewController() {
 		super();
 	}
-	
+
 	@Autowired
 	public ReviewController(ReviewService reviewService) {
 		this.reviewService = reviewService;
 	}
 
-
 	@GetMapping
-	public List<Review> getAllReviews() {
+	public ResponseEntity<List<Review>> getAllReviews() {
 		logger.info("ReviewController.getAllReviews() invoked.");
 		List<Review> allReviews = reviewService.getAllReviews();
 		return ResponseEntity.ok(allReviews);
 	}
 
-	@GetMapping(path = "{reviewId}")
+	@GetMapping(path = "/{reviewId}")
 	public ResponseEntity<Object> getReviewById(@PathVariable int reviewId) 
 			throws ReviewNotFoundException {
 		logger.info("ReviewController.getReviewById() invoked.");
@@ -62,7 +60,7 @@ public class ReviewController {
 	}
 
 	@PostMapping
-	public ResponseEntity<Object> postNewReview(@RequestBody Review newReview) throws InvalidParameterException {
+	public ResponseEntity<Void> postNewReview(@RequestBody Review newReview) throws InvalidParameterException {
 		logger.info("ReviewController.postNewReview() invoked.");
 
 		if (newReview != null) {
@@ -87,8 +85,7 @@ public class ReviewController {
 	}
 
 	@GetMapping(path = "/book/{bookId}")
-	public ResponseEntity<Object> getAllReviewsForBook(@PathVariable int bookId) 
-			throws BookNotFoundException {
+	public ResponseEntity<Object> getAllReviewsForBook(@PathVariable int bookId) throws BookNotFoundException {
 		logger.info("ReviewController.getAllReviewsForBook() invoked.");
 		try {
 			List<Review> reviewList = reviewService.getReviewsByBook(bookId);
@@ -96,7 +93,5 @@ public class ReviewController {
 		} catch (BookNotFoundException e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
 		}
-
 	}
-
 }

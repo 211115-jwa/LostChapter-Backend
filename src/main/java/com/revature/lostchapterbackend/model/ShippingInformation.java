@@ -11,6 +11,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 @Entity
 @Table
 public class ShippingInformation {
@@ -29,6 +31,7 @@ public class ShippingInformation {
 	private String deliveryDate; 
 	@ManyToOne
 	@JoinColumn(name="user_id")
+	@Autowired
 	private User user;
 	public ShippingInformation() {
 		super();
