@@ -41,7 +41,7 @@ public class BookServiceImpl implements BookService {
 	@Override
 	public List<Book> getFeaturedBooks() {
 		List<Book> all=bookDao.findAll();
-		List<Book> featured= Collections.emptyList();
+		List<Book> featured= new ArrayList<Book>();
 		for(Book book:all) {
 			if(book.isFeatured()) {
 				
@@ -65,12 +65,10 @@ public class BookServiceImpl implements BookService {
 	@Override
 	public List<Book> getBooksBySale() {
 		List<Book> all=bookDao.findAll();
-		List<Book> sale= Collections.emptyList();
+		List<Book> sale= new ArrayList<Book>();
 		for(Book book:all) {
 			if(book.isSaleIsActive()) {
-				
-				sale.add(book);
-				
+				sale.add(book);		
 			}
 		}
 		return sale;
@@ -130,9 +128,8 @@ public class BookServiceImpl implements BookService {
 		@Transactional
 		public List<Book> getBookByGenre(String genre) {
 			logger.debug("BookService.getBookByGenre() invoked.");
-			System.out.println("simpl");
 			
-			return bookDao.findByGenre(genre);
+			return bookDao.findByGenre(genre.toLowerCase());
 		}
 		
 

@@ -100,7 +100,7 @@ public class UserController {
 	}
 	
 	@GetMapping(path="/email/{email}")
-	public ResponseEntity<User> getUserByEmail(@RequestBody String email) throws UserNotFoundException{
+	public ResponseEntity<User> getUserByEmail(@PathVariable String email) throws UserNotFoundException{
 		User user = userService.getUserByEmail(email);
 		if (user != null) {
 		return ResponseEntity.ok(user);
