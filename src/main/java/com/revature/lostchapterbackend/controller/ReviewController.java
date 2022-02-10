@@ -26,6 +26,12 @@ import com.revature.lostchapterbackend.service.ReviewService;
 @RestController
 @CrossOrigin("*")
 public class ReviewController {
+	//This controller is used for the following
+		//get all book reviews GET /reviews
+		//get reviews by id GET /reviews/{reviewId}
+		//create a new review POST /reviews
+		//update a review by id PUT /reviews
+		//get reviews for a book by its id GET /reviews/book/{bookId}
 	private Logger logger = LoggerFactory.getLogger(ReviewController.class);
 
 	private static ReviewService reviewService;
@@ -43,6 +49,7 @@ public class ReviewController {
 
 	@GetMapping(path = "/reviews")
 	public List<Review> getAllReviews() {
+		//This methods responsibility is to get all reviews from all books
 		logger.info("ReviewController.getAllReviews() invoked.");
 		List<Review> allReviews = reviewService.getAllReviews();
 		return allReviews;
@@ -51,6 +58,7 @@ public class ReviewController {
 	@GetMapping(path = "/reviews/{reviewId}")
 	public ResponseEntity<Object> getReviewById(@PathVariable String reviewId) 
 			throws ReviewNotFoundException {
+		//This methods responsibility is to get a review by its reviewId
 		logger.info("ReviewController.getReviewById() invoked.");
 		try {
 			Review review = reviewService.getReviewById(reviewId);
@@ -62,6 +70,8 @@ public class ReviewController {
 
 	@PostMapping(path = "/reviews")
 	public ResponseEntity<Object> postNewReview(@RequestBody Review newReview) throws InvalidParameterException {
+		//This methods responsibility is to create new reviews
+		//Needs to check to make sure the review not blank or too long etc
 		logger.info("ReviewController.postNewReview() invoked.");
 
 		if (newReview != null) {
@@ -75,6 +85,7 @@ public class ReviewController {
 	@PutMapping(path = "/reviews/{reviewId}")
 	public ResponseEntity<Object> updateReviewById(@PathVariable String reviewId, @RequestBody Review updatedReview)
 			throws ReviewNotFoundException, InvalidParameterException {
+		//This methods responsibility is to update a specific review by its id
 		logger.info("ReviewController.updateReviewById() invoked.");
 
 		try {
@@ -88,6 +99,8 @@ public class ReviewController {
 	@GetMapping(path = "/reviews/book/{bookId}")
 	public ResponseEntity<Object> getAllReviewsForBook(@PathVariable int bookId) 
 			throws BookNotFoundException {
+		
+		//This methods responsibility is to get all of the reviews for a specific book by the bookId
 		logger.info("ReviewController.getAllReviewsForBook() invoked.");
 		try {
 			List<Review> reviewList = reviewService.getReviewsByBook(bookService.getBookById(bookId));

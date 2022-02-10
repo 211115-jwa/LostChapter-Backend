@@ -22,7 +22,10 @@
 //@RequestMapping(path="/transactions")
 //@CrossOrigin("*")
 //public class TransactionController {
-//
+	//This controller is used for the following
+		//get purchased cart by the orderID GET /{currentOrderId}
+		//get the purchased cart by the transactionID GET /{transactionId}
+		//get the
 //	private static TransactionService transService;
 //	private static CartService cartService;
 //	
