@@ -23,9 +23,9 @@ public class Order {
 	@Column(name="order_id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int orderId;
-	
+	@Column(name="total_price")
 	private float totalPrice;
-	
+	@Column(name="transaction_date")
 	private LocalDateTime transactionDate;
 	
 	@ManyToOne
