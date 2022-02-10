@@ -6,10 +6,8 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -21,7 +19,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import com.revature.lostchapterbackend.LostChapterBackendApplication;
 import com.revature.lostchapterbackend.dao.BookDAO;
 import com.revature.lostchapterbackend.model.Book;
-import com.revature.lostchapterbackend.model.Genre;
 import com.revature.lostchapterbackend.service.BookService;
 
 @SpringBootTest(classes=LostChapterBackendApplication.class)
@@ -33,31 +30,19 @@ public class BookServiceTests {
 	
 	private static List<Book> mockBooks;
 	
-	private static Genre mockGenreHorror;
-	
-	private static Genre mockGenreAction;
-	
 	@BeforeAll
 	public static void mockBookSetUp() {
 			mockBooks = new ArrayList<>();
-			
-			mockGenreHorror = new Genre();
-			mockGenreHorror.setGenre("Horror");
-			mockGenreHorror.setId(1);
-			
-			mockGenreAction = new Genre();
-			mockGenreAction.setGenre("Action");
-			mockGenreAction.setId(2);
 		
 		for (int i=1; i<=5; i++) {
 			Book book = new Book();
 			book.setBookId(i);
 			if (i<3)
-				book.setGenre(mockGenreHorror);
+				book.setGenre("Horror");
 				book.setBookName("To Kill a Mocking Bird");
 				book.setISBN("123456789");
 			if  (i>3)
-				book.setGenre(mockGenreAction);
+				book.setGenre("Action");
 				book.setBookName("Fahrenheit 451");
 				book.setISBN("987654321");
 			mockBooks.add(book);
@@ -76,7 +61,7 @@ public class BookServiceTests {
 	@Test
 	public void getBookByIdExists() {
 		Book book = new Book();
-		book.setBookId(0);
+		book.setBookId(1);
 		
 		when(bookDao.findById(1)).thenReturn(Optional.of(book));
 		
@@ -96,12 +81,12 @@ public class BookServiceTests {
 	public void getBooksByGenreExists() {
 		String genre = "Horror";
 		
-		when(bookDao.findByGenre_Genre("Horror")).thenReturn(mockBooks);
+		when(bookDao.findByGenre("Horror")).thenReturn(mockBooks);
 		
 		List<Book> actualBooks = bookServ.getBookByGenre(genre);
 		boolean onlyHorror = true;
 		for (Book book : actualBooks) {
-			if (!book.getGenreId().equals(1))
+			if (!book.getGenre().equals("Horror"))
 				onlyHorror = false;
 		}
 		assertTrue(onlyHorror);
@@ -112,7 +97,7 @@ public class BookServiceTests {
 	public void getBooksByGenreDoesNotExist() {
 		String genre = "Mystery";
 		
-		when(bookDao.findByGenre_Genre("Mystery")).thenReturn(mockBooks);
+		when(bookDao.findByGenre("Mystery")).thenReturn(mockBooks);
 		
 		List<Book> actualBooks = bookServ.getBookByGenre(genre);
 		assertTrue(actualBooks.isEmpty());

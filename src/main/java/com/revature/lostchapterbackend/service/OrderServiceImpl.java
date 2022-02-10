@@ -10,6 +10,7 @@ import com.revature.lostchapterbackend.dao.OrderDAO;
 import com.revature.lostchapterbackend.exceptions.CartNotFoundException;
 import com.revature.lostchapterbackend.exceptions.OrderDoesNotExist;
 import com.revature.lostchapterbackend.exceptions.UserNotFoundException;
+import com.revature.lostchapterbackend.model.Book;
 import com.revature.lostchapterbackend.model.Order;
 
 public class OrderServiceImpl implements OrderService {
@@ -39,7 +40,7 @@ public class OrderServiceImpl implements OrderService {
 	public List<Order> getAllOrdersByUser(int userId) throws UserNotFoundException{
 		try
 		{
-			List<Order> orders = orderdao.findByCartUser(userId);
+			List<Order> orders = orderdao.findByUser(userId);
 			return orders;
 		}catch(Exception e)
 		{
@@ -47,24 +48,26 @@ public class OrderServiceImpl implements OrderService {
 		}
 	}
 
-	@Override
-	@Transactional
-	public Order getOrderByCartId(int cartId) throws CartNotFoundException{
-		try
-		{
-			Order order = orderdao.findBycart(cartId);
-			return order;
-		}catch(Exception e)
-		{
-			throw new CartNotFoundException("Cart Id Not Found, Try Again!");
-		}
-	}
+//	@Override
+//	@Transactional
+//	public Order getOrderByCartId(int cartId) throws CartNotFoundException{
+//		try
+//		{
+//			Order order = orderdao.findBycart(cartId);
+//			return order;
+//		}catch(Exception e)
+//		{
+//			throw new CartNotFoundException("Cart Id Not Found, Try Again!");
+//		}
+//	}
 
 	@Override
 	@Transactional
-	public Order addOrder(Order order) {
-		Order newOrder = orderdao.save(order);
-		return newOrder;
+	public int addOrder(Order newOrder) {
+		Order order = orderdao.save(newOrder);
+		if(order != null)
+		return order.getOrderId();
+		else return 0;
 	}
 
 

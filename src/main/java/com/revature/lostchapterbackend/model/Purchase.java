@@ -1,7 +1,7 @@
 package com.revature.lostchapterbackend.model;
-
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -9,39 +9,40 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
-@JsonIgnoreProperties({"hibernateLazyInitializer"})
 @Entity
-@Table(name="book_to_buy")
-public class BookToBuy {
+@Table
+public class Purchase {
 
 	@Id
-	@Column(name="book_to_buy_id")
+	@Column(name="purchase_id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int bookId;
+	private int purchaseId;
 
 	@ManyToOne
 	@JoinColumn(name="book_id")
 	private Book book;
-	
 	@Column(name="quantity_to_buy")
 	private int quantityToBuy;
-
-	public BookToBuy() {
-		this.bookId=0;
-		this.book=null;
-		this.quantityToBuy=1;
-	}
+	@ManyToOne
+	@JoinColumn(name="order_id")
+	private Order order;
 	
-	public int getBookId() {
-		return bookId;
+	public Purchase() {
+		this.purchaseId = 0;
+		this.book = new Book();
+		this.quantityToBuy=0;
 	}
 
-	public void setBookId(int bookId) {
-		this.bookId = bookId;
+	public int getPurchaseId() {
+		return purchaseId;
+	}
+
+	public void setPurchaseId(int purchaseId) {
+		this.purchaseId = purchaseId;
 	}
 
 	public Book getBook() {
@@ -60,14 +61,23 @@ public class BookToBuy {
 		this.quantityToBuy = quantityToBuy;
 	}
 
+	public Order getOrder() {
+		return order;
+	}
+
+	public void setOrder(Order order) {
+		this.order = order;
+	}
+
 	@Override
 	public String toString() {
-		return "BookToBuy [bookId=" + bookId + ", book=" + book + ", quantityToBuy=" + quantityToBuy + "]";
+		return "Purchase [purchaseId=" + purchaseId + ", book=" + book + ", quantityToBuy=" + quantityToBuy + ", order="
+				+ order + "]";
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(book, bookId, quantityToBuy);
+		return Objects.hash(book, order, purchaseId, quantityToBuy);
 	}
 
 	@Override
@@ -78,9 +88,12 @@ public class BookToBuy {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		BookToBuy other = (BookToBuy) obj;
-		return Objects.equals(book, other.book) && bookId == other.bookId && quantityToBuy == other.quantityToBuy;
+		Purchase other = (Purchase) obj;
+		return Objects.equals(book, other.book) && Objects.equals(order, other.order) && purchaseId == other.purchaseId
+				&& quantityToBuy == other.quantityToBuy;
 	}
+
+
 
 	
 

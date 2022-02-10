@@ -35,6 +35,10 @@ public class User {
 	@Column(name="user_role")
 	private String role;
 	
+	private boolean isActive;
+	
+	private boolean isNotLocked;
+	
 	public User() {
 		super();
 	}
@@ -49,6 +53,8 @@ public class User {
 		this.email = email;
 		this.birthday = birthday;
 		this.role = role;
+		this.isNotLocked=true;
+		this.isActive=true;
 	}
 
 	public int getUserId() {
@@ -81,6 +87,22 @@ public class User {
 
 	public void setFirstName(String firstName) {
 		this.firstName = firstName;
+	}
+
+	public boolean isActive() {
+		return isActive;
+	}
+
+	public void setActive(boolean isActive) {
+		this.isActive = isActive;
+	}
+
+	public boolean isNotLocked() {
+		return isNotLocked;
+	}
+
+	public void setNotLocked(boolean isNotLocked) {
+		this.isNotLocked = isNotLocked;
 	}
 
 	public String getLastName() {
@@ -119,12 +141,13 @@ public class User {
 	public String toString() {
 		return "User [userId=" + userId + ", username=" + username + ", password=" + password + ", firstName="
 				+ firstName + ", lastName=" + lastName + ", email=" + email + ", birthday=" + birthday + ", role="
-				+ role + "]";
+				+ role + ", isActive=" + isActive + ", isNotLocked=" + isNotLocked + "]";
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(birthday, email, firstName, lastName, password, role, userId, username);
+		return Objects.hash(birthday, email, firstName, isActive, isNotLocked, lastName, password, role, userId,
+				username);
 	}
 
 	@Override
@@ -137,10 +160,13 @@ public class User {
 			return false;
 		User other = (User) obj;
 		return Objects.equals(birthday, other.birthday) && Objects.equals(email, other.email)
-				&& Objects.equals(firstName, other.firstName) && Objects.equals(lastName, other.lastName)
+				&& Objects.equals(firstName, other.firstName) && isActive == other.isActive
+				&& isNotLocked == other.isNotLocked && Objects.equals(lastName, other.lastName)
 				&& Objects.equals(password, other.password) && Objects.equals(role, other.role)
 				&& userId == other.userId && Objects.equals(username, other.username);
 	}
 
 
+
+	
 }
