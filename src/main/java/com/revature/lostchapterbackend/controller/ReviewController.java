@@ -42,10 +42,10 @@ public class ReviewController {
 	}
 
 	@GetMapping(path = "/reviews")
-	public List<Review> getAllReviews() {
+	public ResponseEntity<List<Review>> getAllReviews() {
 		logger.info("ReviewController.getAllReviews() invoked.");
 		List<Review> allReviews = reviewService.getAllReviews();
-		return allReviews;
+		return ResponseEntity.ok(allReviews);
 	}
 
 	@GetMapping(path = "/reviews/{reviewId}")

@@ -79,7 +79,7 @@ public class BookControllerTest {
 	}
 	
 	@Test
-	public void getAvailableBooksSuccessfully() throws Exception {
+	public void getAvailableBooks() throws Exception {
 		when(bookServ.getAllBooks()).thenReturn(Collections.emptyList());
 		
 		String jsonSet = objMapper.writeValueAsString(Collections.emptyList());
