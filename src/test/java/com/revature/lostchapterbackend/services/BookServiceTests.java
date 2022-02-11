@@ -229,7 +229,7 @@ public class BookServiceTests {
 		editedBook.setBookId(1);
 		editedBook.setBookName("My Last Book");
 		
-		when(bookDao.findById(2)).thenReturn(Optional.of(editedBook));
+		when(bookDao.findById(1)).thenReturn(Optional.of(editedBook));
 		when(bookDao.save(Mockito.any(Book.class))).thenReturn(editedBook);
 		
 		Book actualBook = bookServ.updateBook(editedBook);

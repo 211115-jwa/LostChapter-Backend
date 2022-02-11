@@ -12,7 +12,7 @@ import com.revature.lostchapterbackend.model.Order;
 @Service
 public interface OrderService {
 	
-	public Order getOrderById(int orderId) throws OrderDoesNotExist;
+	public Order getOrderById(int orderId);
 	public List<Order> getAllOrdersByUser(int userId) throws UserNotFoundException;
 	public int addOrder(Order newOrder);
 //	public Order getOrderByBook(Book book);  stretch goal

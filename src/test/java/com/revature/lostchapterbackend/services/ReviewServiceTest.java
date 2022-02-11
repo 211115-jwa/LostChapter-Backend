@@ -139,7 +139,7 @@ public class ReviewServiceTest {
 		editedReview.setReviewId(1);
 		editedReview.setReviewText("My Last Book");
 		
-		when(reviewDao.findById(2)).thenReturn(Optional.of(editedReview));
+		when(reviewDao.findById(1)).thenReturn(Optional.of(editedReview));
 		when(reviewDao.save(Mockito.any(Review.class))).thenReturn(editedReview);
 		
 		Review actualReview = reviewServ.updateReview(editedReview);
