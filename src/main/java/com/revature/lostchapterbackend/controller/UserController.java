@@ -26,7 +26,15 @@ import com.revature.lostchapterbackend.service.UserService;
 @RequestMapping(path="/users")
 @CrossOrigin("*")
 public class UserController {
-	
+	//This controller is used for the following
+		//getting the login status GET /{userId}/auth
+		//logging in users POST /auth
+		//get a user by their id GET /{userId}
+		//get a user by their email GET /email/{email}
+		//get a user by their username GET /username/{username}
+		//updating user information PUT /{userId}
+		//deleting users DELETE /{userId}
+
 	private static UserService userService;
 	
 	public UserController() {
@@ -40,6 +48,9 @@ public class UserController {
 	
 	@PostMapping
 	public ResponseEntity<Map<String,Integer>> register(@RequestBody User newUser) throws UsernameAlreadyExists{
+		//This methods responsibility is to sign up a new user
+		//no checking if user already exists
+		//no current path??
 		try
 		{
 			newUser = userService.register(newUser);
@@ -57,6 +68,7 @@ public class UserController {
 	@PostMapping(path="/auth")
 
 	public ResponseEntity<String> logIn(@RequestBody Map<String, String> credentials){
+		//This methods responsibility is to log in the user
 
 		String username = credentials.get("username");
 		String password = credentials.get("password");
@@ -73,6 +85,8 @@ public class UserController {
 	
 	@GetMapping(path="/{userId}/auth")
 	public ResponseEntity<User> checkLogin(@PathVariable int userId) throws UserNotFoundException{
+		//This methods responsibility is to return the current login status of the user.
+		//does not actually return a value of logged in or not, only checks if there is a user in the database
 		try {
 
 			User loggedInPerson =userService.getUserById(userId);
@@ -90,6 +104,7 @@ public class UserController {
 	
 	@GetMapping(path="/{userId}")
 	public ResponseEntity<User> getUserById(@PathVariable int userId) throws UserNotFoundException{
+		//This methods responsibility is to return a user by their userId
 		
 		User user = userService.getUserById(userId);
 		
@@ -101,6 +116,7 @@ public class UserController {
 	
 	@GetMapping(path="/email/{email}")
 	public ResponseEntity<User> getUserByEmail(@PathVariable String email) throws UserNotFoundException{
+		//This methods responsibility is to return a user by their email
 		User user = userService.getUserByEmail(email);
 		if (user != null) {
 		return ResponseEntity.ok(user);
@@ -110,6 +126,7 @@ public class UserController {
 	
 	@GetMapping(path="/username/{username}")
 	public ResponseEntity<User> getUserByUsername(@PathVariable String username) throws UserNotFoundException{
+		//This methods responsibility is to return a user by their username
 		User user = userService.getUserByUsername(username);
 		if (user != null) {
 			return ResponseEntity.ok(user);
@@ -121,6 +138,8 @@ public class UserController {
 	@PutMapping(path="/{userId}")
 	public ResponseEntity<User> updateUser(@PathVariable int userId,
 			@RequestBody User userToEdit) throws UserNotFoundException {
+		//This methods responsibility is to update a users information base on their userId
+		//No checking if data is good
 		
 		if (userToEdit != null && userToEdit.getUserId() == userId) {
 			userToEdit = userService.update(userToEdit);
@@ -137,6 +156,7 @@ public class UserController {
 	
 	@DeleteMapping(path="/{userId}")
 	public ResponseEntity<Void> deleteUser(@RequestBody User deleteUser) throws UserNotFoundException {
+		//This methods responsibility is to delete a users information base on their userId
 		if (deleteUser != null) {
 			userService.deleteUser(deleteUser);
 			return ResponseEntity.status(HttpStatus.CREATED).build();
