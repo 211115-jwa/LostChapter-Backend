@@ -37,5 +37,4 @@ public interface BookService {
 	public List<Book> getByKeyWord(String key);
 	public List<Book> getFeaturedBooks();
 	public List<Book> getBooksBySale();
-	public List<Book> getBooksByGenre();
 }
