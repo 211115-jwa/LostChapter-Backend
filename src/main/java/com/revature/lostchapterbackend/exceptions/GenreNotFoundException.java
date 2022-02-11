@@ -2,6 +2,11 @@ package com.revature.lostchapterbackend.exceptions;
 
 public class GenreNotFoundException extends Exception {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	public GenreNotFoundException() {
 		super();
 		
@@ -17,15 +22,7 @@ public class GenreNotFoundException extends Exception {
 		
 	}
 
-	public GenreNotFoundException(String arg0) {
-		super(arg0);
 	
-	}
-
-	public GenreNotFoundException(Throwable arg0) {
-		super(arg0);
-		
-	}
 
 	
 }

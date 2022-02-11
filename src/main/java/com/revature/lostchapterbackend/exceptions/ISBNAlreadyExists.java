@@ -2,6 +2,11 @@ package com.revature.lostchapterbackend.exceptions;
 
 public class ISBNAlreadyExists extends Exception {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	public ISBNAlreadyExists() {
 		super();
 		
@@ -17,15 +22,7 @@ public class ISBNAlreadyExists extends Exception {
 	
 	}
 
-	public ISBNAlreadyExists(String message) {
-		super(message);
-		
-	}
 
-	public ISBNAlreadyExists(Throwable cause) {
-		super(cause);
-		
-	}
 
 	
 }

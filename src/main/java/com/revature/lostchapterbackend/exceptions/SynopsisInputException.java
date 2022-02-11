@@ -2,6 +2,11 @@ package com.revature.lostchapterbackend.exceptions;
 
 public class SynopsisInputException extends Exception {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	public SynopsisInputException() {
 		super();
 	}
@@ -15,12 +20,6 @@ public class SynopsisInputException extends Exception {
 		super(message, cause);
 	}
 
-	public SynopsisInputException(String message) {
-		super(message);
-	}
 
-	public SynopsisInputException(Throwable cause) {
-		super(cause);
-	}
 
 }
