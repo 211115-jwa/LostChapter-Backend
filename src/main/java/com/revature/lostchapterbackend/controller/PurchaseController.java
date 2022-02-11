@@ -35,7 +35,7 @@ public class PurchaseController {
 		//decrease quantity of books to purchase by first finding the purchase by purchaseID POST /decrease/quantity/{bookToBuyId}/{PurchaseId}
 		//get purchase by its id GET /{PurchaseId}
 		//delete purchase by its id DELETE /{PurchaseId}
-	private static PurchaseService PurchaseServ;
+	private static PurchaseService purchaseServ;
 	
 	public PurchaseController() {
 		super();
@@ -166,7 +166,7 @@ public class PurchaseController {
 	@GetMapping(path = "/{PurchaseId}") 
 	public ResponseEntity<Object> getPurchaseById(@PathVariable int PurchaseId) {
 		//gets the purchase by its PurchaseId
-		Purchase Purchase = PurchaseServ.getPurchaseById(PurchaseId);
+		Purchase Purchase = purchaseServ.getPurchaseById(PurchaseId);
 		if (Purchase != null)
 			return ResponseEntity.ok(Purchase);
 		else
