@@ -42,12 +42,12 @@ public class BookServiceTests {
 			if (i<3)
 				book.setGenre("Horror");
 				book.setBookName("To Kill a Mocking Bird");
-				book.setISBN("123456789");
+				book.setISBN("1");
 				book.setFeatured(true);
 			if  (i>3)
 				book.setGenre("Action");
 				book.setBookName("Fahrenheit 451");
-				book.setISBN("987654321");
+				book.setISBN("2");
 			mockBooks.add(book);
 		}
 	}
@@ -62,7 +62,7 @@ public class BookServiceTests {
 			if (i<3)
 				book.setGenre("Horror");
 				book.setBookName("To Kill a Mocking Bird");
-				book.setISBN("123456789");
+				book.setISBN("1");
 				book.setFeatured(false);
 			mockBooks.add(book);
 		}
@@ -124,14 +124,14 @@ public class BookServiceTests {
 	
 	@Test
 	public void getBooksByISBNExists() {
-		String ISBN = "123456789";
+		String ISBN = "1";
 		
-		when(bookDao.findByISBN("123456789")).thenReturn(mockBooks);
+		when(bookDao.findByISBN("1")).thenReturn(mockBooks);
 		
 		List<Book> actualBooks = bookServ.getByISBN(ISBN);
 		boolean onlyISBN = true;
 		for (Book book : actualBooks) {
-			if (!book.getISBN().equals("123456789"))
+			if (!book.getISBN().equals("1"))
 				onlyISBN = false;
 		}
 		assertTrue(onlyISBN);
@@ -140,11 +140,9 @@ public class BookServiceTests {
 	
 	@Test
 	public void getBooksByISBNDoesNotExist() {
-		String ISBN = "1";
+		when(bookDao.findByISBN("0")).thenReturn(mockBooks);
 		
-		when(bookDao.findByISBN("1")).thenReturn(mockBooks);
-		
-		List<Book> actualBooks = bookServ.getByISBN(ISBN);
+		List<Book> actualBooks = bookServ.getByISBN("0");
 		assertTrue(actualBooks.isEmpty());
 	}
 	

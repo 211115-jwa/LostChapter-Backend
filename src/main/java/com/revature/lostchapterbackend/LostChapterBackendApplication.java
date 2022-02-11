@@ -7,11 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class LostChapterBackendApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(LostChapterBackendApplication.class, args);
-
-
-	
-	    
-	    
+		//this code runs the entire application, DO NOT DELETE!
+		SpringApplication.run(LostChapterBackendApplication.class, args);	    
 	}
 }

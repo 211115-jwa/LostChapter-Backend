@@ -5,6 +5,7 @@ import java.util.List;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.revature.lostchapterbackend.dao.OrderDAO;
 import com.revature.lostchapterbackend.exceptions.CartNotFoundException;
@@ -13,6 +14,7 @@ import com.revature.lostchapterbackend.exceptions.UserNotFoundException;
 import com.revature.lostchapterbackend.model.Book;
 import com.revature.lostchapterbackend.model.Order;
 
+@Service
 public class OrderServiceImpl implements OrderService {
 
 	private OrderDAO orderdao;
