@@ -52,16 +52,6 @@ public class BookServiceImpl implements BookService {
 		return featured;
 	}
 
-
-
-	@Override
-	public List<Book> getBooksByGenre() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-
-
 	@Override
 	public List<Book> getBooksBySale() {
 		List<Book> all=bookDao.findAll();
@@ -135,9 +125,9 @@ public class BookServiceImpl implements BookService {
 
 		@Override
 		@Transactional
-		public List<Book> getByISBN(String ISBN){
-			logger.debug("BookService.getByISBN() invoked.");
-			return bookDao.findByISBN(ISBN);
+		public List<Book> getBookByIsbn(String isbn){
+			logger.debug("BookService.getByIsbn() invoked.");
+			return bookDao.findByIsbn(isbn);
 		}
 
 
