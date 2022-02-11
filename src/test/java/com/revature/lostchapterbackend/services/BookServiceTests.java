@@ -6,10 +6,8 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -63,7 +61,7 @@ public class BookServiceTests {
 	@Test
 	public void getBookByIdExists() {
 		Book book = new Book();
-		book.setBookId(0);
+		book.setBookId(1);
 		
 		when(bookDao.findById(1)).thenReturn(Optional.of(book));
 		
