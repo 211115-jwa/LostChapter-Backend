@@ -13,6 +13,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 @Entity
 @Table(name="ordr")
 public class Order {
@@ -21,13 +23,14 @@ public class Order {
 	@Column(name="order_id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int orderId;
-	
+	@Column(name="total_price")
 	private float totalPrice;
-	
+	@Column(name="transaction_date")
 	private LocalDateTime transactionDate;
 	
 	@ManyToOne
 	@JoinColumn(name="user_id")
+	@Autowired
 	private User user;
 
 	public Order() {
@@ -35,7 +38,7 @@ public class Order {
 		this.orderId = 0;
 		this.totalPrice=0.0f;
 		this.transactionDate=LocalDateTime.now();
-		this.user=new User();
+		//this.user=new User();
 
 	}
 

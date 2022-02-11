@@ -78,7 +78,6 @@ public class BookController {
 	@GetMapping(path = "/featured")
 	public List<Book> getFeaturedBooks() {
 		//This method is responsible for getting all of the current featured books
-
 		logger.info("BookController.getFeaturedBooks() invoked.");
 	List<Book> featuredBooks = bookServ.getFeaturedBooks();
 
@@ -103,9 +102,10 @@ public class BookController {
 	}
 	//working
 	@GetMapping(path = "/genre/{name}")
-	public ResponseEntity<Object> getBookByGenreId(@PathVariable String name) {
-		//This method is responsible for getting books by their genre
-		//If the genre does not exist then it will throw an error
+
+	public ResponseEntity<Object> getBookByGenre(@PathVariable String name) {
+  		//This method is responsible for getting books by their genre
+		  //If the genre does not exist then it will throw an error
 		logger.debug("BookController.getBookByGenreId() invoked.");
 
 		try {
