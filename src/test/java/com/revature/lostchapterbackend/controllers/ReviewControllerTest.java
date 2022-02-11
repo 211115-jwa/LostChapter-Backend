@@ -104,7 +104,7 @@ public class ReviewControllerTest {
 	
 	@Test
 	public void getAllReviewsForBook () throws Exception {
-		when(((OngoingStubbing<List<Review>>) reviewServ.getReviewsByBook(1)).thenReturn(Collections.emptyList()));
+		when(reviewServ.getReviewsByBook(1)).thenReturn(Collections.emptyList());
 		
 		String jsonSet = objMapper.writeValueAsString(Collections.emptyList());
 		

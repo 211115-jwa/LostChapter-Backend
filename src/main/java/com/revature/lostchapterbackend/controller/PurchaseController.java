@@ -13,18 +13,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.springframework.web.bind.annotation.RestController;
 
+import com.revature.lostchapterbackend.exceptions.UserNotFoundException;
 import com.revature.lostchapterbackend.model.Book;
 import com.revature.lostchapterbackend.model.Purchase;
-
-
-
-
+import com.revature.lostchapterbackend.model.User;
 import com.revature.lostchapterbackend.service.PurchaseService;
 
 @RestController
 @RequestMapping(path="/Purchase")
 @CrossOrigin("*")
 public class PurchaseController {
+
 	//This controller is used for the following
 		//add books to purchase database row POST /add/{userId}
 		//add books to purchase PUT /add/{bookToBuyId}/{PurchaseId}
@@ -38,17 +37,24 @@ public class PurchaseController {
 		//delete purchase by its id DELETE /{PurchaseId}
 	private static PurchaseService PurchaseServ;
 	
-	
 	public PurchaseController() {
 		super();
 		}
 	//field injection
 	@Autowired
-	public PurchaseController(PurchaseService PurchaseServ) {
-		this.PurchaseServ= PurchaseServ;
+	public PurchaseController(PurchaseService purchaseServ) {
+		this.purchaseServ= purchaseServ;
 	}
 	
-	
+	@PostMapping
+	public ResponseEntity<Purchase> createPurchase(@RequestBody Purchase newPurchase)  {
+		
+		if (newPurchase !=null) {
+			purchaseServ.createPurchase(newPurchase);
+			return ResponseEntity.status(HttpStatus.CREATED).build();
+		}
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+}
 
 //	@PostMapping(path = "/add/{userId}") 
 //	public ResponseEntity<Object> addBookToPurchase(@RequestBody Book bookId, @PathVariable(value="userId") int userId){
@@ -172,7 +178,7 @@ public class PurchaseController {
 	public ResponseEntity<Void> deletePurchase(@RequestBody Purchase PurchaseToDelete){
 		//deletes the purchase by its PurchaseId
 		if (PurchaseToDelete !=null) {
-			PurchaseServ.deletePurchase(PurchaseToDelete);
+			purchaseServ.deletePurchase(PurchaseToDelete);
 			return ResponseEntity.status(HttpStatus.CREATED).build();
 		}
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
