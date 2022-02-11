@@ -10,9 +10,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.text.DateFormat;
 import java.time.LocalDateTime;
 import java.util.Collections;
+import java.util.List;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.mockito.stubbing.OngoingStubbing;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -66,9 +68,9 @@ public class ReviewControllerTest {
 	
 	@Test
 	public void getReviewById () throws Exception {
-		when(reviewServ.getReviewById("id")).thenReturn(new Review());
+		when(reviewServ.getReviewById(1)).thenReturn(new Review());
 		
-		mockMvc.perform(get("/reviews/{reviewId}", "id")).andExpect(status().isOk()).andReturn();
+		mockMvc.perform(get("/reviews/{reviewId}", 1)).andExpect(status().isOk()).andReturn();
 		
 	}
 	
@@ -102,7 +104,7 @@ public class ReviewControllerTest {
 	
 	@Test
 	public void getAllReviewsForBook () throws Exception {
-		when(reviewServ.getReviewsByBook(bookServ.getBookById(1))).thenReturn(Collections.emptyList());
+		when(((OngoingStubbing<List<Review>>) reviewServ.getReviewsByBook(1)).thenReturn(Collections.emptyList()));
 		
 		String jsonSet = objMapper.writeValueAsString(Collections.emptyList());
 		
