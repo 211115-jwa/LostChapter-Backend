@@ -26,7 +26,7 @@ public class Book {
 	private int bookId;
 
 	@Column(name="isbn")
-	private String ISBN;
+	private String isbn;
 
 	@Column(name="book_name")
 	private String bookName;
@@ -66,7 +66,7 @@ public class Book {
 	}
 	public Book() {
 		bookId = 0;
-		ISBN = " ";
+		isbn = " ";
 		bookName = " ";
 		synopsis = "";
 		author = "";
@@ -92,13 +92,13 @@ public class Book {
 	}
 
 
-	public String getISBN() {
-		return ISBN;
+	public String getIsbn() {
+		return isbn;
 	}
 
 
-	public void setISBN(String iSBN) {
-		ISBN = iSBN;
+	public void setIsbn(String Isbn) {
+		this.isbn = Isbn;
 	}
 
 
@@ -224,7 +224,7 @@ public class Book {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(ISBN, author, bookId, bookImage, bookName, bookPrice, featured, genre, publisher,
+		return Objects.hash(isbn, author, bookId, bookImage, bookName, bookPrice, featured, genre, publisher,
 				quantityOnHand, saleDiscountRate, saleIsActive, synopsis, year);
 	}
 
@@ -238,7 +238,7 @@ public class Book {
 		if (getClass() != obj.getClass())
 			return false;
 		Book other = (Book) obj;
-		return Objects.equals(ISBN, other.ISBN) && Objects.equals(author, other.author) && bookId == other.bookId
+		return Objects.equals(isbn, other.isbn) && Objects.equals(author, other.author) && bookId == other.bookId
 				&& Objects.equals(bookImage, other.bookImage) && Objects.equals(bookName, other.bookName)
 				&& Float.floatToIntBits(bookPrice) == Float.floatToIntBits(other.bookPrice)
 				&& featured == other.featured && Objects.equals(genre, other.genre)
@@ -251,7 +251,7 @@ public class Book {
 
 	@Override
 	public String toString() {
-		return "Book [bookId=" + bookId + ", ISBN=" + ISBN + ", bookName=" + bookName + ", synopsis=" + synopsis
+		return "Book [bookId=" + bookId + ", Isbn=" + isbn + ", bookName=" + bookName + ", synopsis=" + synopsis
 				+ ", author=" + author + ", genre=" + genre + ", year=" + year + ", publisher=" + publisher
 				+ ", bookImage=" + bookImage + ", saleIsActive=" + saleIsActive + ", featured=" + featured
 				+ ", bookPrice=" + bookPrice + ", saleDiscountRate=" + saleDiscountRate + ", quantityOnHand="

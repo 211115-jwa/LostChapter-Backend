@@ -101,6 +101,26 @@ public class BookController {
 
 	}
 	//working
+	@GetMapping(path = "/isbn/{name}")
+
+	public ResponseEntity<Object> getBookByIsbn(@PathVariable String isbn) {
+  		//This method is responsible for getting books by their genre
+		  //If the genre does not exist then it will throw an error
+		logger.debug("BookController.getBookByGenreId() invoked.");
+
+		try {
+			List<Book> bookList = bookServ.getBookByIsbn(isbn);
+			if(bookList!=null)
+			return ResponseEntity.ok(bookList);
+			else
+				return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+		}
+		catch (NumberFormatException e) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+		}
+
+	}
+	
 	@GetMapping(path = "/genre/{name}")
 
 	public ResponseEntity<Object> getBookByGenre(@PathVariable String name) {
