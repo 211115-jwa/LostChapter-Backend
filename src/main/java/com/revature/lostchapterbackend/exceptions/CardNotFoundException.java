@@ -2,6 +2,11 @@ package com.revature.lostchapterbackend.exceptions;
 
 public class CardNotFoundException extends Exception {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	public CardNotFoundException() {
 		super();
 	}
@@ -15,13 +20,6 @@ public class CardNotFoundException extends Exception {
 		super(message, cause);
 	}
 
-	public CardNotFoundException(String message) {
-		super(message);
-	}
-
-	public CardNotFoundException(Throwable cause) {
-		super(cause);
-	}
 
 	
 	
