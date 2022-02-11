@@ -197,6 +197,7 @@ public class PurchaseServiceImpl implements PurchaseService{
 	@Override
 	@Transactional
 	public int createPurchase(Purchase newPurchase) {
+		
 		Purchase purchase = PurchaseDao.save(newPurchase);
 		if(purchase != null)
 		return purchase.getPurchaseId();

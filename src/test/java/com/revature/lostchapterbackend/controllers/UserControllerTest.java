@@ -181,7 +181,7 @@ public class UserControllerTest {
 	@Test
 	public void updateUserSuccessfully() throws Exception {
 		User userToEdit = new User();
-		userToEdit.setUserId(1);;
+		userToEdit.setUserId(1);
 		
 		when(userServ.update(userToEdit)).thenReturn(userToEdit);
 		

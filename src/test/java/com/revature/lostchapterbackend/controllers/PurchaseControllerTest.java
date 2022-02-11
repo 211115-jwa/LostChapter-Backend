@@ -5,6 +5,8 @@ import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import org.junit.jupiter.api.BeforeAll;
@@ -66,13 +68,13 @@ import com.revature.lostchapterbackend.service.PurchaseService;
 @SpringBootTest(classes=LostChapterBackendApplication.class)
 public class PurchaseControllerTest {
 	@MockBean
-	private PurchaseService PurchaseServ;
+	private PurchaseService purchaseServ;
 	
 	//@MockBean
 	//private  TransactionService transServ;
 	
 	@Autowired
-	private static PurchaseController PurchaseController;
+	private static PurchaseController purchaseController;
 	
 	// this object basically represents a mock of the Spring Web architecture
 	private static MockMvc mockMvc;
@@ -88,17 +90,32 @@ public class PurchaseControllerTest {
 	}
 	
 	@Test
+	public void createPurchase() throws Exception {
+		Purchase newPurchase = new Purchase();
+		
+		when(purchaseServ.createPurchase(newPurchase)).thenReturn(1);
+		
+		
+		String jsonPurchase = objMapper.writeValueAsString(newPurchase);
+		mockMvc.perform(post("/Purchase").content(jsonPurchase).contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isCreated())
+				.andReturn();
+		}
+	
+	@Test
 	public void getPurchaseById ()throws Exception {
-		when(PurchaseServ.getPurchaseById(1)).thenReturn(new Purchase());
+		when(purchaseServ.getPurchaseById(1)).thenReturn(new Purchase());
 		
 		mockMvc.perform(get("/Purchase/{PurchaseId}",1)).andExpect(status().isOk()).andReturn();
 	}
 	
 	@Test
 	public void getPurchaseByIdNotFound() throws Exception {
-		when(PurchaseServ.getPurchaseById(1)).thenReturn(null);
+		when(purchaseServ.getPurchaseById(1)).thenReturn(null);
 		mockMvc.perform(get("/Purchase/{PurchaseId}", 1)).andExpect(status().isNotFound()).andReturn();
 	}
+	
+}
 	
 //	@Test
 //	public void addBookToPurchase(@RequestBody Book bookToAdd, @PathVariable int userId) throws Exception {
@@ -112,13 +129,13 @@ public class PurchaseControllerTest {
 //		.andExpect(status().isBadRequest()).andReturn();
 //	}
 	
-	@Test 
-	public void addBookToPurchaseNoUser(@RequestBody Book bookToAdd, @PathVariable int PurchaseId) throws Exception {
-		String jsonBook = objMapper.writeValueAsString(null);
-		mockMvc.perform(post("/Purchase/delete/{bookToBuyId}/{userId}").content(jsonBook).contentType(MediaType.APPLICATION_JSON))
-		.andExpect(status().isBadRequest()).andReturn();
-	}
-}
+//	@Test 
+//	public void addBookToPurchaseNoUser(@RequestBody Book bookToAdd, @PathVariable int PurchaseId) throws Exception {
+//		String jsonBook = objMapper.writeValueAsString(null);
+//		mockMvc.perform(post("/Purchase/delete/{bookToBuyId}/{userId}").content(jsonBook).contentType(MediaType.APPLICATION_JSON))
+//		.andExpect(status().isBadRequest()).andReturn();
+//	}
+//}
 //@AutoConfigureMockMvc
 //@DirtiesContext(classMode = ClassMode.BEFORE_EACH_TEST_METHOD)
 //public class PurchaseIntegrationTests {

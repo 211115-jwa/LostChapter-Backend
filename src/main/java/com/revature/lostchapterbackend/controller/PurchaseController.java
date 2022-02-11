@@ -13,12 +13,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.springframework.web.bind.annotation.RestController;
 
+import com.revature.lostchapterbackend.exceptions.UserNotFoundException;
 import com.revature.lostchapterbackend.model.Book;
 import com.revature.lostchapterbackend.model.Purchase;
-
-
-
-
+import com.revature.lostchapterbackend.model.User;
 import com.revature.lostchapterbackend.service.PurchaseService;
 
 @RestController
@@ -26,8 +24,9 @@ import com.revature.lostchapterbackend.service.PurchaseService;
 @CrossOrigin("*")
 public class PurchaseController {
 
+	
 	//static for testing
-	private static PurchaseService PurchaseServ;
+	private static PurchaseService purchaseServ;
 	
 	
 	public PurchaseController() {
@@ -35,11 +34,19 @@ public class PurchaseController {
 		}
 	//field injection
 	@Autowired
-	public PurchaseController(PurchaseService PurchaseServ) {
-		this.PurchaseServ= PurchaseServ;
+	public PurchaseController(PurchaseService purchaseServ) {
+		this.purchaseServ= purchaseServ;
 	}
 	
-	
+	@PostMapping
+	public ResponseEntity<Purchase> createPurchase(@RequestBody Purchase newPurchase)  {
+		
+		if (newPurchase !=null) {
+			purchaseServ.createPurchase(newPurchase);
+			return ResponseEntity.status(HttpStatus.CREATED).build();
+		}
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+}
 
 //	@PostMapping(path = "/add/{userId}") 
 //	public ResponseEntity<Object> addBookToPurchase(@RequestBody Book bookId, @PathVariable(value="userId") int userId){
@@ -134,7 +141,7 @@ public class PurchaseController {
 	
 	@GetMapping(path = "/{PurchaseId}") 
 	public ResponseEntity<Object> getPurchaseById(@PathVariable int PurchaseId) {
-		Purchase Purchase = PurchaseServ.getPurchaseById(PurchaseId);
+		Purchase Purchase = purchaseServ.getPurchaseById(PurchaseId);
 		if (Purchase != null)
 			return ResponseEntity.ok(Purchase);
 		else
@@ -145,7 +152,7 @@ public class PurchaseController {
 	@DeleteMapping(path = "/{PurchaseId}")
 	public ResponseEntity<Void> deletePurchase(@RequestBody Purchase PurchaseToDelete){
 		if (PurchaseToDelete !=null) {
-			PurchaseServ.deletePurchase(PurchaseToDelete);
+			purchaseServ.deletePurchase(PurchaseToDelete);
 			return ResponseEntity.status(HttpStatus.CREATED).build();
 		}
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
