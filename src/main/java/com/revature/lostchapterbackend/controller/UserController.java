@@ -4,8 +4,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,11 +19,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.revature.lostchapterbackend.JWT.TokenProvider;
+import com.revature.lostchapterbackend.JWT.UserDetail;
 import com.revature.lostchapterbackend.exceptions.InvalidLoginException;
 import com.revature.lostchapterbackend.exceptions.UserNotFoundException;
 import com.revature.lostchapterbackend.exceptions.UsernameAlreadyExists;
 import com.revature.lostchapterbackend.model.User;
 import com.revature.lostchapterbackend.service.UserService;
+
+import com.revature.lostchapterbackend.constants.*;
 
 @RestController
 @RequestMapping(path="/users")
@@ -36,13 +43,17 @@ public class UserController {
 		//deleting users DELETE /{userId}
 
 	private static UserService userService;
+	private AuthenticationManager authenticationManager;
+	private TokenProvider tokenProvider;
 	
 	public UserController() {
 		super();
 	}
 	
 	@Autowired
-	public UserController(UserService userService) {
+	public UserController(UserService userService, AuthenticationManager authenticationManager, TokenProvider tokenProvider) {
+		this.authenticationManager = authenticationManager;
+		this.tokenProvider = tokenProvider;
 		this.userService = userService;
 	}
 	
@@ -62,26 +73,29 @@ public class UserController {
 			return ResponseEntity.status(HttpStatus.CONFLICT).build();
 		}
 	}
-			
-		
-	
+				
 	@PostMapping(path="/auth")
-
-	public ResponseEntity<String> logIn(@RequestBody Map<String, String> credentials){
+	public ResponseEntity<User> logIn(@RequestBody Map<String, String> credentials){
 		//This methods responsibility is to log in the user
 
 		String username = credentials.get("username");
 		String password = credentials.get("password");
 		
 		try {
-			User user = userService.login(username, password);
+			this.authenticate(username, password);
+//			User user = userService.login(username, password);
+			User user = userService.getUserByUsername(username);
+			UserDetail userDetail = new UserDetail(user);
+			HttpHeaders jwtHeader = this.getHeader(userDetail);
+			
 			String token = Integer.toString(user.getUserId());
-			return ResponseEntity.ok(token);
+			
+			return new ResponseEntity<>(user, jwtHeader, HttpStatus.OK);
 
-		} catch (UserNotFoundException | InvalidLoginException e) {
+		} catch (UserNotFoundException e) {
 			return ResponseEntity.notFound().build();
+		}
 	}
-}
 	
 	@GetMapping(path="/{userId}/auth")
 	public ResponseEntity<User> checkLogin(@PathVariable int userId) throws UserNotFoundException{
@@ -98,10 +112,9 @@ public class UserController {
 		catch (UserNotFoundException e) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 		}
-		
 	}
-	
-	
+
+
 	@GetMapping(path="/{userId}")
 	public ResponseEntity<User> getUserById(@PathVariable int userId) throws UserNotFoundException{
 		//This methods responsibility is to return a user by their userId
@@ -164,6 +177,16 @@ public class UserController {
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
 	}
 
+	private HttpHeaders getHeader(UserDetail userDetail) {
+		HttpHeaders headers = new HttpHeaders();
+		headers.add(SecurityConstant.JWT_TOKEN_HEADER, tokenProvider.generateToken(userDetail));
+		
+		return headers;
+	}
+	
+	private void authenticate(String username, String pwd) {
+		this.authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, pwd));
+	}
 	//public String passwordHasher(String password) throws NoSuchAlgorithmException;
 	//not sure how to go about creating the path for this one ^
 }
