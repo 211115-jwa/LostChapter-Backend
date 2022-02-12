@@ -63,12 +63,9 @@ public class UserController {
 		}
 	}
 			
-		
-	
 	@PostMapping(path="/auth")
 
 	public ResponseEntity<String> logIn(@RequestBody Map<String, String> credentials){
-		//This methods responsibility is to log in the user
 
 		String username = credentials.get("username");
 		String password = credentials.get("password");
@@ -84,12 +81,10 @@ public class UserController {
 }
 	
 	@GetMapping(path="/{userId}/auth")
-	public ResponseEntity<User> checkLogin(@PathVariable int userId) throws UserNotFoundException{
-		//This methods responsibility is to return the current login status of the user.
-		//does not actually return a value of logged in or not, only checks if there is a user in the database
+	public ResponseEntity<User> checkLogin(@PathVariable String userId) throws UserNotFoundException{
 		try {
 
-			User loggedInPerson =userService.getUserById(userId);
+			User loggedInPerson =userService.getUserById(Integer.parseInt(userId));
 			if(loggedInPerson!=null)
 				return ResponseEntity.ok(loggedInPerson);
 			else
@@ -100,6 +95,44 @@ public class UserController {
 		}
 		
 	}
+	
+	
+
+//	@PostMapping(path="/auth")
+//
+//	public ResponseEntity<String> logIn(@RequestBody Map<String, String> credentials){
+//		//This methods responsibility is to log in the user
+//
+//		String username = credentials.get("username");
+//		String password = credentials.get("password");
+//		
+//		try {
+//			User user = userService.login(username, password);
+//			String token = Integer.toString(user.getUserId());
+//			return ResponseEntity.ok(token);
+//
+//		} catch (UserNotFoundException | InvalidLoginException e) {
+//			return ResponseEntity.notFound().build();
+//	}
+//}
+//	
+//	@GetMapping(path="/{userId}/auth")
+//	public ResponseEntity<User> checkLogin(@PathVariable int userId) throws UserNotFoundException{
+//		//This methods responsibility is to return the current login status of the user.
+//		//does not actually return a value of logged in or not, only checks if there is a user in the database
+//		try {
+//
+//			User loggedInPerson =userService.getUserById(userId);
+//			if(loggedInPerson!=null)
+//				return ResponseEntity.ok(loggedInPerson);
+//			else
+//				return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+//		}
+//		catch (UserNotFoundException e) {
+//			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+//		}
+//		
+//	}
 	
 	
 	@GetMapping(path="/{userId}")
