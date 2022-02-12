@@ -23,10 +23,14 @@ public class ReviewServiceImpl implements ReviewService {
 	private Logger logger = LoggerFactory.getLogger(ReviewService.class);
 
 	private ReviewDAO revDao;
+	private BookDAO bookDao;
 	
 	@Autowired
-	public ReviewServiceImpl(ReviewDAO revDao) {
+	public ReviewServiceImpl(ReviewDAO revDao, BookDAO bookDao) {
+		// For mocking
+		// For Unit Testing
 		this.revDao = revDao;
+		this.bookDao = bookDao;
 	}
 
 	@Override
@@ -39,48 +43,65 @@ public class ReviewServiceImpl implements ReviewService {
 
 	@Override
 	@Transactional
-	public Review getReviewById(int id) throws ReviewNotFoundException {
+	public Review getReviewById(String id) throws ReviewNotFoundException {
 		logger.info("ReviewService.getReviewById() invoked.");
-		Optional<Review> review = revDao.findById(id);
-		if (review.isPresent())
-			return review.get();
-		else return null;
+
+		try {
+			int reviewId = Integer.parseInt(id);
+			if (!revDao.findById(reviewId).isPresent()) {
+				throw new ReviewNotFoundException();
+			}
+			return revDao.findById(reviewId).get();
+		} catch (NumberFormatException e) {
+			throw new InvalidParameterException("The Id entered must be an int.");
+
+		}
+
 	}
 
 	@Override
 	@Transactional
-	public int addReview(Review newReview) throws InvalidParameterException {
+	public Review addReview(Review newReview) throws InvalidParameterException {
 		logger.info("ReviewService.addReview() invoked.");
-		Review review = revDao.save(newReview);
-		if(review != null)
-		return review.getReviewId();
-		else return 0;
+
+		// int newId = revDao.save(newReview).getReviewId();
+		// newReview.setReviewId(newId);
+		// return newReview;
+
+		return revDao.saveAndFlush(newReview);
 
 	}
 
 	@Override
 	@Transactional
-	public Review updateReview(Review reviewToUpdate) throws ReviewNotFoundException, InvalidParameterException {
+	public Review updateReview(Review reviewToUpdate, String id)
+			throws ReviewNotFoundException, InvalidParameterException {
+
 		logger.info("ReviewService.updateReview() invoked.");
-		Optional<Review> ReviewFromDatabase = revDao.findById(reviewToUpdate.getReviewId());
-		if (ReviewFromDatabase.isPresent()) {
-			revDao.save(reviewToUpdate);
-			return revDao.findById(reviewToUpdate.getReviewId()).get();
+
+		try {
+			int reviewId = Integer.parseInt(id);
+
+			if (!revDao.findById(reviewId).isPresent()) {
+
+				throw new ReviewNotFoundException();
+			}
+
+			logger.debug("revDao.findById(reviewId).get() {}", revDao.findById(reviewId).get());
+
+			return revDao.saveAndFlush(reviewToUpdate);
+		} catch (NumberFormatException e) {
+			throw new InvalidParameterException("Id must be in Int format");
 		}
-		return null;
 	}
-	
+
 	@Override
 	@Transactional
-	public List<Review> getReviewsByBook(int bookId) throws BookNotFoundException {
-		try
-		{
-			List<Review> reviews = revDao.findReviewByBook(bookId);
-			return reviews;
-		}catch(Exception e)
-		{
-			throw new BookNotFoundException("Book Id Not Found, Try Again", e);
+	public List<Review> getReviewsByBook(Book book) throws BookNotFoundException {
+		if (!bookDao.findById(book.getBookId()).isPresent()) {
+			throw new BookNotFoundException();
 		}
+		return revDao.findByBookOrderBySentAtDesc(book);
 	}
 
 }
