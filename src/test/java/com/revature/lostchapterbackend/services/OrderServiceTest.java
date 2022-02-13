@@ -62,7 +62,7 @@ public class OrderServiceTest {
 		
 		when(orderDao.findById(2)).thenReturn(Optional.of(order));
 		
-		Order actualOrder = orderServ.getOrderById(2);
+		Optional<Order> actualOrder = orderServ.getOrderById(2);
 		assertEquals(order, actualOrder);
 	}
 	
@@ -70,7 +70,7 @@ public class OrderServiceTest {
 	public void getOrderByIdDoesNotExist() throws OrderDoesNotExist {
 		when(orderDao.findById(2)).thenReturn(Optional.empty());
 		
-		Order actualOrder = orderServ.getOrderById(2);
+		Optional<Order> actualOrder = orderServ.getOrderById(2);
 		assertNull(actualOrder);
 	}
 	
