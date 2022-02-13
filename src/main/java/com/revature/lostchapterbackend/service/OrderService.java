@@ -13,8 +13,9 @@ import com.revature.lostchapterbackend.model.Order;
 public interface OrderService {
 	
 	public Order getOrderById(int orderId) throws OrderDoesNotExist;
+	public Order updateOrderBy(Order updateOrder) throws OrderDoesNotExist;
 	public List<Order> getAllOrdersByUser(int userId) throws UserNotFoundException;
 	public int addOrder(Order newOrder);
 //	public Order getOrderByBook(Book book);  stretch goal
-
+	public void deleteOrder(Order orderToDelete);
 }

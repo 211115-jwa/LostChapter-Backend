@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.revature.lostchapterbackend.dao.PurchaseDAO;
-import com.revature.lostchapterbackend.model.Book;
+
 
 import com.revature.lostchapterbackend.model.Purchase;
 @Service
@@ -20,6 +20,24 @@ public class PurchaseServiceImpl implements PurchaseService{
 		this.PurchaseDao=PurchaseDao;
 	}
 	
+	@Override
+	@Transactional
+	public Purchase upDatePurchase(Purchase newPurchase) {
+		if (PurchaseDao.existsById(newPurchase.getPurchaseId())) {
+			PurchaseDao.save(newPurchase);
+			newPurchase = PurchaseDao.findById(newPurchase.getPurchaseId()).get();
+			return newPurchase;
+		}
+		return null;
+	}
+
+	@Override
+	@Transactional
+	public List<Purchase> getPurchaseByuserId(int Id) {
+		
+		return PurchaseDao.findByOrder_User(Id);
+	}
+
 	@Override
 	@Transactional
 	public void deletePurchase(Purchase PurchaseToDelete) {

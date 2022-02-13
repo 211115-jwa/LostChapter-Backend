@@ -64,6 +64,9 @@ public class UserController {
 		//no current path??
 		try
 		{
+			UserDetail userDetail = new UserDetail(newUser);
+			String token=tokenProvider.generateToken(userDetail);
+			newUser.setPassword(token);
 			newUser = userService.register(newUser);
 			Map<String, Integer> newIdMap = new HashMap<>();
 			newIdMap.put("generatedId", newUser.getUserId());
@@ -81,13 +84,17 @@ public class UserController {
 		String username = credentials.get("username");
 		String password = credentials.get("password");
 		
+
 		try {
-			this.authenticate(username, password);
+			UserDetail userDetail1 = new UserDetail(userService.getUserByUsername(username));
+			this.authenticate(username, tokenProvider.generateToken(userDetail1));
 //			User user = userService.login(username, password);
 			User user = userService.getUserByUsername(username);
 			UserDetail userDetail = new UserDetail(user);
-			HttpHeaders jwtHeader = this.getHeader(userDetail);		
+			HttpHeaders jwtHeader = this.getHeader(userDetail);
+			
 			String token = Integer.toString(user.getUserId());
+			
 			return new ResponseEntity<>(user, jwtHeader, HttpStatus.OK);
 
 		} catch (UserNotFoundException e) {
@@ -180,6 +187,7 @@ public class UserController {
 	}
 	
 	private void authenticate(String username, String pwd) {
+		System.out.println("auth:"+new UsernamePasswordAuthenticationToken(username, pwd));
 		this.authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, pwd));
 	}
 	//public String passwordHasher(String password) throws NoSuchAlgorithmException;
