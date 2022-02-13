@@ -1,6 +1,6 @@
 package com.revature.lostchapterbackend.service;
 
-import java.security.InvalidParameterException;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -12,9 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.revature.lostchapterbackend.dao.ShippingInfoDAO;
-import com.revature.lostchapterbackend.exceptions.BookNotFoundException;
-import com.revature.lostchapterbackend.exceptions.UserNotFoundException;
-import com.revature.lostchapterbackend.model.Review;
 import com.revature.lostchapterbackend.model.ShippingInformation;
 
 @Service
@@ -55,8 +52,27 @@ public class ShippingServiceImpl implements ShippingService {
 	@Override
 	@Transactional
 	public List<ShippingInformation> getShippingInformationByUser(int UserId) {
-			List<ShippingInformation> ship = shipDao.findShippingInformationByUser(UserId);
+			List<ShippingInformation> ship = shipDao.findByUser(UserId);
 			return ship;
+	}
+
+	@Override
+	@Transactional
+	public ShippingInformation upDateShippingInformation(ShippingInformation newShippingInformation) {
+		
+			if (shipDao.existsById(newShippingInformation.getShippingInfoId())) {
+				shipDao.save(newShippingInformation);
+				newShippingInformation = shipDao.findById(newShippingInformation.getShippingInfoId()).get();
+				return newShippingInformation;
+			}
+			return null;
+	}
+
+	@Override
+	@Transactional
+	public void deleteShipping(ShippingInformation shipToDelete) {
+		shipDao.delete(shipToDelete);
+		
 	}
 
 }

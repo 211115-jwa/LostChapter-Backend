@@ -1,8 +1,6 @@
 package com.revature.lostchapterbackend.controller;
 
-
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,35 +15,41 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.revature.lostchapterbackend.exceptions.OrderDoesNotExist;
 import com.revature.lostchapterbackend.exceptions.UserNotFoundException;
+import com.revature.lostchapterbackend.model.CreditCardInfo;
 import com.revature.lostchapterbackend.model.Order;
-
-import com.revature.lostchapterbackend.service.OrderService;
-
+import com.revature.lostchapterbackend.service.CreditCardInfoServ;
 
 
 @RestController
-@RequestMapping(path="/order")
+@RequestMapping(path="/ccinfo")
 @CrossOrigin("*")
-public class OrderController {
-
-	private static OrderService orderServ;
-	public OrderController() {
+public class CreditCardInfoController {
+	private static CreditCardInfoServ CreditCardInfoServ;
+	public CreditCardInfoController() {
 		super();
 	}
 	
 	@Autowired
-	public OrderController(OrderService orderServ) {
-		this.orderServ=orderServ;
+	public CreditCardInfoController(CreditCardInfoServ CreditCardInfoServ) {
+		this.CreditCardInfoServ=CreditCardInfoServ;
 	}
-	/*needs update*/
+	@GetMapping(path = "user/{userId}") 
+	public ResponseEntity<Object> getCCByUser(@PathVariable int userId){
+		//gets the purchase by its PurchaseId
+		
+		List<CreditCardInfo> orders = CreditCardInfoServ.getCreditCardInfoByUser(userId);	
+		if (orders != null)
+			return ResponseEntity.ok(orders);
+		else
+			return ResponseEntity.notFound().build();
+	}
 	@PutMapping(path = "/update") 
-	public ResponseEntity<Object> updateOrder(@RequestBody Order newOrder) throws OrderDoesNotExist{
-		//This methods responsibility it to add a new book to the Order collection if it doesnt exist already or to increase the quantity if it is present
-		//This method uses the userID in order to find the users Order collection
-		if (newOrder !=null) {
-			orderServ.updateOrderBy(newOrder);
+	public ResponseEntity<Object> updateCreditCardInfo(@RequestBody CreditCardInfo newCreditCardInfo){
+		//This methods responsibility it to add a new book to the CreditCardInfo collection if it doesnt exist already or to increase the quantity if it is present
+		//This method uses the userID in order to find the users CreditCardInfo collection
+		if (newCreditCardInfo !=null) {
+			CreditCardInfoServ.upDateCreditCardInfo(newCreditCardInfo);
 			return ResponseEntity.status(HttpStatus.ACCEPTED).build();
 		}
 		else
@@ -53,30 +57,19 @@ public class OrderController {
 	}
 	
 	@PostMapping(path = "/add") 
-	public ResponseEntity<Object> addBookToOrder(@RequestBody Order ccAdd){
+	public ResponseEntity<Object> addCreditCardInfo(@RequestBody CreditCardInfo ccAdd){
 		
 		if (ccAdd !=null) {
-			orderServ.addOrder(ccAdd);
+			CreditCardInfoServ.addCreditCardInfo(ccAdd);
 			return ResponseEntity.status(HttpStatus.CREATED).build();
 		}
 		
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
 	}
-	@GetMapping(path = "user/{userId}") 
-	public ResponseEntity<Object> getOrderByUser(@PathVariable int userId)throws UserNotFoundException{
+	@GetMapping(path = "/{ccId}") 
+	public ResponseEntity<Object> getCCById(@PathVariable int ccId) {
 		//gets the purchase by its PurchaseId
-		
-		List<Order> orders = orderServ.getAllOrdersByUser(userId);	
-		if (orders != null)
-			return ResponseEntity.ok(orders);
-		else
-			return ResponseEntity.notFound().build();
-	}
-	@GetMapping(path = "/{orderId}") 
-	public ResponseEntity<Object> getOrderById(@PathVariable int orderId) throws OrderDoesNotExist{
-		//gets the purchase by its PurchaseId
-		
-		Optional<Order>  cc = orderServ.getOrderById(orderId);	
+		CreditCardInfo cc = CreditCardInfoServ.getCreditCardInfoById(ccId);
 		if (cc != null)
 			return ResponseEntity.ok(cc);
 		else
@@ -84,13 +77,14 @@ public class OrderController {
 	}
 
 	
-	@DeleteMapping(path = "/{orderId}")
-	public ResponseEntity<Void> deletePurchase(@RequestBody Order ccToDelete){
+	@DeleteMapping(path = "/{ccId}")
+	public ResponseEntity<Void> deletePurchase(@RequestBody CreditCardInfo ccToDelete){
 		//deletes the purchase by its PurchaseId
 		if (ccToDelete !=null) {
-			orderServ.deleteOrder(ccToDelete);
+			CreditCardInfoServ.deleteCreditCardInfo(ccToDelete);
 			return ResponseEntity.status(HttpStatus.CREATED).build();
 		}
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
 	}
+	
 }

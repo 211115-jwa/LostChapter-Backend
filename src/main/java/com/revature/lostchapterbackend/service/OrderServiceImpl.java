@@ -1,6 +1,7 @@
 package com.revature.lostchapterbackend.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.transaction.Transactional;
 
@@ -8,10 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.revature.lostchapterbackend.dao.OrderDAO;
-import com.revature.lostchapterbackend.exceptions.CartNotFoundException;
 import com.revature.lostchapterbackend.exceptions.OrderDoesNotExist;
 import com.revature.lostchapterbackend.exceptions.UserNotFoundException;
-import com.revature.lostchapterbackend.model.Book;
 import com.revature.lostchapterbackend.model.Order;
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -25,10 +24,10 @@ public class OrderServiceImpl implements OrderService {
 	
 	@Override
 	@Transactional
-	public Order getOrderById(int orderId) throws OrderDoesNotExist {
+	public Optional<Order>  getOrderById(int orderId) throws OrderDoesNotExist {
 		try
 		{
-			Order order = orderdao.getById(orderId);
+			Optional<Order> order = orderdao.findById(orderId);
 			return order;
 		}catch(Exception e)
 		{
@@ -69,6 +68,24 @@ public class OrderServiceImpl implements OrderService {
 		if(order != null)
 		return order.getOrderId();
 		else return 0;
+	}
+
+	@Override
+	@Transactional
+	public void deleteOrder(Order orderToDelete) {
+	
+		orderdao.delete(orderToDelete);
+	}
+
+	@Override
+	@Transactional
+	public Order updateOrderBy(Order updateOrder) throws OrderDoesNotExist {
+		if (orderdao.existsById(updateOrder.getOrderId())) {
+			orderdao.save(updateOrder);
+			updateOrder =orderdao.findById(updateOrder.getOrderId()).get();
+			return updateOrder;
+		}
+		return null;
 	}
 
 
