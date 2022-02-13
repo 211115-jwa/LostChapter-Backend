@@ -1,6 +1,7 @@
 package com.revature.lostchapterbackend.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.transaction.Transactional;
 
@@ -23,10 +24,10 @@ public class OrderServiceImpl implements OrderService {
 	
 	@Override
 	@Transactional
-	public Order getOrderById(int orderId) throws OrderDoesNotExist {
+	public Optional<Order>  getOrderById(int orderId) throws OrderDoesNotExist {
 		try
 		{
-			Order order = orderdao.getById(orderId);
+			Optional<Order> order = orderdao.findById(orderId);
 			return order;
 		}catch(Exception e)
 		{

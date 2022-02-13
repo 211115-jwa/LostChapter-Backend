@@ -2,6 +2,7 @@ package com.revature.lostchapterbackend.controller;
 
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -75,7 +76,7 @@ public class OrderController {
 	public ResponseEntity<Object> getOrderById(@PathVariable int orderId) throws OrderDoesNotExist{
 		//gets the purchase by its PurchaseId
 		
-		Order cc = orderServ.getOrderById(orderId);	
+		Optional<Order>  cc = orderServ.getOrderById(orderId);	
 		if (cc != null)
 			return ResponseEntity.ok(cc);
 		else
