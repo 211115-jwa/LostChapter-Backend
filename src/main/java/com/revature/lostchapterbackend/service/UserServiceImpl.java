@@ -89,7 +89,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 	@Override
 	@Transactional
 	public User getUserByUsername(String username) {
-		User user = userDao.findByUsername(username);
+		User user = userDao.findByUsername(username.toLowerCase().replace(" ", ""));
 		return user;
 	}
 

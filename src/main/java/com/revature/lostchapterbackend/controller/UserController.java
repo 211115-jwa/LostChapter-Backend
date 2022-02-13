@@ -64,9 +64,8 @@ public class UserController {
 		//no current path??
 		try
 		{
-			UserDetail userDetail = new UserDetail(newUser);
-			String token=tokenProvider.generateToken(userDetail);
-			newUser.setPassword(token);
+//			UserDetail userDetail = new UserDetail(newUser);
+//			String token=tokenProvider.generateToken(userDetail);
 			newUser = userService.register(newUser);
 			Map<String, Integer> newIdMap = new HashMap<>();
 			newIdMap.put("generatedId", newUser.getUserId());
@@ -86,8 +85,8 @@ public class UserController {
 		
 
 		try {
-			UserDetail userDetail1 = new UserDetail(userService.getUserByUsername(username));
-			this.authenticate(username, tokenProvider.generateToken(userDetail1));
+			//UserDetail userDetail1 = new UserDetail(userService.getUserByUsername(username));
+			this.authenticate(username, password);
 //			User user = userService.login(username, password);
 			User user = userService.getUserByUsername(username);
 			UserDetail userDetail = new UserDetail(user);
