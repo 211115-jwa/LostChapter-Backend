@@ -6,7 +6,14 @@ import java.util.Optional;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import com.revature.lostchapterbackend.JWT.UserDetail;
 import com.revature.lostchapterbackend.dao.UserDAO;
 import com.revature.lostchapterbackend.exceptions.InvalidLoginException;
 import com.revature.lostchapterbackend.exceptions.UserNotFoundException;
@@ -15,15 +22,26 @@ import com.revature.lostchapterbackend.model.User;
 import com.revature.lostchapterbackend.utility.HashUtil;
 
 @Service
-public class UserServiceImpl implements UserService {
-
-
+@Transactional
+@Qualifier("UserDetailService")
+public class UserServiceImpl implements UserService, UserDetailsService {
+	//This service is used to handle all aspects of the User class and has the below methods
+		//register: This methods responsibility is to sign up a new user
+		//login: This methods responsibility is to log in the user
+		//getUserById: This methods responsibility is to return a user by their userId
+		//getUserByEmail: This methods responsibility is to return a user by their email
+		//getUserByUsername:This methods responsibility is to return a user by their username 
+		//update: This methods responsibility is to update a users information base on their userId
+		//deleteUser: This methods responsibility is to delete a users information base on their userId
+		//passwordHasher: This methods responsibility is to encode the users password for safe keeping
+		//loadUserByUsername: Returns a users information?
 	private UserDAO userDao;
+	private BCryptPasswordEncoder hashPassword;
 	
-
 	@Autowired
-	public UserServiceImpl(UserDAO userDao) {
+	public UserServiceImpl(UserDAO userDao, BCryptPasswordEncoder hashPassword) {
 		this.userDao = userDao;
+		this.hashPassword = hashPassword;
 	}
 	
 	@Override
@@ -31,16 +49,17 @@ public class UserServiceImpl implements UserService {
 	public User register(User newUser) throws UsernameAlreadyExists {
 		try 
 		{
+			String encryptedPassword = this.hashPassword.encode(newUser.getPassword());
+			newUser.setPassword(encryptedPassword);
 			newUser = userDao.save(newUser);
 			return newUser;
 		} catch(Exception e) {
-			if(e.getMessage() != null && e.getMessage().contains("unique"))
-				
+			if(e.getMessage() != null && e.getMessage().contains("unique")) {
 				throw new UsernameAlreadyExists("Username Already Exists! Try Again!");
-			
-			else return null;
-		}	
-		
+			} else {
+				return null;
+			}
+		}
 	}
 
 	
@@ -48,14 +67,13 @@ public class UserServiceImpl implements UserService {
 	@Transactional
 	public User login(String username, String password) throws UserNotFoundException, InvalidLoginException{
 		User userFromDatabase = userDao.findByUsername(username);
-		if (userFromDatabase != null && userFromDatabase.getPassword().equals(password)) 
+		String encryptedPassword = this.hashPassword.encode(password);
+		if (userFromDatabase != null && userFromDatabase.getPassword().equals(encryptedPassword)) 
 		{
 			return userFromDatabase;
-		}else if (userFromDatabase == null )
-		{
+		} else if (userFromDatabase == null ) {
 			throw new UserNotFoundException();	
-		}else
-		{
+		} else {
 			throw new InvalidLoginException();
 		}
 		
@@ -81,7 +99,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	@Transactional
 	public User getUserByUsername(String username) {
-		User user = userDao.findByUsername(username);
+		User user = userDao.findByUsername(username.toLowerCase().replace(" ", ""));
 		return user;
 	}
 
@@ -107,17 +125,25 @@ public class UserServiceImpl implements UserService {
 		
 	}
 
-
 	@Override
 	@Transactional
 	public String passwordHasher(String password) throws NoSuchAlgorithmException {
-		String algorithm = "SHA-256";
-		String hashedPassword = HashUtil.hashInputPassword(password.trim(), algorithm);
-		return hashedPassword;
+//		String algorithm = "SHA-256";
+//		String hashedPassword = HashUtil.hashInputPassword(password.trim(), algorithm);
+		return hashPassword.encode(password);
 	}
 
-
-	
+	@Override
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		// TODO Auto-generated method stub
+		User user = userDao.findByUsername(username);
+		if(user==null) {
+			throw new UsernameNotFoundException(username + "is not registered.");
+		} else {
+			UserDetail userDetail = new UserDetail(user);
+			return userDetail;
+		}
+	}	
 }
 
 

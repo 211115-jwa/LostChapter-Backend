@@ -77,12 +77,14 @@ public class BookController {
 
 	@GetMapping(path = "/featured")
 	public List<Book> getFeaturedBooks() {
-		//This method is responsible for getting all of the current featured books
-		logger.info("BookController.getFeaturedBooks() invoked.");
-	List<Book> featuredBooks = bookServ.getFeaturedBooks();
 
-	return featuredBooks;
-}
+		//This method is responsible for getting all of the current featured books
+
+		logger.info("BookController.getFeaturedBooks() invoked.");
+		List<Book> featuredBooks = bookServ.getFeaturedBooks();
+
+		return featuredBooks;
+	}
 	
 	//working
 	@GetMapping(path = "/{bookId}")

@@ -1,4 +1,6 @@
 package com.revature.lostchapterbackend.controller;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.revature.lostchapterbackend.exceptions.UserNotFoundException;
 import com.revature.lostchapterbackend.model.Book;
+import com.revature.lostchapterbackend.model.Order;
 import com.revature.lostchapterbackend.model.Purchase;
 import com.revature.lostchapterbackend.model.User;
 import com.revature.lostchapterbackend.service.PurchaseService;
@@ -45,6 +48,20 @@ public class PurchaseController {
 	public PurchaseController(PurchaseService purchaseServ) {
 		this.purchaseServ= purchaseServ;
 	}
+	/*get all purchases by user*/
+	@GetMapping(path = "user/{userId}") 
+	public ResponseEntity<Object> getPurchaseByUser(@PathVariable int userId){
+		//gets the purchase by its PurchaseId
+		
+		List<Purchase> purchase = PurchaseServ.getPurchaseByuserId(userId);	
+		if (purchase != null)
+			return ResponseEntity.ok(purchase);
+		else
+			return ResponseEntity.notFound().build();
+	}
+	/*update purchase */
+	@PutMapping(path = "/adjust") 
+	public ResponseEntity<Object> updatePurchase(@RequestBody Purchase newPurchase){
 	
 	@PostMapping
 	public ResponseEntity<Purchase> createPurchase(@RequestBody Purchase newPurchase)  {
@@ -60,30 +77,28 @@ public class PurchaseController {
 //	public ResponseEntity<Object> addBookToPurchase(@RequestBody Book bookId, @PathVariable(value="userId") int userId){
 		//This methods responsibility it to add a new book to the purchase collection if it doesnt exist already or to increase the quantity if it is present
 		//This method uses the userID in order to find the users Purchase collection
-//		if (bookId !=null&&userId!=0) {
-//			if(PurchaseServ.checkBookInThePurchase(bookId, userId)) {
-//				PurchaseServ.incrementQuantity(bookId, userId);
-//			}
-//			else {
-//			PurchaseServ.addBooksToPurchase(bookId, userId);
-//			return ResponseEntity.status(HttpStatus.CREATED).build();
-//			}
-//		}
-//		
-//		return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-//	}
-//	
-//	@PutMapping(path = "/add/{bookToBuyId}/{PurchaseId}") 
-//	public ResponseEntity<Object> addBookToPurchaseNoUser(@RequestBody Book bookToAdd, @PathVariable(value="PurchaseId") int PurchaseId){
-		//This methods responsibility it to add a new book to the purchase collection if it doesnt exist already or to increase the quantity if it is present
-		//This method uses the PurchaseId in order to find the users Purchase collection
-//		if (bookToAdd !=null) {
-//			PurchaseServ.addBooksToPurchaseNoUser(bookToAdd, PurchaseServ.getPurchaseById(PurchaseId));
-//			return ResponseEntity.status(HttpStatus.CREATED).build();
-//		}
-//		
-//		return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-//	}
+		if (newPurchase !=null&& newPurchase.getQuantityToBuy()!=0) {
+			PurchaseServ.upDatePurchase(newPurchase);
+			return ResponseEntity.status(HttpStatus.ACCEPTED).build();
+			}
+		else if (newPurchase !=null&& newPurchase.getQuantityToBuy()==0) {
+		PurchaseServ.deletePurchase(newPurchase);	
+		return ResponseEntity.status(HttpStatus.ACCEPTED).build();
+		}
+		else
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+	}
+	/*create new purchase*/
+	@PostMapping(path = "/add") 
+	public ResponseEntity<Object> addBookToPurchase(@RequestBody Purchase bookToAdd){
+		
+		if (bookToAdd !=null) {
+			PurchaseServ.createPurchase(bookToAdd);
+			return ResponseEntity.status(HttpStatus.CREATED).build();
+		}
+		
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+	}
 //	@PostMapping(path = "/delete/{bookToBuyId}/{userId}") 
 //	public ResponseEntity<Object> deleteBookToPurchase(@RequestBody Book bookToDelete, @PathVariable int userId){
 		//This methods responsibility it to delete a new book from the purchase collection
@@ -162,7 +177,7 @@ public class PurchaseController {
 //		
 //		return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
 //	}
-	
+	/*get  purchase by id*/
 	@GetMapping(path = "/{PurchaseId}") 
 	public ResponseEntity<Object> getPurchaseById(@PathVariable int PurchaseId) {
 		//gets the purchase by its PurchaseId

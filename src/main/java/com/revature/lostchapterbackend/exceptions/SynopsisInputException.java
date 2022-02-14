@@ -1,7 +1,7 @@
 package com.revature.lostchapterbackend.exceptions;
 
 public class SynopsisInputException extends Exception {
-
+	//This exception is thrown when the program is unable to find a review in the database with the given id
 	/**
 	 * 
 	 */

@@ -75,13 +75,13 @@ public class ReviewControllerTest {
 		
 	}
 	
-	@Test
-	public void getReviewById () throws Exception {
-		when(reviewServ.getReviewById(1)).thenReturn(new Review());
-		
-		mockMvc.perform(get("/reviews/{reviewId}", 1)).andExpect(status().isOk()).andReturn();
-		
-	}
+//	@Test
+//	public void getReviewById () throws Exception {
+//		when(reviewServ.getReviewById(1)).thenReturn(new Review());
+//		
+//		mockMvc.perform(get("/reviews/{reviewId}", 1)).andExpect(status().isOk()).andReturn();
+//		
+//	}
 	
 	@Test
 	public void postNewReview () throws Exception {
@@ -109,7 +109,6 @@ public class ReviewControllerTest {
 //				.andExpect(content().json(jsonReview))
 //				.andReturn();
 //	}
-//	
 	@Test
 	public void getAllReviewsForBook () throws Exception {
 		when(reviewServ.getReviewsByBook(1)).thenReturn(Collections.emptyList());

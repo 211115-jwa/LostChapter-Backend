@@ -161,5 +161,57 @@ public class ReviewServiceTest {
 		verify(reviewDao, times(0)).save(Mockito.any(Review.class));
 	}
 	
+//	@Test 
+//	public void addReviewSuccessfully() throws InvalidParameterException {
+//		Review newReview = new Review();
+//		Review mockReview = new Review();
+//		mockReview.setReviewId(69);
+//		
+//		when(reviewDao.save(newReview)).thenReturn(mockReview);
+//		
+//		int newId = reviewServ.addReview(newReview);
+//		
+//		assertNotEquals(0, newId);
+//	}
+//	
+//	@Test 
+//	public void addReviewUnsuccessfully() throws InvalidParameterException {
+//		Review review = new Review();
+//		
+//		when(reviewDao.save(review)).thenReturn(review);
+//		
+//		int newId = reviewServ.addReview(review);
+//		
+//		assertEquals(0,newId);
+//	}
+//	
+//	@Test 
+//	public void updateReviewExists() throws ReviewNotFoundException, InvalidParameterException {
+//		Review editedReview = new Review();
+//		editedReview.setReviewId(1);
+//		editedReview.setReviewText("My Last Book");
+//		
+//		when(reviewDao.findById(2)).thenReturn(Optional.of(editedReview));
+//		when(reviewDao.save(Mockito.any(Review.class))).thenReturn(editedReview);
+//		
+//		Review actualReview = reviewServ.updateReview(editedReview);
+//		
+//		assertEquals(editedReview, actualReview);
+//	}
+//	
+//	@Test 
+//	public void updateReviewDoesNotExist() throws ReviewNotFoundException, InvalidParameterException {
+//		when(reviewDao.findById(2)).thenReturn(Optional.empty());
+//		
+//		Review editedReview = new Review();
+//		editedReview.setReviewId(2);
+//		editedReview.setReviewText("My First Book");
+//		
+//		Review actualReview = reviewServ.updateReview(editedReview);
+//		
+//		assertNull(actualReview);
+//		verify(reviewDao, times(0)).save(Mockito.any(Review.class));
+//	}
+//	
 
 }

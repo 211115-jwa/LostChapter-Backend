@@ -2,6 +2,7 @@ package com.revature.lostchapterbackend.exceptions;
 
 public class SaleDiscountRateException extends Exception {
 
+	//This exception is thrown when the salesdiscount rate is????
 	/**
 	 * 
 	 */

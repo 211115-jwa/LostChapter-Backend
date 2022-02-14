@@ -3,6 +3,14 @@ package com.revature.lostchapterbackend.dto;
 import java.util.Objects;
 
 public class LoginDto {
+	//This DTO is used for logging the suer in
+	//Its methods are
+		//LoginDto: logs the user in
+		//Get/Set username
+		//Get/Set password
+		//hashCode: hashes the user
+		//equals: finds a matching user in the database based off of their username and password
+		//toString: converts the username and passoword into a sendable value
 
 	private String username;
 	private String password;

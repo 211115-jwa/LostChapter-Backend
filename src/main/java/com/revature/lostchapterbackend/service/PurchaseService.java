@@ -1,5 +1,7 @@
 package com.revature.lostchapterbackend.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import com.revature.lostchapterbackend.model.Book;
@@ -29,7 +31,8 @@ public int createPurchase(Purchase newPurchase);
 	
 /* Returns Purchase by id using spring boot repo*/
 public Purchase getPurchaseById(int Id);
-
+/*Get purchase by userid*/
+public List<Purchase> getPurchaseByuserId(int Id);
 /*deletes Purchase*/
 public void deletePurchase(Purchase PurchaseToDelete);
 
@@ -37,7 +40,8 @@ public void deletePurchase(Purchase PurchaseToDelete);
  *Then we add the book to the list of books in Purchase
  *Spring boot adds a new entry to the booktobuy table
  */
-//public void addBooksToPurchase(Book newbook, int userId);
+/*for updating quantity*/
+public Purchase upDatePurchase(Purchase newPurchase);
 //
 ///*Using the login token we find the user's Purchase
 // * Then we check the Purchases list for the book
@@ -94,7 +98,6 @@ public void deletePurchase(Purchase PurchaseToDelete);
 // * decreases quantity
 // * */
 //public void decreaseQuantityNoUser(Book book, Purchase currentPurchase);
-
 
 
 }

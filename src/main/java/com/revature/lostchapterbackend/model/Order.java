@@ -18,6 +18,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 @Entity
 @Table(name="ordr")
 public class Order {
+	//This class deals with Order objects
+	//Has the values of
+		//LocalDateTime transactionDate
+		//int orderId
+		//float totalPrice
+	//Has the special methods of
+		//hashCode: hashes all of the order information
+		//equals: see if there is a matching order in the database 
+		//toString: converts all of the order information into a string
 	
 	@Id
 	@Column(name="order_id")

@@ -2,7 +2,7 @@ package com.revature.lostchapterbackend.exceptions;
 
 public class GenreNotFoundException extends Exception {
 
-	/**
+	/**	This exception is thrown when the program is unable to find a genre in the database with the given id
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;

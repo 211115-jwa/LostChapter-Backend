@@ -1,6 +1,6 @@
 package com.revature.lostchapterbackend.service;
 
-import java.security.InvalidParameterException;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -12,13 +12,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.revature.lostchapterbackend.dao.ShippingInfoDAO;
-import com.revature.lostchapterbackend.exceptions.BookNotFoundException;
-import com.revature.lostchapterbackend.exceptions.UserNotFoundException;
-import com.revature.lostchapterbackend.model.Review;
 import com.revature.lostchapterbackend.model.ShippingInformation;
 
 @Service
 public class ShippingServiceImpl implements ShippingService {
+	//This service is used to handle all aspects of shipping and has the below methods
+		//getAllShippingInfos: gets all of the shipping information from the database
+		//getShippingInformationById:  gets a specific shipping information by its unique id
+		//addShippingInformation: creates and adds a shipping information to the database
+		//getShippingInformationByUser: gets the shipping information of the user by passing in a userid
+		//upDateShippingInformation: allows the user to update and change their shipping information
+		//deleteShipping: deletes a shipping information from the database
+		
 	private Logger logger = LoggerFactory.getLogger(ShippingService.class);
 
 	private ShippingInfoDAO shipDao;
@@ -55,8 +60,27 @@ public class ShippingServiceImpl implements ShippingService {
 	@Override
 	@Transactional
 	public List<ShippingInformation> getShippingInformationByUser(int UserId) {
-			List<ShippingInformation> ship = shipDao.findShippingInformationByUser(UserId);
+			List<ShippingInformation> ship = shipDao.findByUser(UserId);
 			return ship;
+	}
+
+	@Override
+	@Transactional
+	public ShippingInformation upDateShippingInformation(ShippingInformation newShippingInformation) {
+		
+			if (shipDao.existsById(newShippingInformation.getShippingInfoId())) {
+				shipDao.save(newShippingInformation);
+				newShippingInformation = shipDao.findById(newShippingInformation.getShippingInfoId()).get();
+				return newShippingInformation;
+			}
+			return null;
+	}
+
+	@Override
+	@Transactional
+	public void deleteShipping(ShippingInformation shipToDelete) {
+		shipDao.delete(shipToDelete);
+		
 	}
 
 }

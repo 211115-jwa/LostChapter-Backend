@@ -13,7 +13,16 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @Entity
 @Table(name="book")
 public class Book {
-
+	//This is the second most important object in this project
+	//Has the values of
+		//String ISBN, bookName, synopsis, author, genre, publisher, bookImage
+		//int year, quantityOnHand
+		//boolean saleIsActive, featured
+		//float bookPrice, saleDiscountRate, saleDiscountRate
+	//Has the special methods of
+		//hashCode: hashes all of the book information
+		//equals: see if there is a matching book in the database 
+		//toString: converts all of the books information into a string
 
 	@Id
 	@Column(name="book_id")
