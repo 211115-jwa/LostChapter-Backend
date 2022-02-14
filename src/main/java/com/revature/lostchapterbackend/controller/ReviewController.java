@@ -49,7 +49,7 @@ public class ReviewController {
 	}
 
 	@GetMapping(path = "/reviews")
-	public ResponseEntity<List<Review>> getAllReviews(@RequestHeader("Authorization") String authorization) {
+	public ResponseEntity<List<Review>> getAllReviews() {
 		logger.info("ReviewController.getAllReviews() invoked.");
 
 		List<Review> allReviews = reviewService.getAllReviews();
@@ -57,7 +57,7 @@ public class ReviewController {
 	}
 
 	@GetMapping(path = "/reviews/{reviewId}")
-	public ResponseEntity<Object> getReviewById(@PathVariable String reviewId, @RequestHeader("Authorization") String authorization) 
+	public ResponseEntity<Object> getReviewById(@PathVariable String reviewId) 
 			throws ReviewNotFoundException {
 		logger.info("ReviewController.getReviewById() invoked.");
 
