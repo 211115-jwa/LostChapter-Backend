@@ -42,12 +42,12 @@ public class BookServiceTests {
 			if (i<3)
 				book.setGenre("Horror");
 				book.setBookName("To Kill a Mocking Bird");
-				book.setISBN("1");
+				book.setIsbn("1");
 				book.setFeatured(true);
 			if  (i>3)
 				book.setGenre("Action");
 				book.setBookName("Fahrenheit 451");
-				book.setISBN("2");
+				book.setIsbn("2");
 			mockBooks.add(book);
 		}
 	}
@@ -62,7 +62,7 @@ public class BookServiceTests {
 			if (i<3)
 				book.setGenre("Horror");
 				book.setBookName("To Kill a Mocking Bird");
-				book.setISBN("1");
+				book.setIsbn("1");
 				book.setFeatured(false);
 			mockBooks.add(book);
 		}
@@ -117,32 +117,37 @@ public class BookServiceTests {
 		String genre = "Mystery";
 		
 		when(bookDao.findByGenre("Mystery")).thenReturn(mockBooks);
-		
+
 		List<Book> actualBooks = bookServ.getBookByGenre(genre);
 		assertTrue(actualBooks.isEmpty());
 	}
 	
 	@Test
-	public void getBooksByISBNExists() {
-		String ISBN = "1";
+	public void getBooksByIsbnExists() {
+		String Isbn = "1";
 		
-		when(bookDao.findByISBN("1")).thenReturn(mockBooks);
-		
-		List<Book> actualBooks = bookServ.getByISBN(ISBN);
-		boolean onlyISBN = true;
+		when(bookDao.findByIsbn(Isbn)).thenReturn(mockBooks);
+		System.out.println(mockBooks);
+		List<Book> actualBooks = bookServ.getBookByIsbn(Isbn);
+		System.out.println("SYSOUT HERE");
+		System.out.println(actualBooks);
+		boolean onlyIsbn = true;
 		for (Book book : actualBooks) {
-			if (!book.getISBN().equals("1"))
-				onlyISBN = false;
+			if (!book.getIsbn().equals("1"))
+				onlyIsbn = false;
 		}
-		assertTrue(onlyISBN);
+		assertTrue(onlyIsbn);
 	}
 
 	
 	@Test
-	public void getBooksByISBNDoesNotExist() {
-		when(bookDao.findByISBN("0")).thenReturn(mockBooks);
+	public void getBooksByIsbnDoesNotExist() {
+		String Isbn = "0";
 		
-		List<Book> actualBooks = bookServ.getByISBN("0");
+		when(bookDao.findByIsbn(Isbn)).thenReturn(mockBooks);
+		
+		List<Book> actualBooks = bookServ.getBookByIsbn(Isbn);
+		
 		assertTrue(actualBooks.isEmpty());
 	}
 	
@@ -224,7 +229,7 @@ public class BookServiceTests {
 		editedBook.setBookId(1);
 		editedBook.setBookName("My Last Book");
 		
-		when(bookDao.findById(2)).thenReturn(Optional.of(editedBook));
+		when(bookDao.findById(1)).thenReturn(Optional.of(editedBook));
 		when(bookDao.save(Mockito.any(Book.class))).thenReturn(editedBook);
 		
 		Book actualBook = bookServ.updateBook(editedBook);

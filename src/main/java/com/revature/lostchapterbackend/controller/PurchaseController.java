@@ -19,16 +19,14 @@ import com.revature.lostchapterbackend.exceptions.UserNotFoundException;
 import com.revature.lostchapterbackend.model.Book;
 import com.revature.lostchapterbackend.model.Order;
 import com.revature.lostchapterbackend.model.Purchase;
-
-
-
-
+import com.revature.lostchapterbackend.model.User;
 import com.revature.lostchapterbackend.service.PurchaseService;
 
 @RestController
 @RequestMapping(path="/Purchase")
 @CrossOrigin("*")
 public class PurchaseController {
+
 	//This controller is used for the following
 		//add books to purchase database row POST /add/{userId}
 		//add books to purchase PUT /add/{bookToBuyId}/{PurchaseId}
@@ -40,16 +38,15 @@ public class PurchaseController {
 		//decrease quantity of books to purchase by first finding the purchase by purchaseID POST /decrease/quantity/{bookToBuyId}/{PurchaseId}
 		//get purchase by its id GET /{PurchaseId}
 		//delete purchase by its id DELETE /{PurchaseId}
-	private static PurchaseService PurchaseServ;
-	
+	private static PurchaseService purchaseServ;
 	
 	public PurchaseController() {
 		super();
 		}
 	//field injection
 	@Autowired
-	public PurchaseController(PurchaseService PurchaseServ) {
-		this.PurchaseServ= PurchaseServ;
+	public PurchaseController(PurchaseService purchaseServ) {
+		this.purchaseServ= purchaseServ;
 	}
 	/*get all purchases by user*/
 	@GetMapping(path = "user/{userId}") 
@@ -65,6 +62,19 @@ public class PurchaseController {
 	/*update purchase */
 	@PutMapping(path = "/adjust") 
 	public ResponseEntity<Object> updatePurchase(@RequestBody Purchase newPurchase){
+	
+	@PostMapping
+	public ResponseEntity<Purchase> createPurchase(@RequestBody Purchase newPurchase)  {
+		
+		if (newPurchase !=null) {
+			purchaseServ.createPurchase(newPurchase);
+			return ResponseEntity.status(HttpStatus.CREATED).build();
+		}
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+}
+
+//	@PostMapping(path = "/add/{userId}") 
+//	public ResponseEntity<Object> addBookToPurchase(@RequestBody Book bookId, @PathVariable(value="userId") int userId){
 		//This methods responsibility it to add a new book to the purchase collection if it doesnt exist already or to increase the quantity if it is present
 		//This method uses the userID in order to find the users Purchase collection
 		if (newPurchase !=null&& newPurchase.getQuantityToBuy()!=0) {
@@ -171,7 +181,7 @@ public class PurchaseController {
 	@GetMapping(path = "/{PurchaseId}") 
 	public ResponseEntity<Object> getPurchaseById(@PathVariable int PurchaseId) {
 		//gets the purchase by its PurchaseId
-		Purchase Purchase = PurchaseServ.getPurchaseById(PurchaseId);
+		Purchase Purchase = purchaseServ.getPurchaseById(PurchaseId);
 		if (Purchase != null)
 			return ResponseEntity.ok(Purchase);
 		else
@@ -183,7 +193,7 @@ public class PurchaseController {
 	public ResponseEntity<Void> deletePurchase(@RequestBody Purchase PurchaseToDelete){
 		//deletes the purchase by its PurchaseId
 		if (PurchaseToDelete !=null) {
-			PurchaseServ.deletePurchase(PurchaseToDelete);
+			purchaseServ.deletePurchase(PurchaseToDelete);
 			return ResponseEntity.status(HttpStatus.CREATED).build();
 		}
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();

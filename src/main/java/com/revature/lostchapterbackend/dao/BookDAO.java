@@ -13,7 +13,7 @@ public interface BookDAO extends JpaRepository<Book, Integer> {
 		//findByISBN: finds a book its unique ISBN
 	public List<Book> findByGenre(String genre);
 	//public List<Book> findBysaleIsActiveTrue();
-	public List<Book> findByISBN(String ISBN);
+	public List<Book> findByIsbn(String isbn);
 	
 }
 
