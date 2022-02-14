@@ -148,13 +148,11 @@ public class BookController {
 	}
 
 	@GetMapping(path = "/books/sales")
-	public ResponseEntity<List<Book>> getBookBySale(@RequestHeader("Authorization") String authorization) {
+	public ResponseEntity<List<Book>> getBookBySale() {
 		//This method is responsible for getting all books that are currently on sale
 		//logger.info("BookController.getBookBySale() invoked.");
-		String token = tokenProvider.extractToken(authorization);
-		HttpHeaders jwtHeader = tokenProvider.getHeaderJWT(token);
-		
-		return new ResponseEntity<>(bookServ.getBooksBySale(), jwtHeader, HttpStatus.OK);
+		List<Book> bookList = bookServ.getBooksBySale();
+		return ResponseEntity.ok(bookList);
 	}
 
 	//working
