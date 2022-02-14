@@ -9,5 +9,8 @@ import org.springframework.stereotype.Repository;
 import com.revature.lostchapterbackend.model.ShippingInformation;
 @Repository
 public interface ShippingInfoDAO extends JpaRepository<ShippingInformation, Integer> {
+	//This DAO is used to hold ShippingInformation objects which can be found by their ids
+	//Methods include
+		//findByUser:finds a users ShippingInformation by using their userId
 	public List<ShippingInformation> findByUser(int userId);
 }

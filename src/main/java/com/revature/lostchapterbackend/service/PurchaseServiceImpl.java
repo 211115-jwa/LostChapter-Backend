@@ -13,6 +13,22 @@ import com.revature.lostchapterbackend.dao.PurchaseDAO;
 import com.revature.lostchapterbackend.model.Purchase;
 @Service
 public class PurchaseServiceImpl implements PurchaseService{
+	//This service is used to handle all aspects of Purchases and has the below methods
+		//upDatePurchase: This method updates a purchase information
+		//getPurchaseByuserId: This method gets a purchase using the usersid
+		//deletePurchase: This method deletes a purchase by a purchase object
+		//getPurchaseById: This method gets a purchase by an id
+		//addBooksToPurchase: This method adds books to the purchase
+		//checkBookInThePurchase: This method allows the user to check to see if a book is already in the purchase
+		//deleteBookInPurchase: This method allows the user to delete a book by its book object in the purchase
+		//deleteAllBooksInPurchase: This method allows the user to delete all of the books in the users purchase
+		//incrementQuantity: This method allows the user to increase the quantity of books they are buying by 1 via a user object
+		//incrementQuantityNoUser: This method allows the user to increase the quantity of books they are buying by 1 via a purchase object
+		//decreaseQuantity: This method allows the user to decrease the quantity of books they are buying by 1 via a user object
+		//decreaseQuantityNoUser: This method allows the user to decrease the quantity of books they are buying by 1 via a purchase object
+		//createPurchase: This method creates a new purchase in the database
+
+
 
 	private PurchaseDAO PurchaseDao;
 	@Autowired

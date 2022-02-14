@@ -1,7 +1,7 @@
 package com.revature.lostchapterbackend.exceptions;
 
 public class OutOfStockException extends Exception {
-
+	//This exception is thrown when a user is attempting to purchase a book, but the quantity left is less than the amount on the order or their is 0 stock
 	/**
 	 * 
 	 */

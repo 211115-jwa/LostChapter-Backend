@@ -16,6 +16,14 @@ import com.revature.lostchapterbackend.model.ShippingInformation;
 
 @Service
 public class ShippingServiceImpl implements ShippingService {
+	//This service is used to handle all aspects of shipping and has the below methods
+		//getAllShippingInfos: gets all of the shipping information from the database
+		//getShippingInformationById:  gets a specific shipping information by its unique id
+		//addShippingInformation: creates and adds a shipping information to the database
+		//getShippingInformationByUser: gets the shipping information of the user by passing in a userid
+		//upDateShippingInformation: allows the user to update and change their shipping information
+		//deleteShipping: deletes a shipping information from the database
+		
 	private Logger logger = LoggerFactory.getLogger(ShippingService.class);
 
 	private ShippingInfoDAO shipDao;

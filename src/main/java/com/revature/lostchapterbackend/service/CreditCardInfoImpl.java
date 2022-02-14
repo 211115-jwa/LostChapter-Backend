@@ -14,6 +14,13 @@ import com.revature.lostchapterbackend.model.Purchase;
 
 @Service
 public class CreditCardInfoImpl implements CreditCardInfoServ {
+	//This service is used to handle all aspects of credit cards and has the below methods
+		//upDateCreditCardInfo: This method allows for the user to update their credit card information
+		//getCreditCardInfoById:  This method gets a credit cards info by its id
+		//addCreditCardInfo: This method creates a new credit card in the datbase
+		//getCreditCardInfoByUser: This method gets a credit card by its users information
+		//deleteCreditCardInfo: This method deletes a credit cards information from the database
+
 	private CreditCardInfoDAO creditCardInfoDao;
 	
 	@Autowired

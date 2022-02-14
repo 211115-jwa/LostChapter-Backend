@@ -13,7 +13,15 @@ import javax.persistence.Table;
 @Entity
 @Table(name="usr")
 public class User {
-	
+	//This class deals with User objects
+	//Has the values of
+		//string username, password, firstName, lastname, password
+		//LocalDate birthday
+		//boolean isActive, isNotLocked
+	//Has the special methods of
+		//hashCode: hashes all of the User information
+		//equals: see if there is a matching User in the database 
+		//toString: converts all of the User information into a string
 	@Id
 	@Column(name="user_id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

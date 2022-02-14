@@ -18,6 +18,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 @Entity
 @Table
 public class Review {
+	//This class deals with Review objects
+	//Has the values of
+		//Book book
+		//User user
+		//int reviewId, ratingOne, ratingTwo, ratingThree
+		//string reviewTitle, reviewText
+		//LocalDateTime sentAt
+	//Has the special methods of
+		//hashCode: hashes all of the Review information
+		//equals: see if there is a matching Review in the database 
+		//toString: converts all of the Review information into a string
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int reviewId;

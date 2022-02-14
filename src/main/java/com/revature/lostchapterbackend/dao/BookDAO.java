@@ -7,6 +7,10 @@ import org.springframework.stereotype.Repository;
 import com.revature.lostchapterbackend.model.Book;
 @Repository
 public interface BookDAO extends JpaRepository<Book, Integer> {
+	//This DAO is used to hold book objects which can be found by their ids
+	//Methods include
+		//findByGenre: finds books by their genre name
+		//findByISBN: finds a book its unique ISBN
 	public List<Book> findByGenre(String genre);
 	//public List<Book> findBysaleIsActiveTrue();
 	public List<Book> findByISBN(String ISBN);

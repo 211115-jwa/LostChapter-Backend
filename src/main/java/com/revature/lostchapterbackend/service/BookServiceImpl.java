@@ -18,7 +18,16 @@ import com.revature.lostchapterbackend.model.Book;
 
 @Service
 public class BookServiceImpl implements BookService {
-
+	//This service is used to handle all aspects of books and has the below methods
+		//getFeaturedBooks:This method is responsible for getting all of the current featured books
+		//getBooksBySale: This method is responsible for getting all books that are currently on sale
+		//getAllBooks: This method is responsible for getting all of the current book on the database
+		//getBookById: This method is responsible  for getting a book by its id
+		//addBook: This method allow the admin to add a new book to our database
+		//updateBook: This method is responsible for the updating of a books information
+		//getBookByGenre: This method is responsible for getting books by their genre
+		//getByISBN: This method is responsible  for getting a book by its isbn
+		//getByKeyWord: This method is responsible for getting all books with the inserted keyword
 	private Logger logger = LoggerFactory.getLogger(BookService.class);
 	private BookDAO bookDao;
 	
