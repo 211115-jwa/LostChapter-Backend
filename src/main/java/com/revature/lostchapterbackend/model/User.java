@@ -35,8 +35,10 @@ public class User {
 	@Column(name="user_role")
 	private String role;
 	
+	@Column(name="is_active")
 	private boolean isActive;
 	
+	@Column(name="is_not_locked")
 	private boolean isNotLocked;
 	
 	public User() {
