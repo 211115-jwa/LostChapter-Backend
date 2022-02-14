@@ -20,4 +20,5 @@ public interface ReviewService {
 			throws ReviewNotFoundException, InvalidParameterException ;
 	public List<Review> getReviewsByBook(Book book) throws BookNotFoundException ;
 
+
 }

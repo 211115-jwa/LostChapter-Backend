@@ -13,6 +13,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 @Entity
 @Table
 public class Purchase {
@@ -24,11 +26,13 @@ public class Purchase {
 
 	@ManyToOne
 	@JoinColumn(name="book_id")
+	@Autowired
 	private Book book;
 	@Column(name="quantity_to_buy")
 	private int quantityToBuy;
 	@ManyToOne
 	@JoinColumn(name="order_id")
+	@Autowired
 	private Order order;
 	
 	public Purchase() {
