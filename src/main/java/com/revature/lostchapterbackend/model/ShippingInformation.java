@@ -16,6 +16,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 @Entity
 @Table
 public class ShippingInformation {
+	//This class deals with ShippingInformation objects
+	//Has the values of
+		//string firstName, lastname, streetname, city, state, zipcode, deliveryDate
+	//Has the special methods of
+		//hashCode: hashes all of the ShippingInformation information
+		//equals: see if there is a matching ShippingInformation in the database 
+		//toString: converts all of the ShippingInformation information into a string
 
 	@Id
 	@Column(name="shipping_info_id")

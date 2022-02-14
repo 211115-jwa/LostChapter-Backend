@@ -22,16 +22,14 @@ import com.revature.lostchapterbackend.exceptions.UserNotFoundException;
 import com.revature.lostchapterbackend.model.Book;
 import com.revature.lostchapterbackend.model.Order;
 import com.revature.lostchapterbackend.model.Purchase;
-
-
-
-
+import com.revature.lostchapterbackend.model.User;
 import com.revature.lostchapterbackend.service.PurchaseService;
 
 @RestController
 @RequestMapping(path="/Purchase")
 @CrossOrigin("*")
 public class PurchaseController {
+
 	//This controller is used for the following
 		//add books to purchase database row POST /add/{userId}
 		//add books to purchase PUT /add/{bookToBuyId}/{PurchaseId}

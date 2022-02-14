@@ -20,6 +20,13 @@ import com.revature.lostchapterbackend.model.Review;
 
 @Service
 public class ReviewServiceImpl implements ReviewService {
+	//This service is used to handle all aspects of Reviews and has the below methods
+		//getAllReviews: gets all reviews in the database
+		//getReviewById: get a review by its specific id
+		//addReview: creates and adds a review to the database
+		//updateReview: allows the user to update and change their review
+		//getReviewsByBook: gets all reviews by passing in a book object
+	
 	private Logger logger = LoggerFactory.getLogger(ReviewService.class);
 
 	private ReviewDAO revDao;

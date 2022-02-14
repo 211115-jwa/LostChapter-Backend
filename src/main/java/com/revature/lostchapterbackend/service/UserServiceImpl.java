@@ -25,6 +25,16 @@ import com.revature.lostchapterbackend.utility.HashUtil;
 @Transactional
 @Qualifier("UserDetailService")
 public class UserServiceImpl implements UserService, UserDetailsService {
+	//This service is used to handle all aspects of the User class and has the below methods
+		//register: This methods responsibility is to sign up a new user
+		//login: This methods responsibility is to log in the user
+		//getUserById: This methods responsibility is to return a user by their userId
+		//getUserByEmail: This methods responsibility is to return a user by their email
+		//getUserByUsername:This methods responsibility is to return a user by their username 
+		//update: This methods responsibility is to update a users information base on their userId
+		//deleteUser: This methods responsibility is to delete a users information base on their userId
+		//passwordHasher: This methods responsibility is to encode the users password for safe keeping
+		//loadUserByUsername: Returns a users information?
 	private UserDAO userDao;
 	private BCryptPasswordEncoder hashPassword;
 	
