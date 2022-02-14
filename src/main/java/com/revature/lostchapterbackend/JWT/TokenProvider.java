@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -57,6 +58,17 @@ public class TokenProvider {
 	public boolean isTokenValid(String username, String token) {
 		JWTVerifier verifier = this.getJWTVerifier();
 		return StringUtils.isNotEmpty(username) && !this.isTokenExpired(verifier, token);
+	}
+
+	public String extractToken(String authorizationHeader) {
+		return authorizationHeader.substring(TOKEN_PREFIX.length());
+	}
+	
+	public HttpHeaders getHeaderJWT(String token) {
+		HttpHeaders headers = new HttpHeaders();
+		headers.add(JWT_TOKEN_HEADER, token);
+		
+		return headers;
 	}
 	
 	private boolean isTokenExpired(JWTVerifier verifier, String token) {
