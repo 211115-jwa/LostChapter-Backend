@@ -21,6 +21,7 @@ import com.revature.lostchapterbackend.dao.OrderDAO;
 import com.revature.lostchapterbackend.dao.UserDAO;
 import com.revature.lostchapterbackend.exceptions.OrderDoesNotExist;
 import com.revature.lostchapterbackend.exceptions.UserNotFoundException;
+import com.revature.lostchapterbackend.model.Book;
 import com.revature.lostchapterbackend.model.Order;
 import com.revature.lostchapterbackend.model.User;
 import com.revature.lostchapterbackend.service.OrderService;
@@ -58,11 +59,10 @@ public class OrderServiceTest {
 	@Test
 	public void getOrderByIdExists() throws OrderDoesNotExist {
 		Order order = new Order();
-		order.setOrderId(2);
+		order.setOrderId(1);
 		
-		when(orderDao.findById(2)).thenReturn(Optional.of(order));
-		
-		Order actualOrder = orderServ.getOrderById(2);
+		when(orderDao.findById(1)).thenReturn(Optional.of(order));
+		Order actualOrder = orderServ.getOrderById(1);
 		assertEquals(order, actualOrder);
 	}
 	
@@ -93,7 +93,7 @@ public class OrderServiceTest {
 	@Test
 	public void getAllOrdersByUserDoesNotExist() throws UserNotFoundException {
 		
-		when(orderDao.findByUser(2)).thenReturn(mockOrders);
+		when(orderDao.findByUser(0)).thenReturn(mockOrders);
 		
 		List<Order> actualOrders = orderServ.getAllOrdersByUser(0);
 		assertTrue(actualOrders.isEmpty());
