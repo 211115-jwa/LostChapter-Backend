@@ -7,6 +7,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -14,10 +15,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-
+import com.revature.lostchapterbackend.JWT.TokenProvider;
 import com.revature.lostchapterbackend.model.Book;
 import com.revature.lostchapterbackend.service.BookService;
 
@@ -39,13 +41,16 @@ public class BookController {
 
 	//static for testing
 	private static BookService bookServ;
+	private TokenProvider tokenProvider;
+	
 	public BookController() {
 		super();
 	}
 	//field injection
 	@Autowired
-	public BookController(BookService bookServ) {
+	public BookController(BookService bookServ, TokenProvider tokenProvider) {
 		this.bookServ=bookServ;
+		this.tokenProvider=tokenProvider;
 	}
 	
 //	@GetMapping(path = "/genre")
@@ -68,11 +73,15 @@ public class BookController {
 //	}
 	//working
 	@GetMapping
-	public ResponseEntity<List<Book>>  getAllBooks() {
+	public ResponseEntity<List<Book>>  getAllBooks(@RequestHeader("Authorization") String authorization) {
 		//This method is responsible for getting all of the current books on the database
+		String token = tokenProvider.extractToken(authorization);
+		HttpHeaders jwtHeader = tokenProvider.getHeaderJWT(token);
 		logger.debug("BookController.getAllBooks() invoked.");
 		List<Book> books = bookServ.getAllBooks();
-		return ResponseEntity.ok(books);
+		
+//		return ResponseEntity.ok(books);
+		return new ResponseEntity<>(books, jwtHeader, HttpStatus.OK);
 	}
 
 	@GetMapping(path = "/featured")
