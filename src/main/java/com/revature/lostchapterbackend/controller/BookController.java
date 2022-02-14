@@ -73,26 +73,24 @@ public class BookController {
 //	}
 	//working
 	@GetMapping
-	public ResponseEntity<List<Book>>  getAllBooks(@RequestHeader("Authorization") String authorization) {
+	public ResponseEntity<List<Book>>  getAllBooks() {
 		//This method is responsible for getting all of the current books on the database
-		String token = tokenProvider.extractToken(authorization);
-		HttpHeaders jwtHeader = tokenProvider.getHeaderJWT(token);
+		
 		logger.debug("BookController.getAllBooks() invoked.");
 		List<Book> books = bookServ.getAllBooks();
 		
-//		return ResponseEntity.ok(books);
-		return new ResponseEntity<>(books, jwtHeader, HttpStatus.OK);
+		return ResponseEntity.ok(books);
 	}
 
 	@GetMapping(path = "/featured")
-	public List<Book> getFeaturedBooks() {
+	public ResponseEntity<List<Book>> getFeaturedBooks() {
 
 		//This method is responsible for getting all of the current featured books
 
 		logger.info("BookController.getFeaturedBooks() invoked.");
 		List<Book> featuredBooks = bookServ.getFeaturedBooks();
 
-		return featuredBooks;
+		return ResponseEntity.ok(featuredBooks);
 	}
 	
 	//working
@@ -100,6 +98,7 @@ public class BookController {
 	public ResponseEntity<Book> getBookById(@PathVariable int bookId) {
 		//This method is responsible  for getting a book by its id
 		//If the book does not exist it will throw an error
+
 		logger.debug("BookController.getBookById() invoked.");
 
 		Book book = bookServ.getBookById(bookId);
@@ -113,10 +112,10 @@ public class BookController {
 	}
 	//working
 	@GetMapping(path = "/genre/{name}")
-
 	public ResponseEntity<Object> getBookByGenre(@PathVariable String name) {
   		//This method is responsible for getting books by their genre
 		  //If the genre does not exist then it will throw an error
+		
 		logger.debug("BookController.getBookByGenreId() invoked.");
 
 		try {
@@ -149,26 +148,33 @@ public class BookController {
 	}
 
 	@GetMapping(path = "/books/sales")
-	public List<Book> getBookBySale() {
+	public ResponseEntity<List<Book>> getBookBySale(@RequestHeader("Authorization") String authorization) {
 		//This method is responsible for getting all books that are currently on sale
 		//logger.info("BookController.getBookBySale() invoked.");
-		return bookServ.getBooksBySale();
-
+		String token = tokenProvider.extractToken(authorization);
+		HttpHeaders jwtHeader = tokenProvider.getHeaderJWT(token);
+		
+		return new ResponseEntity<>(bookServ.getBooksBySale(), jwtHeader, HttpStatus.OK);
 	}
 
 	//working
 	@PostMapping
-	public ResponseEntity<Void> addNewBook(@RequestBody Book newBook) {
+	public ResponseEntity<Void> addNewBook(@RequestBody Book newBook, @RequestHeader("Authorization") String authorization) {
 		//This method allow the admin to add a new book to our database
 		//This method will throw an error if any of the following occur
 			//Currently no checking to see if book is valid
+		String token = tokenProvider.extractToken(authorization);
+		HttpHeaders jwtHeader = tokenProvider.getHeaderJWT(token);
+		
 		logger.debug("BookController.addNewBook() invoked.");
 
 		if (newBook !=null) {
-				bookServ.addBook(newBook);
-				return ResponseEntity.status(HttpStatus.CREATED).build();
-			}
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+			bookServ.addBook(newBook);
+//				return ResponseEntity.status(HttpStatus.CREATED).build();
+			return new ResponseEntity<>(jwtHeader,HttpStatus.CREATED);
+		}
+//			return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+			return new ResponseEntity<>(jwtHeader, HttpStatus.BAD_REQUEST);
 	}
 
 //	@Admin
