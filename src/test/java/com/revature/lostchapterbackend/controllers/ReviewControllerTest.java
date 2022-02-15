@@ -23,8 +23,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.json.JsonMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.revature.lostchapterbackend.LostChapterBackendApplication;
-import com.revature.lostchapterbackend.controller.BookController;
 import com.revature.lostchapterbackend.controller.ReviewController;
 import com.revature.lostchapterbackend.model.Review;
 import com.revature.lostchapterbackend.service.BookService;
@@ -43,7 +44,15 @@ public class ReviewControllerTest {
 	private ReviewController reviewController;
 	
 	private static MockMvc mockMvc;
+	
+//	private ObjectMapper mapper = JsonMapper.builder()
+//		    .addModule(new JavaTimeModule())
+//		    .build();
+	
 	private ObjectMapper objMapper = new ObjectMapper();
+//	.addModule(new JavaTimeModule())
+//   .build();
+	//.registerModule(new JavaTimeModule());
 	
 	@BeforeAll
 	public static void setUp() {
@@ -74,47 +83,45 @@ public class ReviewControllerTest {
 //		
 //	}
 	
-//	@Test
-//	public void postNewReview () throws Exception {
-//		Review newReview = new Review();
-//		when(reviewServ.addReview(newReview)).thenReturn(new Review());
-//		
-//		String jsonPet = objMapper.writeValueAsString(newReview);
-//		DateFormat jsonDate = objMapper.getDateFormat();
-//		
-//		mockMvc.perform(post("/reviews").content(jsonPet).contentType(MediaType.APPLICATION_JSON))
-//			.andExpect(status().isCreated())
-//			.andReturn();
-//
-//		
-//	}
+	@Test
+	public void postNewReview () throws Exception {
+		Review newReview = new Review();
+		when(reviewServ.addReview(newReview)).thenReturn(1);
+		
+		String jsonReview = objMapper.writeValueAsString(newReview);
+		
+		mockMvc.perform(post("/reviews").content(jsonReview).contentType(MediaType.APPLICATION_JSON))
+			.andExpect(status().isCreated())
+			.andReturn();
+
+		
+	}
 	
 //	@Test
 //	public void updateReviewById () throws Exception {
 //		Review reviewToEdit = new Review();
-//		reviewToEdit.setReviewId(1);;
+//		reviewToEdit.setReviewId(1);
 //		
-//		when(reviewServ.updateReview(reviewToEdit, "1"));
+//		when(reviewServ.updateReview(reviewToEdit));
 //		String jsonReview = objMapper.writeValueAsString(reviewToEdit);
-//		mockMvc.perform(put("/reviews/{reviewId}", 1).content(jsonReview).contentType(MediaType.APPLICATION_JSON))
+//		mockMvc.perform(put("/reviews/{reviewId}").content(jsonReview).contentType(MediaType.APPLICATION_JSON))
 //				.andExpect(status().isOk())
 //				.andExpect(content().json(jsonReview))
 //				.andReturn();
 //	}
-	
-//	@Test
-//	public void getAllReviewsForBook () throws Exception {
-//		when(((OngoingStubbing<List<Review>>) reviewServ.getReviewsByBook(1)).thenReturn(Collections.emptyList()));
-//		
-//		String jsonSet = objMapper.writeValueAsString(Collections.emptyList());
-//		
-//		mockMvc.perform(get("/reviews/book/{bookId}", 1))
-//			.andExpect(status().isOk())
-//			.andExpect(content().contentType(MediaType.APPLICATION_JSON))
-//			.andExpect(content().json(jsonSet))
-//			.andReturn();
-//		
-//	}
+	@Test
+	public void getAllReviewsForBook () throws Exception {
+		when(reviewServ.getReviewsByBook(1)).thenReturn(Collections.emptyList());
+		
+		String jsonSet = objMapper.writeValueAsString(Collections.emptyList());
+		
+		mockMvc.perform(get("/reviews/book/{bookId}", 1))
+			.andExpect(status().isOk())
+			.andExpect(content().contentType(MediaType.APPLICATION_JSON))
+			.andExpect(content().json(jsonSet))
+			.andReturn();
+		
+	}
 }
 	
 

@@ -85,7 +85,7 @@ public class Review {
 		this.ratingOne = 0;
 		this.ratingTwo = 0;
 		this.ratingThree = 0;
-		this.sentAt = LocalDateTime.now();
+		this.sentAt = null;
 	}
 	
 	public double getOverallRating() {
