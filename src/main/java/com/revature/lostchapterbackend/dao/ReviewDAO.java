@@ -12,4 +12,5 @@ public interface ReviewDAO extends JpaRepository<Review, Integer> {
 	//Methods include
 		//findByBookOrderBySentAtDesc: 
 	public List<Review> findByBookOrderBySentAtDesc(Book book);
+	public List<Review> findReviewByBook(int bookId);
 }

@@ -60,7 +60,7 @@ public class ShippingServiceImpl implements ShippingService {
 	@Override
 	@Transactional
 	public List<ShippingInformation> getShippingInformationByUser(int UserId) {
-			List<ShippingInformation> ship = shipDao.findByUser(UserId);
+			List<ShippingInformation> ship = shipDao.findShippingInformationByUser(UserId);
 			return ship;
 	}
 
