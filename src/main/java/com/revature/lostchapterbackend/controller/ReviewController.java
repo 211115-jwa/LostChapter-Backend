@@ -26,6 +26,14 @@ import com.revature.lostchapterbackend.service.ReviewService;
 @RestController
 @CrossOrigin("*")
 public class ReviewController {
+	//This controller is used for the following
+		//getAllReviews GET /reviews
+		//getReviewById GET /reviews/{reviewId}
+		//postNewReview POST /reviews
+		//updateReviewById PUT /reviews
+		//getAllReviewsForBook GET /reviews/book/{bookId}
+
+	
 	private Logger logger = LoggerFactory.getLogger(ReviewController.class);
 
 	private static ReviewService reviewService;

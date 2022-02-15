@@ -30,6 +30,12 @@ import com.revature.lostchapterbackend.service.ShippingService;
 @RequestMapping(path="/shipping")
 @CrossOrigin("*")
 public class ShippingController {
+	//This controller is used for the following
+		//updateshipping PUT /update
+		//addBookToshipping POST /add
+		//getshippingByUser GET user/{userId}
+		//getshippingById GET /{shippingId}
+		//deletePurchase DELETE /{shippingId}
 	private TokenProvider tokenProvider;
 	private static ShippingService shippingServ;
 	public ShippingController() {

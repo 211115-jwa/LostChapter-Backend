@@ -31,6 +31,12 @@ import com.revature.lostchapterbackend.service.OrderService;
 @RequestMapping(path="/order")
 @CrossOrigin("*")
 public class OrderController {
+	//This controller is used for the following
+		//updateOrder PUT /update
+		//addBookToOrder POST /add
+		//getOrderByUser GET user/{userId}
+		//getOrderById GET /{orderId}
+		//deletePurchase DELETE /{orderId}
 	private TokenProvider tokenProvider;
 	private static OrderService orderServ;
 	public OrderController() {
