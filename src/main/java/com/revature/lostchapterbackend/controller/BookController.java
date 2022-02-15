@@ -7,6 +7,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -14,10 +15,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-
+import com.revature.lostchapterbackend.JWT.TokenProvider;
 import com.revature.lostchapterbackend.model.Book;
 import com.revature.lostchapterbackend.service.BookService;
 
@@ -39,13 +41,16 @@ public class BookController {
 
 	//static for testing
 	private static BookService bookServ;
+	private TokenProvider tokenProvider;
+	
 	public BookController() {
 		super();
 	}
 	//field injection
 	@Autowired
-	public BookController(BookService bookServ) {
+	public BookController(BookService bookServ, TokenProvider tokenProvider) {
 		this.bookServ=bookServ;
+		this.tokenProvider=tokenProvider;
 	}
 	
 //	@GetMapping(path = "/genre")
@@ -70,20 +75,22 @@ public class BookController {
 	@GetMapping
 	public ResponseEntity<List<Book>>  getAllBooks() {
 		//This method is responsible for getting all of the current books on the database
+		
 		logger.debug("BookController.getAllBooks() invoked.");
 		List<Book> books = bookServ.getAllBooks();
+		
 		return ResponseEntity.ok(books);
 	}
 
 	@GetMapping(path = "/featured")
-	public List<Book> getFeaturedBooks() {
+	public ResponseEntity<List<Book>> getFeaturedBooks() {
 
 		//This method is responsible for getting all of the current featured books
 
 		logger.info("BookController.getFeaturedBooks() invoked.");
 		List<Book> featuredBooks = bookServ.getFeaturedBooks();
 
-		return featuredBooks;
+		return ResponseEntity.ok(featuredBooks);
 	}
 	
 	//working
@@ -91,6 +98,7 @@ public class BookController {
 	public ResponseEntity<Book> getBookById(@PathVariable int bookId) {
 		//This method is responsible  for getting a book by its id
 		//If the book does not exist it will throw an error
+
 		logger.debug("BookController.getBookById() invoked.");
 
 		Book book = bookServ.getBookById(bookId);
@@ -124,10 +132,10 @@ public class BookController {
 	}
 	
 	@GetMapping(path = "/genre/{name}")
-
 	public ResponseEntity<Object> getBookByGenre(@PathVariable String name) {
   		//This method is responsible for getting books by their genre
 		  //If the genre does not exist then it will throw an error
+		
 		logger.debug("BookController.getBookByGenreId() invoked.");
 
 		try {
@@ -160,26 +168,31 @@ public class BookController {
 	}
 
 	@GetMapping(path = "/books/sales")
-	public List<Book> getBookBySale() {
+	public ResponseEntity<List<Book>> getBookBySale() {
 		//This method is responsible for getting all books that are currently on sale
 		//logger.info("BookController.getBookBySale() invoked.");
-		return bookServ.getBooksBySale();
-
+		List<Book> bookList = bookServ.getBooksBySale();
+		return ResponseEntity.ok(bookList);
 	}
 
 	//working
 	@PostMapping
-	public ResponseEntity<Void> addNewBook(@RequestBody Book newBook) {
+	public ResponseEntity<Void> addNewBook(@RequestBody Book newBook, @RequestHeader("Authorization") String authorization) {
 		//This method allow the admin to add a new book to our database
 		//This method will throw an error if any of the following occur
 			//Currently no checking to see if book is valid
+		String token = tokenProvider.extractToken(authorization);
+		HttpHeaders jwtHeader = tokenProvider.getHeaderJWT(token);
+		
 		logger.debug("BookController.addNewBook() invoked.");
 
 		if (newBook !=null) {
-				bookServ.addBook(newBook);
-				return ResponseEntity.status(HttpStatus.CREATED).build();
-			}
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+			bookServ.addBook(newBook);
+//				return ResponseEntity.status(HttpStatus.CREATED).build();
+			return new ResponseEntity<>(jwtHeader,HttpStatus.CREATED);
+		}
+//			return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+			return new ResponseEntity<>(jwtHeader, HttpStatus.BAD_REQUEST);
 	}
 
 //	@Admin

@@ -1,10 +1,10 @@
 package com.revature.lostchapterbackend.controller;
 
 import java.util.List;
+import com.revature.lostchapterbackend.JWT.TokenProvider;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -14,14 +14,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-
 import com.revature.lostchapterbackend.exceptions.UserNotFoundException;
-import com.revature.lostchapterbackend.model.Book;
+
 import com.revature.lostchapterbackend.model.ShippingInformation;
-import com.revature.lostchapterbackend.service.BookService;
+
 
 import com.revature.lostchapterbackend.service.ShippingService;
 
@@ -36,72 +36,79 @@ public class ShippingController {
 		//getshippingByUser GET user/{userId}
 		//getshippingById GET /{shippingId}
 		//deletePurchase DELETE /{shippingId}
-
-
+	private TokenProvider tokenProvider;
 	private static ShippingService shippingServ;
 	public ShippingController() {
 		super();
 	}
 	
 	@Autowired
-	public ShippingController(ShippingService shippingServ) {
+	public ShippingController(ShippingService shippingServ,TokenProvider tokenProvider) {
 		this.shippingServ=shippingServ;
+		this.tokenProvider=tokenProvider;
 	}
 	/*Update existing ship info*/
 	@PutMapping(path = "/update") 
-	public ResponseEntity<Object> updateshipping(@RequestBody ShippingInformation newshipping){
+	public ResponseEntity<Object> updateshipping(@RequestBody ShippingInformation newshipping,@RequestHeader("Authorization") String authorization){
 		//This methods responsibility it to add a new book to the shipping collection if it doesnt exist already or to increase the quantity if it is present
 		//This method uses the userID in shipping to find the users shipping collection
+		String token = tokenProvider.extractToken(authorization);
+		HttpHeaders jwtHeader = tokenProvider.getHeaderJWT(token);
 		if (newshipping !=null) {
 			shippingServ.upDateShippingInformation(newshipping);
-			return ResponseEntity.status(HttpStatus.ACCEPTED).build();
+			return new ResponseEntity<>(jwtHeader, HttpStatus.ACCEPTED);
 		}
 		else
-		return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+			return new ResponseEntity<>(jwtHeader, HttpStatus.BAD_REQUEST);
 	}
 	
 	/*add ship info*/
 	@PostMapping(path = "/add") 
-	public ResponseEntity<Object> addBookToshipping(@RequestBody ShippingInformation shipAdd){
-		
+	public ResponseEntity<Object> addBookToshipping(@RequestBody ShippingInformation shipAdd,@RequestHeader("Authorization") String authorization){
+		String token = tokenProvider.extractToken(authorization);
+		HttpHeaders jwtHeader = tokenProvider.getHeaderJWT(token);
 		if (shipAdd !=null) {
 			shippingServ.addShippingInformation(shipAdd);
-			return ResponseEntity.status(HttpStatus.CREATED).build();
+			return new ResponseEntity<>(jwtHeader, HttpStatus.CREATED);
 		}
 		
-		return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+		return new ResponseEntity<>(jwtHeader, HttpStatus.BAD_REQUEST);
 	}
 	/*get all users ship info*/
 	@GetMapping(path = "user/{userId}") 
-	public ResponseEntity<Object> getshippingByUser(@PathVariable int userId)throws UserNotFoundException{
+	public ResponseEntity<Object> getshippingByUser(@PathVariable int userId,@RequestHeader("Authorization") String authorization)throws UserNotFoundException{
 		//gets the purchase by its PurchaseId
-		
+		String token = tokenProvider.extractToken(authorization);
+		HttpHeaders jwtHeader = tokenProvider.getHeaderJWT(token);
 		List<ShippingInformation> shippings = shippingServ.getShippingInformationByUser(userId);	
 		if (shippings != null)
-			return ResponseEntity.ok(shippings);
+			return new ResponseEntity<>(shippings,jwtHeader, HttpStatus.OK);
 		else
-			return ResponseEntity.notFound().build();
+			return new ResponseEntity<>(jwtHeader, HttpStatus.NOT_FOUND);
 	}
 	/*Get ship info by id*/
 	@GetMapping(path = "/{shippingId}") 
-	public ResponseEntity<Object> getshippingById(@PathVariable int shippingId){
+	public ResponseEntity<Object> getshippingById(@PathVariable int shippingId,@RequestHeader("Authorization") String authorization){
 		//gets the purchase by its PurchaseId
-		
+		String token = tokenProvider.extractToken(authorization);
+		HttpHeaders jwtHeader = tokenProvider.getHeaderJWT(token);
 		ShippingInformation ship = shippingServ.getShippingInformationById(shippingId);	
 		if (ship != null)
-			return ResponseEntity.ok(ship);
+			return new ResponseEntity<>(ship,jwtHeader, HttpStatus.OK);
 		else
-			return ResponseEntity.notFound().build();
+			return new ResponseEntity<>(jwtHeader, HttpStatus.NOT_FOUND);
 	}
 	/*delete existing ship info*/
 	
 	@DeleteMapping(path = "/{shippingId}")
-	public ResponseEntity<Void> deletePurchase(@RequestBody ShippingInformation shipToDelete){
+	public ResponseEntity<Void> deletePurchase(@RequestBody ShippingInformation shipToDelete, @RequestHeader("Authorization") String authorization){
 		//deletes the purchase by its PurchaseId
+		String token = tokenProvider.extractToken(authorization);
+		HttpHeaders jwtHeader = tokenProvider.getHeaderJWT(token);
 		if (shipToDelete !=null) {
 			shippingServ.deleteShipping(shipToDelete);
-			return ResponseEntity.status(HttpStatus.CREATED).build();
+			return new ResponseEntity<>(jwtHeader, HttpStatus.OK);
 		}
-		return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+		return new ResponseEntity<>(jwtHeader, HttpStatus.BAD_REQUEST);
 	}
 }
