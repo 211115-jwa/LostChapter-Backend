@@ -28,6 +28,13 @@ import com.revature.lostchapterbackend.service.CreditCardInfoServ;
 @RequestMapping(path="/ccinfo")
 @CrossOrigin("*")
 public class CreditCardInfoController {
+	//This controller is used for the following
+		//getCCByUser GET /user/{userId}
+		//updateCreditCardInfo PUT /update
+		//addCreditCardInfo POST /add
+		//getCCById GET /{ccId}
+		//deletePurchase DELETE /{ccId}
+
 	private static CreditCardInfoServ CreditCardInfoServ;
 	private TokenProvider tokenProvider;
 	public CreditCardInfoController() {

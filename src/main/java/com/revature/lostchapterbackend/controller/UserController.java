@@ -35,13 +35,13 @@ import com.revature.lostchapterbackend.constants.*;
 @CrossOrigin(origins = "http://localhost:4200",allowCredentials="true", exposedHeaders="Jwt-Token")
 public class UserController {
 	//This controller is used for the following
-		//getting the login status GET /{userId}/auth
-		//logging in users POST /auth
-		//get a user by their id GET /{userId}
-		//get a user by their email GET /email/{email}
-		//get a user by their username GET /username/{username}
-		//updating user information PUT /{userId}
-		//deleting users DELETE /{userId}
+		//checkLogin GET /{userId}/auth
+		//logIn POST /auth
+		//getUserById GET /{userId}
+		//getUserByEmail GET /email/{email}
+		//getUserByUsername GET /username/{username}
+		//updateUser PUT /{userId}
+		//deleteUser DELETE /{userId}
 
 	private static UserService userService;
 	private AuthenticationManager authenticationManager;
