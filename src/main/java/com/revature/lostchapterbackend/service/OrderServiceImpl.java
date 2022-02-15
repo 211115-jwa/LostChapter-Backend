@@ -32,11 +32,15 @@ public class OrderServiceImpl implements OrderService {
 	
 	@Override
 	@Transactional
-	public Order getOrderById(int orderId){
+	public Optional<Order>  getOrderById(int orderId) throws OrderDoesNotExist {
+		try
+		{
 			Optional<Order> order = orderdao.findById(orderId);
-			if (order.isPresent())
-				return order.get();
-			else return null;
+			return order;
+		}catch(Exception e)
+		{
+			throw new OrderDoesNotExist("Order Id Not Found, Try Again!");
+		}
 	}
 
 	@Override

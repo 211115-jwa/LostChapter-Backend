@@ -62,7 +62,7 @@ public class OrderServiceTest {
 		order.setOrderId(1);
 		
 		when(orderDao.findById(1)).thenReturn(Optional.of(order));
-		Order actualOrder = orderServ.getOrderById(1);
+		Optional<Order> actualOrder = orderServ.getOrderById(1);
 		assertEquals(order, actualOrder);
 	}
 	
