@@ -12,5 +12,5 @@ public interface ShippingInfoDAO extends JpaRepository<ShippingInformation, Inte
 	//This DAO is used to hold ShippingInformation objects which can be found by their ids
 	//Methods include
 		//findByUser:finds a users ShippingInformation by using their userId
-	public List<ShippingInformation> findByUser(int userId);
+	public List<ShippingInformation> findShippingInformationByUser(int userId);
 }

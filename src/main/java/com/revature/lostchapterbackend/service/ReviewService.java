@@ -14,7 +14,7 @@ import com.revature.lostchapterbackend.model.Review;
 public interface ReviewService {
 	
 	public List<Review> getAllReviews();
-	public Review getReviewById(String id) throws ReviewNotFoundException;
+	public Review getReviewById(String reviewId) throws ReviewNotFoundException;
 	public Review addReview(Review newReview) throws InvalidParameterException ;
 	public Review updateReview(Review reviewToUpdate, String id)
 			throws ReviewNotFoundException, InvalidParameterException ;
