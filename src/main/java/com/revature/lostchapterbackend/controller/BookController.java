@@ -27,14 +27,14 @@ import com.revature.lostchapterbackend.service.BookService;
 @CrossOrigin("*")
 public class BookController {
 	//This controller is used for the following
-		//get all books GET /books 
-		//get featured books GET /books/featured 
-		//get book by id GET //books/{id}
-		//get books by genre GET //books/genre/{genreId}
-		//get books by certain keywords GET /books/search/{keyword}
-		//get books that are on sale GET books/sales 
-		//Admin can add book POST /books
-		//Admin can update a book by its id PUT /books/{id}
+		//getAllBooks GET /books 
+		//getFeaturedBooks GET /books/featured 
+		//getBookById GET //books/{id}
+		//getBookByGenre GET //books/genre/{genreId}
+		//getBookByKeyword GET /books/search/{keyword}
+		//getBookBySale GET books/sales 
+		//addNewBook POST /books
+		//updateBookById PUT /books/{id}
 	private Logger logger = LoggerFactory.getLogger(BookController.class);
 
 	//static for testing

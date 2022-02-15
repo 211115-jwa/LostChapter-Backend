@@ -30,16 +30,17 @@ import com.revature.lostchapterbackend.service.PurchaseService;
 @CrossOrigin("*")
 public class PurchaseController {
 	//This controller is used for the following
-		//add books to purchase database row POST /add/{userId}
-		//add books to purchase PUT /add/{bookToBuyId}/{PurchaseId}
-		//delete book by title from purchase by first finding the user by userId POST /delete/{bookToBuyId}/{userId}
-		//delete book by title from purchase by first finding the purchase by purchaseID POST /delete/{bookToBuyId}/{PurchaseId}
-		//increase quantity of books to purchase by first finding the user by userId POST /add/quantity/{bookToBuyId}/{userId}
-		//increase quantity of books to purchase by first finding the purchase by purchaseID POST /add/quantity/{bookToBuyId}/{PurchaseId}
-		//decrease quantity of books to purchase by first finding the user by userId POST POST /decrease/quantity/{bookToBuyId}/{userId}
-		//decrease quantity of books to purchase by first finding the purchase by purchaseID POST /decrease/quantity/{bookToBuyId}/{PurchaseId}
-		//get purchase by its id GET /{PurchaseId}
-		//delete purchase by its id DELETE /{PurchaseId}
+		//getPurchaseByUser GET user/{userId}
+		//updatePurchase PUT/adjust
+		//addBookToPurchase PUT /add/{bookToBuyId}/{PurchaseId}
+		//deleteBookToPurchase POST /delete/{bookToBuyId}/{userId}
+		//deleteBookToPurchaseNoUser POST /delete/{bookToBuyId}/{PurchaseId}
+		//addQuantity POST /add/quantity/{bookToBuyId}/{userId}
+		//addQuantityNoUser POST /add/quantity/{bookToBuyId}/{PurchaseId}
+		//decreaseQuantity POST /decrease/quantity/{bookToBuyId}/{userId}
+		//decreaseQuantityNoUser POST /decrease/quantity/{bookToBuyId}/{PurchaseId}
+		//getPurchaseById GET /{PurchaseId}
+		//deletePurchase DELETE /{PurchaseId}
 	private static PurchaseService PurchaseServ;
 	
 	
