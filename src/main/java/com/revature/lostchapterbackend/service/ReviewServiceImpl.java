@@ -50,11 +50,11 @@ public class ReviewServiceImpl implements ReviewService {
 
 	@Override
 	@Transactional
-	public Review getReviewById(int id) throws ReviewNotFoundException {
+	public Review getReviewById(String id) throws ReviewNotFoundException {
 		logger.info("ReviewService.getReviewById() invoked.");
 
 		try {
-			int reviewId = id;
+			int reviewId = Integer.parseInt(id);
 			if (!revDao.findById(reviewId).isPresent()) {
 				throw new ReviewNotFoundException();
 			}
