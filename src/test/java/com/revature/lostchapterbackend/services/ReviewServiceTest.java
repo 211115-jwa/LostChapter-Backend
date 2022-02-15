@@ -72,7 +72,7 @@ public class ReviewServiceTest {
 		
 		when(reviewDao.findById(1)).thenReturn(Optional.of(review));
 		
-		Review actualReview = reviewServ.getReviewById(1);
+		Review actualReview = reviewServ.getReviewById("1");
 		assertEquals(review, actualReview);
 	}
 	
@@ -80,7 +80,7 @@ public class ReviewServiceTest {
 	public void getReviewByIdDoesNotExist() throws ReviewNotFoundException {
 		when(reviewDao.findById(1)).thenReturn(Optional.empty());
 		
-		Review actualReview = reviewServ.getReviewById(1);
+		Review actualReview = reviewServ.getReviewById("1");
 		assertNull(actualReview);
 	}
 	
