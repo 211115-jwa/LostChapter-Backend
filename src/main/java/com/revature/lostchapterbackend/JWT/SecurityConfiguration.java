@@ -1,5 +1,6 @@
 package com.revature.lostchapterbackend.JWT;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -28,6 +29,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
 	private UserDetailsService userDetailService;
 	private BCryptPasswordEncoder passwordEncoder;
 	
+	@Autowired
 	public SecurityConfiguration(AuthorizationFilter authorizationFilter, AccessDeniedHandler accessDeniedHandler,
 			AuthenticationEntryPoint authenticationEntryPoint, 
 			@Qualifier("UserDetailService") UserDetailsService userDetailService,
