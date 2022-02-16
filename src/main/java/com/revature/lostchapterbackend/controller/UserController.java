@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -42,10 +43,11 @@ public class UserController {
 		//getUserByUsername GET /username/{username}
 		//updateUser PUT /{userId}
 		//deleteUser DELETE /{userId}
-
+	
 	private static UserService userService;
-	private AuthenticationManager authenticationManager;
-	private TokenProvider tokenProvider;
+	private static AuthenticationManager authenticationManager;
+	private static TokenProvider tokenProvider;
+	
 	
 	public UserController() {
 		super();

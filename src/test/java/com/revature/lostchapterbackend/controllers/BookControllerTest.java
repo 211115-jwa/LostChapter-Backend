@@ -14,6 +14,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -36,7 +37,7 @@ public class BookControllerTest {
 	
 	private static MockMvc mockMvc;
 	private ObjectMapper objMapper = new ObjectMapper();
-	
+	private final String jwtToken = "BookMark eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJhdWQiOiJVc2VyIE1hbmFnZW1lbnQgUG9ydGFsIiwic3ViIjoicmlja3kyM2kiLCJpc3MiOiJTSUVSUkEgLSBMT1NUIENIQVBURVIgMiIsImV4cCI6MTY0NTMyNTAyNSwiaWF0IjoxNjQ0ODkzMDI1LCJhdXRob3JpdGllcyI6WyJSRUFEIl19.5HKK08thMWDNq4QaREVNOvcv9nKatrSd-ZH8dH2XexVM7RND2YrsgKrkygGQCtXL5WUOp4amWjeqIY_Vh53LrQ.";
 	@BeforeAll
 	public static void setUp() {
 		// this initializes the Spring Web/MVC architecture for just one controller
@@ -134,7 +135,7 @@ public class BookControllerTest {
 		
 		String jsonBook = objMapper.writeValueAsString(newBook);
 		
-		mockMvc.perform(post("/book").content(jsonBook).contentType(MediaType.APPLICATION_JSON))
+		mockMvc.perform(post("/book").content(jsonBook).contentType(MediaType.APPLICATION_JSON).header(HttpHeaders.AUTHORIZATION, jwtToken ))
 			.andExpect(status().isCreated())
 			.andReturn();
 	}

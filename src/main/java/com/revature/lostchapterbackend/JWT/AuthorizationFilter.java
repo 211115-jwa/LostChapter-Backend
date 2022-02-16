@@ -21,7 +21,7 @@ import com.revature.lostchapterbackend.constants.SecurityConstant;
 @Component
 public class AuthorizationFilter extends OncePerRequestFilter{
 	private TokenProvider tokenProvider;
-
+	
 	public AuthorizationFilter(TokenProvider tokenProvider) {
 		this.tokenProvider = tokenProvider;
 	}

@@ -41,7 +41,7 @@ public class BookController {
 
 	//static for testing
 	private static BookService bookServ;
-	private TokenProvider tokenProvider;
+	private static TokenProvider tokenProvider;
 	
 	public BookController() {
 		super();
