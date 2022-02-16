@@ -18,24 +18,52 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.revature.lostchapterbackend.LostChapterBackendApplication;
+import com.revature.lostchapterbackend.JWT.AccessDeniedHandler;
+import com.revature.lostchapterbackend.JWT.AuthenticationEntryPoint;
+import com.revature.lostchapterbackend.JWT.AuthorizationFilter;
+import com.revature.lostchapterbackend.JWT.HttpResponse;
+import com.revature.lostchapterbackend.JWT.SecurityConfiguration;
+import com.revature.lostchapterbackend.JWT.TokenProvider;
+import com.revature.lostchapterbackend.JWT.UserDetail;
 import com.revature.lostchapterbackend.controller.UserController;
 import com.revature.lostchapterbackend.exceptions.InvalidLoginException;
 import com.revature.lostchapterbackend.exceptions.UsernameAlreadyExists;
 import com.revature.lostchapterbackend.model.User;
 import com.revature.lostchapterbackend.service.UserService;
 
+@EnableWebMvc
 @SpringBootTest(classes=LostChapterBackendApplication.class)
 public class UserControllerTest {
 
 	@MockBean
 	private UserService userServ;
+	@MockBean
+	private AccessDeniedHandler accessDeniedHandler;
+	@MockBean
+	private AuthenticationEntryPoint authenticationEntryPoint;
+	@MockBean
+	private SecurityConfiguration securityConfiguration;
+	@MockBean
+	private TokenProvider tokenProvider;
+	@MockBean
+	private HttpResponse httpResponse;
+	@MockBean
+	private UserDetail userDetail;
+	@MockBean
+	private AuthenticationManager authenticationManagerBean;
 	
 	@Autowired
 	private UserController userController;
+	@Autowired
+	private AuthorizationFilter authorizationFilter;
 	
 	private static MockMvc mockMvc;
 	private ObjectMapper objMapper = new ObjectMapper();
