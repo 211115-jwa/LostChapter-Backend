@@ -1,36 +1,4 @@
 package com.revature.lostchapterbackend.controllers;
-//
-//import javax.persistence.EntityManager;
-//import javax.persistence.EntityManagerFactory;
-//
-//import com.revature.lostchapterbackend.model.Users;
-//import org.hibernate.Session;
-//import org.hibernate.Transaction;
-//import org.junit.jupiter.api.Assertions;
-//import org.junit.jupiter.api.BeforeEach;
-//import org.junit.jupiter.api.Test;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-//import org.springframework.boot.test.context.SpringBootTest;
-//import org.springframework.http.MediaType;
-//import org.springframework.mock.web.MockHttpSession;
-//import org.springframework.test.annotation.DirtiesContext;
-//import org.springframework.test.annotation.DirtiesContext.ClassMode;
-//import org.springframework.test.web.servlet.MockMvc;
-//import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
-//import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-//import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-//
-//import com.fasterxml.jackson.databind.ObjectMapper;
-//
-//import com.revature.lostchapterbackend.dto.AddOrUpdateBookDTO;
-//import com.revature.lostchapterbackend.model.Book;
-//import com.revature.lostchapterbackend.model.Genre;
-//
-//import java.time.LocalDate;
-//import java.util.ArrayList;
-//import java.util.List;
-//
 
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -58,8 +26,6 @@ import com.revature.lostchapterbackend.model.Book;
 import com.revature.lostchapterbackend.model.User;
 import com.revature.lostchapterbackend.service.BookService;
 
-//@AutoConfigureMockMvc
-//@DirtiesContext(classMode = ClassMode.BEFORE_EACH_TEST_METHOD)
 @SpringBootTest(classes=LostChapterBackendApplication.class)
 public class BookControllerTest {
 	@MockBean
