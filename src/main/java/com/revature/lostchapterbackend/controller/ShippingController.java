@@ -36,7 +36,7 @@ public class ShippingController {
 		//getshippingByUser GET user/{userId}
 		//getshippingById GET /{shippingId}
 		//deletePurchase DELETE /{shippingId}
-	private TokenProvider tokenProvider;
+	private static TokenProvider tokenProvider;
 	private static ShippingService shippingServ;
 	public ShippingController() {
 		super();
