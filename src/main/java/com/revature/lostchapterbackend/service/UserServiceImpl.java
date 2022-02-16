@@ -19,7 +19,6 @@ import com.revature.lostchapterbackend.exceptions.InvalidLoginException;
 import com.revature.lostchapterbackend.exceptions.UserNotFoundException;
 import com.revature.lostchapterbackend.exceptions.UsernameAlreadyExists;
 import com.revature.lostchapterbackend.model.User;
-import com.revature.lostchapterbackend.utility.HashUtil;
 
 @Service
 @Transactional
