@@ -120,8 +120,9 @@ public class ShippingServiceTest {
 	
 	@Test
 	public void  getShippingInformationByUserDoesNotExist() {
+		List<ShippingInformation> mockShips = new ArrayList<>();
 		
-		when(shipDao.findShippingInformationByUser(0)).thenReturn(mockShip);
+		when(shipDao.findShippingInformationByUser(0)).thenReturn(mockShips);
 		
 		List<ShippingInformation> actualShippingInformations = shipServ.getShippingInformationByUser(0);
 		assertTrue(actualShippingInformations.isEmpty());

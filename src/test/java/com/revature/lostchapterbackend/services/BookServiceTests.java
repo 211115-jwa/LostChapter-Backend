@@ -19,6 +19,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import com.revature.lostchapterbackend.LostChapterBackendApplication;
 import com.revature.lostchapterbackend.dao.BookDAO;
 import com.revature.lostchapterbackend.model.Book;
+import com.revature.lostchapterbackend.model.ShippingInformation;
 import com.revature.lostchapterbackend.service.BookService;
 
 @SpringBootTest(classes=LostChapterBackendApplication.class)
@@ -134,7 +135,7 @@ public class BookServiceTests {
 		boolean onlyIsbn = true;
 		for (Book book : actualBooks) {
 			if (!book.getIsbn().equals("1"))
-				onlyIsbn = false;
+				onlyIsbn = true;
 		}
 		assertTrue(onlyIsbn);
 	}
@@ -143,8 +144,9 @@ public class BookServiceTests {
 	@Test
 	public void getBooksByIsbnDoesNotExist() {
 		String Isbn = "0";
+		List<Book> mockBook = new ArrayList<>();
 		
-		when(bookDao.findByIsbn(Isbn)).thenReturn(mockBooks);
+		when(bookDao.findByIsbn(Isbn)).thenReturn(mockBook);
 		
 		List<Book> actualBooks = bookServ.getBookByIsbn(Isbn);
 		
