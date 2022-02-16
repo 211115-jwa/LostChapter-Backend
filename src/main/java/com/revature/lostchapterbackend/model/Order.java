@@ -46,7 +46,7 @@ public class Order {
 
 		this.orderId = 0;
 		this.totalPrice=0.0f;
-		this.transactionDate=LocalDateTime.now();
+		this.transactionDate=null;
 		//this.user=new User();
 
 	}

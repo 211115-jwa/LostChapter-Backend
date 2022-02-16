@@ -37,7 +37,7 @@ public class OrderController {
 		//getOrderByUser GET user/{userId}
 		//getOrderById GET /{orderId}
 		//deletePurchase DELETE /{orderId}
-	private TokenProvider tokenProvider;
+	private static TokenProvider tokenProvider;
 	private static OrderService orderServ;
 	public OrderController() {
 		super();
@@ -74,7 +74,7 @@ public class OrderController {
 		
 		return new ResponseEntity<>(jwtHeader, HttpStatus.BAD_REQUEST);
 	}
-	@GetMapping(path = "user/{userId}") 
+	@GetMapping(path = "/user/{userId}") 
 	public ResponseEntity<Object> getOrderByUser(@PathVariable int userId,@RequestHeader("Authorization") String authorization)throws UserNotFoundException{
 		//gets the purchase by its PurchaseId
 		String token = tokenProvider.extractToken(authorization);
