@@ -36,7 +36,7 @@ public class CreditCardInfoController {
 		//deletePurchase DELETE /{ccId}
 
 	private static CreditCardInfoServ CreditCardInfoServ;
-	private TokenProvider tokenProvider;
+	private static TokenProvider tokenProvider;
 	public CreditCardInfoController() {
 		super();
 	}
@@ -46,7 +46,7 @@ public class CreditCardInfoController {
 		this.CreditCardInfoServ=CreditCardInfoServ;
 		this.tokenProvider=tokenProvider;
 	}
-	@GetMapping(path = "user/{userId}") 
+	@GetMapping(path = "/user/{userId}") 
 	public ResponseEntity<Object> getCCByUser(@PathVariable int userId, @RequestHeader("Authorization") String authorization){
 		//gets the purchase by its PurchaseId
 		String token = tokenProvider.extractToken(authorization);
