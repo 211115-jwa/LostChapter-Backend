@@ -23,7 +23,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.revature.lostchapterbackend.JWT.TokenProvider;
 import com.revature.lostchapterbackend.JWT.UserDetail;
-import com.revature.lostchapterbackend.exceptions.InvalidLoginException;
 import com.revature.lostchapterbackend.exceptions.UserNotFoundException;
 import com.revature.lostchapterbackend.exceptions.UsernameAlreadyExists;
 import com.revature.lostchapterbackend.model.User;
