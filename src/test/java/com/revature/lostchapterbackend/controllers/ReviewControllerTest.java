@@ -27,6 +27,7 @@ import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.revature.lostchapterbackend.LostChapterBackendApplication;
 import com.revature.lostchapterbackend.controller.ReviewController;
+import com.revature.lostchapterbackend.model.Book;
 import com.revature.lostchapterbackend.model.Review;
 import com.revature.lostchapterbackend.service.BookService;
 import com.revature.lostchapterbackend.service.ReviewService;
@@ -86,7 +87,7 @@ public class ReviewControllerTest {
 	@Test
 	public void postNewReview () throws Exception {
 		Review newReview = new Review();
-		when(reviewServ.addReview(newReview)).thenReturn(1);
+		when(reviewServ.addReview(newReview)).thenReturn(newReview);
 		
 		String jsonReview = objMapper.writeValueAsString(newReview);
 		
@@ -111,7 +112,8 @@ public class ReviewControllerTest {
 //	}
 	@Test
 	public void getAllReviewsForBook () throws Exception {
-		when(reviewServ.getReviewsByBook(1)).thenReturn(Collections.emptyList());
+		Book book = new Book();
+		when(reviewServ.getReviewsByBook(book)).thenReturn(Collections.emptyList());
 		
 		String jsonSet = objMapper.writeValueAsString(Collections.emptyList());
 		

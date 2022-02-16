@@ -32,7 +32,7 @@ import com.revature.lostchapterbackend.constants.*;
 
 @RestController
 @RequestMapping(path="/users")
-@CrossOrigin("*")
+@CrossOrigin(origins = "http://localhost:4200",allowCredentials="true", exposedHeaders="Jwt-Token")
 public class UserController {
 	//This controller is used for the following
 		//checkLogin GET /{userId}/auth
