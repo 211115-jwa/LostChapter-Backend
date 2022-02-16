@@ -21,21 +21,21 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.revature.lostchapterbackend.LostChapterBackendApplication;
 import com.revature.lostchapterbackend.controller.BookController;
-import com.revature.lostchapterbackend.controller.OrderController;
+import com.revature.lostchapterbackend.controller.CreditCardInfoController;
 import com.revature.lostchapterbackend.model.Book;
 import com.revature.lostchapterbackend.model.User;
 import com.revature.lostchapterbackend.service.BookService;
-import com.revature.lostchapterbackend.service.OrderService;
+import com.revature.lostchapterbackend.service.CreditCardInfoServ;
 
 //@AutoConfigureMockMvc
 //@DirtiesContext(classMode = ClassMode.BEFORE_EACH_TEST_METHOD)
 @SpringBootTest(classes=LostChapterBackendApplication.class)
-public class OrderControllerTest {
+public class CreditCardControllerTest {
 	@MockBean
-	private OrderService orderServ;
+	private CreditCardInfoServ cardServ;
 	
 	@Autowired
-	private OrderController orderController;
+	private CreditCardInfoController cardController;
 	
 	private static MockMvc mockMvc;
 	private ObjectMapper objMapper = new ObjectMapper();
