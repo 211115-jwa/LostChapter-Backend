@@ -2,16 +2,6 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<distributionManagement>
-    <repository>
-        <id>releases</id>
-        <url>http://http://ec2-44-201-249-115.compute-1.amazonaws.com:8080/</url>
-    </repository>
-    <snapshotRepository>
-        <id>snapshots</id>
-        <url>http://http://ec2-44-201-249-115.compute-1.amazonaws.com:8080/snapshots</url>
-    </snapshotRepository>
-</distributionManagement>
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>org.springframework.boot</groupId>
