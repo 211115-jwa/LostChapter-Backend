@@ -6,6 +6,8 @@ import java.util.stream.Collectors;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import com.revature.lostchapterbackend.constants.AuthorityConstant;
 import com.revature.lostchapterbackend.model.User;

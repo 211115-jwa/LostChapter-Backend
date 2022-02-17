@@ -44,7 +44,7 @@ public class PurchaseController {
 		//deletePurchase DELETE /{PurchaseId}
 	private static PurchaseService PurchaseServ;
 	
-	private TokenProvider tokenProvider;
+	private static TokenProvider tokenProvider;
 	public PurchaseController() {
 		super();
 		}

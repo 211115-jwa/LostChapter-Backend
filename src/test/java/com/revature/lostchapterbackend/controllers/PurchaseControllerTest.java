@@ -14,6 +14,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
@@ -44,7 +45,7 @@ public class PurchaseControllerTest {
 	// this is a Jackson object mapper for JSON marshalling
 	// (turning objects to JSON strings and vice versa
 	private ObjectMapper objMapper = new ObjectMapper();
-	
+	private final String jwtToken = "BookMark eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJhdWQiOiJVc2VyIE1hbmFnZW1lbnQgUG9ydGFsIiwic3ViIjoicmlja3kyM2kiLCJpc3MiOiJTSUVSUkEgLSBMT1NUIENIQVBURVIgMiIsImV4cCI6MTY0NTMyNTAyNSwiaWF0IjoxNjQ0ODkzMDI1LCJhdXRob3JpdGllcyI6WyJSRUFEIl19.5HKK08thMWDNq4QaREVNOvcv9nKatrSd-ZH8dH2XexVM7RND2YrsgKrkygGQCtXL5WUOp4amWjeqIY_Vh53LrQ.";
 	@BeforeAll
 	public static void setUp () {
 		// sets up the minimum architecture to test our controller
@@ -59,7 +60,7 @@ public class PurchaseControllerTest {
 		
 		
 		String jsonPurchase = objMapper.writeValueAsString(newPurchase);
-		mockMvc.perform(post("/Purchase").content(jsonPurchase).contentType(MediaType.APPLICATION_JSON))
+		mockMvc.perform(post("/Purchase/add").content(jsonPurchase).contentType(MediaType.APPLICATION_JSON).header(HttpHeaders.AUTHORIZATION, jwtToken ))
 				.andExpect(status().isCreated())
 				.andReturn();
 		}
@@ -68,13 +69,14 @@ public class PurchaseControllerTest {
 	public void getPurchaseById ()throws Exception {
 		when(purchaseServ.getPurchaseById(1)).thenReturn(new Purchase());
 		
-		mockMvc.perform(get("/Purchase/{PurchaseId}",1)).andExpect(status().isOk()).andReturn();
+		mockMvc.perform(get("/Purchase/{PurchaseId}",1
+				).header(HttpHeaders.AUTHORIZATION, jwtToken )).andExpect(status().isOk()).andReturn();
 	}
 	
 	@Test
 	public void getPurchaseByIdNotFound() throws Exception {
 		when(purchaseServ.getPurchaseById(1)).thenReturn(null);
-		mockMvc.perform(get("/Purchase/{PurchaseId}", 1)).andExpect(status().isNotFound()).andReturn();
+		mockMvc.perform(get("/Purchase/{PurchaseId}", 1).header(HttpHeaders.AUTHORIZATION, jwtToken )).andExpect(status().isNotFound()).andReturn();
 	}
 	
 	
@@ -90,10 +92,10 @@ public class PurchaseControllerTest {
 //		.andExpect(status().isBadRequest()).andReturn();
 //	}
 	
-	@Test 
-	public void addBookToPurchaseNoUser(@RequestBody Book bookToAdd, @PathVariable int PurchaseId) throws Exception {
-		String jsonBook = objMapper.writeValueAsString(null);
-		mockMvc.perform(post("/Purchase/delete/{bookToBuyId}/{userId}").content(jsonBook).contentType(MediaType.APPLICATION_JSON))
-		.andExpect(status().isBadRequest()).andReturn();
-	}
+//	@Test 
+//	public void addBookToPurchaseNoUser(@RequestBody Book bookToAdd, @PathVariable int PurchaseId) throws Exception {
+//		String jsonBook = objMapper.writeValueAsString(null);
+//		mockMvc.perform(post("/Purchase/delete/{bookToBuyId}/{userId}").content(jsonBook).contentType(MediaType.APPLICATION_JSON))
+//		.andExpect(status().isBadRequest()).andReturn();
+//	}
 }
