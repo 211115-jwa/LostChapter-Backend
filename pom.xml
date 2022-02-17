@@ -9,7 +9,7 @@
     </repository>
     <snapshotRepository>
         <id>snapshots</id>
-        <url>http://domain:port/content/repositories/snapshots</url>
+        <url>http://http://ec2-44-201-249-115.compute-1.amazonaws.com:8081/snapshots</url>
     </snapshotRepository>
 </distributionManagement>
 	<modelVersion>4.0.0</modelVersion>
