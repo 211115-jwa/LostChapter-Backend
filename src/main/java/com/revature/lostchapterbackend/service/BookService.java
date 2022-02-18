@@ -31,11 +31,10 @@ public interface BookService {
 	public List<Book> getBookByGenre(String genre);
 	/* search by ISBN
 	 */
-	public List<Book> getByISBN(String ISBN);
+	public List<Book> getBookByIsbn(String isbn);
 	/* search by contains string keyword
 	 */
 	public List<Book> getByKeyWord(String key);
 	public List<Book> getFeaturedBooks();
 	public List<Book> getBooksBySale();
-	public List<Book> getBooksByGenre();
 }

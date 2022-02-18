@@ -17,6 +17,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 @Entity
 @Table
 public class CreditCardInfo {
+	//This class deals with credit card objects
+		//Has the values of
+			//String nameOnCard, creditCardType
+			//int ccInfoId, cvv, expirationMonth, expirationYear, billingZip
+			//long cardNumber
+		//Has the special methods of
+			//hashCode: hashes all of the credit card information
+			//equals: see if there is a matching credit card in the database 
+			//toString: converts all of the credit card information into a string
 	
 	@Id
 	@Column(name="cc_info_id")

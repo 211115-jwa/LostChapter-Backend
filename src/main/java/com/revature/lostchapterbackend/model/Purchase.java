@@ -18,6 +18,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 @Entity
 @Table
 public class Purchase {
+	//This class deals with Purchase objects
+	//Has the values of
+		//Book book
+		//Order order
+		//int purchaseId, quantityToBuy
+	//Has the special methods of
+		//hashCode: hashes all of the Purchase information
+		//equals: see if there is a matching Purchase in the database 
+		//toString: converts all of the Purchase information into a string
 
 	@Id
 	@Column(name="purchase_id")

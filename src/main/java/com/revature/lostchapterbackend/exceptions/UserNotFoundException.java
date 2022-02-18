@@ -1,7 +1,7 @@
 package com.revature.lostchapterbackend.exceptions;
 
 public class UserNotFoundException extends Exception {
-
+	//This exception is thrown when the program is unable to find a user in the database
 	/**
 	 * 
 	 */

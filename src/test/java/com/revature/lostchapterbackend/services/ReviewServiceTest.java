@@ -72,7 +72,7 @@ public class ReviewServiceTest {
 		
 		when(reviewDao.findById(1)).thenReturn(Optional.of(review));
 		
-		Review actualReview = reviewServ.getReviewById(1);
+		Review actualReview = reviewServ.getReviewById("1");
 		assertEquals(review, actualReview);
 	}
 	
@@ -80,7 +80,7 @@ public class ReviewServiceTest {
 	public void getReviewByIdDoesNotExist() throws ReviewNotFoundException {
 		when(reviewDao.findById(1)).thenReturn(Optional.empty());
 		
-		Review actualReview = reviewServ.getReviewById(1);
+		Review actualReview = reviewServ.getReviewById("1");
 		assertNull(actualReview);
 	}
 	
@@ -91,7 +91,7 @@ public class ReviewServiceTest {
 		
 		when(reviewDao.findReviewByBook(1)).thenReturn(mockReviews);
 		
-		List<Review> actualReviews = reviewServ.getReviewsByBook(1);
+		List<Review> actualReviews = reviewServ.getReviewsByBook(book);
 		boolean onlyBook = true;
 		for (Review review : actualReviews) {
 			if (!review.getBook().equals(book))
@@ -105,7 +105,7 @@ public class ReviewServiceTest {
 		
 		when(reviewDao.findReviewByBook(2)).thenReturn(mockReviews);
 		
-		List<Review> actualReviews = reviewServ.getReviewsByBook(0);
+		List<Review> actualReviews = reviewServ.getReviewsByBook(new Book());
 		assertTrue(actualReviews.isEmpty());
 	}
 	
@@ -117,9 +117,9 @@ public class ReviewServiceTest {
 		
 		when(reviewDao.save(newReview)).thenReturn(mockReview);
 		
-		int newId = reviewServ.addReview(newReview);
+		Review addedReview = reviewServ.addReview(newReview);
 		
-		assertNotEquals(0, newId);
+		assertNotEquals(0, addedReview);
 	}
 	
 	@Test 
@@ -128,9 +128,9 @@ public class ReviewServiceTest {
 		
 		when(reviewDao.save(review)).thenReturn(review);
 		
-		int newId = reviewServ.addReview(review);
+		Review newReview = reviewServ.addReview(review);
 		
-		assertEquals(0,newId);
+		assertEquals(review,newReview);
 	}
 	
 	@Test 
@@ -139,10 +139,10 @@ public class ReviewServiceTest {
 		editedReview.setReviewId(1);
 		editedReview.setReviewText("My Last Book");
 		
-		when(reviewDao.findById(2)).thenReturn(Optional.of(editedReview));
+		when(reviewDao.findById(1)).thenReturn(Optional.of(editedReview));
 		when(reviewDao.save(Mockito.any(Review.class))).thenReturn(editedReview);
 		
-		Review actualReview = reviewServ.updateReview(editedReview);
+		Review actualReview = reviewServ.updateReview(editedReview, "1");
 		
 		assertEquals(editedReview, actualReview);
 	}
@@ -155,11 +155,63 @@ public class ReviewServiceTest {
 		editedReview.setReviewId(2);
 		editedReview.setReviewText("My First Book");
 		
-		Review actualReview = reviewServ.updateReview(editedReview);
+		Review actualReview = reviewServ.updateReview(editedReview, "2");
 		
 		assertNull(actualReview);
 		verify(reviewDao, times(0)).save(Mockito.any(Review.class));
 	}
 	
+//	@Test 
+//	public void addReviewSuccessfully() throws InvalidParameterException {
+//		Review newReview = new Review();
+//		Review mockReview = new Review();
+//		mockReview.setReviewId(69);
+//		
+//		when(reviewDao.save(newReview)).thenReturn(mockReview);
+//		
+//		int newId = reviewServ.addReview(newReview);
+//		
+//		assertNotEquals(0, newId);
+//	}
+//	
+//	@Test 
+//	public void addReviewUnsuccessfully() throws InvalidParameterException {
+//		Review review = new Review();
+//		
+//		when(reviewDao.save(review)).thenReturn(review);
+//		
+//		int newId = reviewServ.addReview(review);
+//		
+//		assertEquals(0,newId);
+//	}
+//	
+//	@Test 
+//	public void updateReviewExists() throws ReviewNotFoundException, InvalidParameterException {
+//		Review editedReview = new Review();
+//		editedReview.setReviewId(1);
+//		editedReview.setReviewText("My Last Book");
+//		
+//		when(reviewDao.findById(2)).thenReturn(Optional.of(editedReview));
+//		when(reviewDao.save(Mockito.any(Review.class))).thenReturn(editedReview);
+//		
+//		Review actualReview = reviewServ.updateReview(editedReview);
+//		
+//		assertEquals(editedReview, actualReview);
+//	}
+//	
+//	@Test 
+//	public void updateReviewDoesNotExist() throws ReviewNotFoundException, InvalidParameterException {
+//		when(reviewDao.findById(2)).thenReturn(Optional.empty());
+//		
+//		Review editedReview = new Review();
+//		editedReview.setReviewId(2);
+//		editedReview.setReviewText("My First Book");
+//		
+//		Review actualReview = reviewServ.updateReview(editedReview);
+//		
+//		assertNull(actualReview);
+//		verify(reviewDao, times(0)).save(Mockito.any(Review.class));
+//	}
+//	
 
 }
